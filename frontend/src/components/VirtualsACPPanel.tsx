@@ -21,7 +21,7 @@ export const VirtualsACPPanel: React.FC<VirtualsACPPanelProps> = ({ status }) =>
   const registry = status?.virtuals_registry;
 
   return (
-    <div className="neo-card" style={{ padding: '20px', background: '#ffffff', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div className="neo-card" style={{ padding: '16px', background: '#ffffff', display: 'flex', flexDirection: 'column', gap: '14px', overflow: 'hidden' }}>
       <div>
         <h3 className="neo-title" style={{ fontSize: '1.2rem', color: '#000000', margin: 0 }}>
           Virtuals Protocol ACP Architecture
@@ -31,13 +31,13 @@ export const VirtualsACPPanel: React.FC<VirtualsACPPanelProps> = ({ status }) =>
         </p>
       </div>
 
-      <div style={{ background: 'var(--neo-purple-light)', border: '2.5px solid #000000', boxShadow: '3px 3px 0px #000000', padding: '16px' }}>
+      <div style={{ background: 'var(--neo-purple-light)', border: '2.5px solid #000000', boxShadow: '3px 3px 0px #000000', padding: '14px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '8px' }}>
           <div>
             <h4 className="neo-title" style={{ fontSize: '1.05rem', color: '#000000', margin: 0 }}>
               Agent ACP Identity
             </h4>
-            <p style={{ fontSize: '0.8rem', color: '#000000', fontWeight: 700, marginTop: '2px' }}>
+            <p style={{ fontSize: '0.8rem', color: '#000000', fontWeight: 700, marginTop: '2px', wordBreak: 'break-all' }}>
               Agent ID: <code>{registry?.agent_id}</code>
             </p>
           </div>
@@ -46,7 +46,7 @@ export const VirtualsACPPanel: React.FC<VirtualsACPPanelProps> = ({ status }) =>
           </span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px', marginTop: '12px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '10px', marginTop: '12px' }}>
           <div style={{ background: '#ffffff', border: '2px solid #000000', padding: '10px' }}>
             <span style={{ fontSize: '0.72rem', fontWeight: 900, textTransform: 'uppercase' }}>Protocol Standard</span>
             <p style={{ fontSize: '0.85rem', fontWeight: 900, marginTop: '2px' }}>{registry?.protocol}</p>
@@ -62,11 +62,11 @@ export const VirtualsACPPanel: React.FC<VirtualsACPPanelProps> = ({ status }) =>
         </div>
       </div>
 
-      <div style={{ background: '#ffffff', border: '2px solid #000000', boxShadow: '3px 3px 0px #000000', padding: '16px' }}>
+      <div style={{ background: '#ffffff', border: '2px solid #000000', boxShadow: '3px 3px 0px #000000', padding: '14px', overflow: 'hidden' }}>
         <h4 className="neo-title" style={{ fontSize: '0.95rem', color: '#000000', marginBottom: '8px' }}>
           Recent Inter-Agent Job Signals
         </h4>
-        <pre className="font-mono" style={{ fontSize: '0.78rem', color: '#000000', background: 'var(--neo-bg)', padding: '12px', border: '2px solid #000000', fontWeight: 700 }}>
+        <pre className="font-mono" style={{ fontSize: '0.78rem', color: '#000000', background: 'var(--neo-bg)', padding: '10px', border: '2px solid #000000', fontWeight: 700, overflowX: 'auto', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
           {JSON.stringify({
             recent_jobs: [
               {

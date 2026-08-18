@@ -19,7 +19,7 @@ export const DocsPanel: React.FC<DocsPanelProps> = ({ status }) => {
   }
 
   return (
-    <div className="neo-card" style={{ padding: '20px', background: '#ffffff', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+    <div className="neo-card" style={{ padding: '16px', background: '#ffffff', display: 'flex', flexDirection: 'column', gap: '14px', overflow: 'hidden' }}>
       <div>
         <h3 className="neo-title" style={{ fontSize: '1.2rem', color: '#000000', margin: 0 }}>
           System Stats & Reference Specs
@@ -34,14 +34,14 @@ export const DocsPanel: React.FC<DocsPanelProps> = ({ status }) => {
         <h4 className="neo-title" style={{ fontSize: '0.95rem', color: '#000000', marginBottom: '6px' }}>
           Hackathon Gate Verification (Litmus Test)
         </h4>
-        <p style={{ fontSize: '0.82rem', color: '#000000', fontWeight: 700, lineHeight: 1.4 }}>
-          gEEpEE explicitly enforces load-bearing memory. Code path located in <code>backend/agent_brain.py</code> lines 32–55. 
+        <p style={{ fontSize: '0.82rem', color: '#000000', fontWeight: 700, lineHeight: 1.4, wordBreak: 'break-word' }}>
+          gEEpEE explicitly enforces load-bearing memory. Code path located in <code style={{ wordBreak: 'break-all' }}>backend/agent_brain.py</code> lines 32–55. 
           When load-bearing memory is deleted, <code>get_entity("user_strategy", "default_profile")</code> returns <code>None</code>, causing <code>run_rebalance_cycle()</code> to safely halt with <code>GATE FAILURE: Load-bearing memory missing</code>.
         </p>
       </div>
 
       {/* PARTNER STACK BREAKDOWN */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
         
         <div style={{ background: 'var(--neo-cyan-light)', border: '2px solid #000000', boxShadow: '3px 3px 0px #000000', padding: '14px' }}>
           <h4 className="neo-title" style={{ fontSize: '0.9rem', color: '#000000', marginBottom: '6px' }}>
@@ -70,11 +70,11 @@ export const DocsPanel: React.FC<DocsPanelProps> = ({ status }) => {
       </div>
 
       {/* SYSTEM ENGINE STATS */}
-      <div style={{ background: '#ffffff', border: '2px solid #000000', boxShadow: '3px 3px 0px #000000', padding: '14px' }}>
+      <div style={{ background: '#ffffff', border: '2px solid #000000', boxShadow: '3px 3px 0px #000000', padding: '14px', overflow: 'hidden' }}>
         <h4 className="neo-title" style={{ fontSize: '0.9rem', color: '#000000', marginBottom: '8px' }}>
           Sibyl 5-Tier Memory Stats
         </h4>
-        <pre className="font-mono" style={{ fontSize: '0.78rem', color: '#000000', background: 'var(--neo-bg)', padding: '10px', border: '2px solid #000000', fontWeight: 700 }}>
+        <pre className="font-mono" style={{ fontSize: '0.78rem', color: '#000000', background: 'var(--neo-bg)', padding: '10px', border: '2px solid #000000', fontWeight: 700, overflowX: 'auto', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
           {JSON.stringify(status?.memory_stats, null, 2)}
         </pre>
       </div>
