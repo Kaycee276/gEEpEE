@@ -25,19 +25,22 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({ status, onSaveStrate
   // Sync form state with strategy loaded from Sibyl Memory (SQLite / status)
   useEffect(() => {
     if (status?.recalled_strategy) {
-      const strat = status.recalled_strategy;
-      if (strat.user_name) setUserName(strat.user_name);
-      if (strat.risk_tolerance) setRiskTolerance(strat.risk_tolerance);
-      if (strat.max_slippage_pct) setMaxSlippage(strat.max_slippage_pct);
+      const raw = status.recalled_strategy;
+      const strat = raw.body ? (typeof raw.body === 'string' ? JSON.parse(raw.body) : raw.body) : raw;
 
-      if (strat.target_allocation) {
-        if (typeof strat.target_allocation.USDC === 'number') setUsdcAlloc(strat.target_allocation.USDC);
-        if (typeof strat.target_allocation.WETH === 'number') setWethAlloc(strat.target_allocation.WETH);
-        if (typeof strat.target_allocation.AERO === 'number') setAeroAlloc(strat.target_allocation.AERO);
-        if (typeof strat.target_allocation.VIRTUAL === 'number') setVirtualAlloc(strat.target_allocation.VIRTUAL);
+      if (strat?.user_name) setUserName(strat.user_name);
+      if (strat?.risk_tolerance) setRiskTolerance(strat.risk_tolerance);
+      if (typeof strat?.max_slippage_pct === 'number') setMaxSlippage(strat.max_slippage_pct);
+
+      if (strat?.target_allocation) {
+        const alloc = strat.target_allocation;
+        if (typeof alloc.USDC === 'number') setUsdcAlloc(alloc.USDC);
+        if (typeof alloc.WETH === 'number') setWethAlloc(alloc.WETH);
+        if (typeof alloc.AERO === 'number') setAeroAlloc(alloc.AERO);
+        if (typeof alloc.VIRTUAL === 'number') setVirtualAlloc(alloc.VIRTUAL);
       }
     }
-  }, [status?.recalled_strategy]);
+  }, [JSON.stringify(status?.recalled_strategy)]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +66,7 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({ status, onSaveStrate
     <div className="neo-card" style={{ padding: '20px', background: '#ffffff' }}>
       <div style={{ marginBottom: '16px' }}>
         <h3 className="neo-title" style={{ fontSize: '1.2rem', color: '#000000', margin: 0 }}>
-          Vault Strategy & WARM Entity Configurator
+          Vault Strategy & WARM Entity Configurator (Drizzle ORM + Turso Cloud Sync)
         </h3>
         <p style={{ fontSize: '0.8rem', color: '#333333', marginTop: '2px', fontWeight: 700 }}>
           Data: User risk tolerance, token target allocation %, max slippage limits saved into Sibyl Memory WARM tier with UNIQUE constraints.
