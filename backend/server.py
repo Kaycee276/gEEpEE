@@ -58,6 +58,9 @@ class RebalanceCycleRequest(BaseModel):
 class X402PaymentRequest(BaseModel):
     endpoint: str = "market-feed/base-volatility"
     cost_usdc: float = 0.01
+    user_wallet: str | None = None
+    real_tx_hash: str | None = None
+    chain_id: int | None = 8453
 
 
 @app.get("/api/status")
@@ -176,9 +179,18 @@ def update_user_strategy(req: StrategyUpdateRequest):
 @app.post("/api/base/x402-fetch")
 def request_x402_feed(req: X402PaymentRequest):
     """Executes x402 payment header verification on Base network."""
-    result = base_agent.verify_x402_micropayment(req.endpoint, req.cost_usdc)
+    result = base_agent.verify_x402_micropayment(
+        endpoint=req.endpoint,
+        required_cost_usdc=req.cost_usdc,
+        real_tx_hash=req.real_tx_hash,
+        chain_id=req.chain_id or 8453
+    )
     if result["verified"]:
-        memory_engine.write_event("x402_payment_executed", result)
+        memory_engine.write_event(
+            action="x402_payment_executed",
+            details=result,
+            tx_hash=result.get("tx_hash")
+        )
     return result
 
 

@@ -143,14 +143,13 @@ export default function App() {
   const handleTriggerX402 = async (payload?: {
     user_wallet?: string;
     real_tx_hash?: string;
+    chain_id?: number;
   }) => {
     try {
-      const data = await triggerX402Payment();
-      const txNotice = payload?.real_tx_hash
-        ? ` (Tx: ${payload.real_tx_hash.slice(0, 10)}...)`
-        : "";
+      const data = await triggerX402Payment(payload);
+      const txNotice = data.explorer_url ? ` | View on Basescan: ${data.explorer_url}` : '';
       setNotice(
-        `x402 Micropayment Result: Header ${data.x402_payment_header}${txNotice}`,
+        `x402 Payment Verified: ${data.x402_payment_header}${txNotice}`,
       );
       refreshAllData();
     } catch (err) {

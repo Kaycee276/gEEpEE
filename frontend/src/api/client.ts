@@ -75,9 +75,15 @@ export async function updateStrategy(payload: {
   return res.json();
 }
 
-export async function triggerX402Payment(): Promise<{
+export async function triggerX402Payment(payload?: {
+  user_wallet?: string;
+  real_tx_hash?: string;
+  chain_id?: number;
+}): Promise<{
   verified: boolean;
   x402_payment_header: string;
+  tx_hash?: string;
+  explorer_url?: string;
 }> {
   const res = await fetch(`${API_BASE}/base/x402-fetch`, {
     method: "POST",
@@ -85,6 +91,9 @@ export async function triggerX402Payment(): Promise<{
     body: JSON.stringify({
       endpoint: "base-oracle/volatility",
       cost_usdc: 0.01,
+      user_wallet: payload?.user_wallet,
+      real_tx_hash: payload?.real_tx_hash,
+      chain_id: payload?.chain_id || 8453,
     }),
   });
   return res.json();
