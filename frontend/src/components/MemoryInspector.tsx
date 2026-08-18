@@ -27,7 +27,7 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
 
   return (
     <div
-      className="glass-panel"
+      className="neo-card"
       style={{ padding: "24px", background: "#ffffff" }}
     >
       <div
@@ -42,24 +42,24 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
       >
         <div>
           <h3
+            className="neo-title"
             style={{
-              fontSize: "1.3rem",
-              fontWeight: 900,
+              fontSize: "1.4rem",
               color: "#000000",
               display: "flex",
               alignItems: "center",
               gap: "8px",
             }}
           >
-            <Database style={{ color: "#000000" }} size={24} /> Sibyl 5-Tier
+            <Database style={{ color: "#000000" }} size={26} /> Sibyl 5-Tier
             Memory Architecture Inspector
           </h3>
           <p
             style={{
-              fontSize: "0.875rem",
-              color: "#444444",
+              fontSize: "0.9rem",
+              color: "#333333",
               marginTop: "4px",
-              fontWeight: 600,
+              fontWeight: 700,
             }}
           >
             Local SQLite Database (`{status?.memory_stats?.db_path}`). Zero
@@ -68,29 +68,24 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
         </div>
 
         {/* FTS5 SEARCH FORM */}
-        <form onSubmit={onSearchSubmit} style={{ display: "flex", gap: "8px" }}>
+        <form
+          onSubmit={onSearchSubmit}
+          style={{ display: "flex", gap: "10px" }}
+        >
           <div style={{ position: "relative" }}>
             <input
               type="text"
               placeholder="FTS5 Search Memory..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              style={{
-                background: "#ffffff",
-                border: "2px solid #000000",
-                padding: "8px 12px 8px 36px",
-                borderRadius: "6px",
-                color: "#000000",
-                fontSize: "0.9rem",
-                width: "240px",
-                fontWeight: 700,
-              }}
+              className="neo-input"
+              style={{ paddingLeft: "38px", width: "260px" }}
             />
             <Search
-              size={16}
+              size={18}
               style={{
                 position: "absolute",
-                left: "10px",
+                left: "12px",
                 top: "12px",
                 color: "#000000",
               }}
@@ -99,16 +94,7 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
           <button
             type="submit"
             disabled={isSearching}
-            style={{
-              background: "#000000",
-              color: "#ffffff",
-              border: "2px solid #000000",
-              padding: "8px 16px",
-              borderRadius: "6px",
-              fontWeight: 900,
-              fontSize: "0.85rem",
-              cursor: "pointer",
-            }}
+            className="neo-btn neo-btn-yellow"
           >
             {isSearching ? "Searching..." : "Search"}
           </button>
@@ -119,31 +105,39 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
       {searchResults.length > 0 && (
         <div
           style={{
-            background: "#fef3c7",
+            background: "var(--neo-yellow-light)",
             padding: "16px",
-            borderRadius: "6px",
+            borderRadius: "4px",
             marginBottom: "24px",
-            border: "2px solid #000000",
+            border: "3px solid #000000",
+            boxShadow: "4px 4px 0px #000000",
           }}
         >
           <h4
             style={{
-              fontSize: "0.95rem",
+              fontSize: "1rem",
               color: "#000000",
               marginBottom: "10px",
               fontWeight: 900,
+              textTransform: "uppercase",
             }}
           >
             FTS5 Search Results for "{searchQuery}":
           </h4>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          >
             {searchResults.map((item, idx) => (
               <div
                 key={idx}
                 style={{
-                  fontSize: "0.85rem",
+                  fontSize: "0.9rem",
                   color: "#000000",
-                  fontWeight: 600,
+                  fontWeight: 700,
+                  background: "#ffffff",
+                  padding: "10px",
+                  border: "2px solid #000000",
+                  borderRadius: "4px",
                 }}
               >
                 <span className="badge badge-sibyl">{item.category}</span>{" "}
@@ -160,8 +154,6 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
           display: "flex",
           gap: "10px",
           marginBottom: "20px",
-          borderBottom: "2px solid #000000",
-          paddingBottom: "10px",
           flexWrap: "wrap",
         }}
       >
@@ -169,26 +161,35 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
           {
             id: "warm",
             label: `WARM Entities (${memoryDump?.warm_entities?.length || 0})`,
+            bg: "var(--neo-yellow)",
           },
           {
             id: "cold",
             label: `COLD Journal (${memoryDump?.cold_journal?.length || 0})`,
+            bg: "var(--neo-cyan)",
           },
-          { id: "hot", label: "HOT State" },
-          { id: "reference", label: "REFERENCE Docs" },
+          { id: "hot", label: "HOT State", bg: "var(--neo-green)" },
+          { id: "reference", label: "REFERENCE Docs", bg: "var(--neo-purple)" },
         ].map((t) => (
           <button
             key={t.id}
             onClick={() => setMemoryTierTab(t.id as any)}
             style={{
-              background: memoryTierTab === t.id ? "#000000" : "#ffffff",
-              color: memoryTierTab === t.id ? "#ffffff" : "#000000",
-              border: "2px solid #000000",
+              background: memoryTierTab === t.id ? t.bg : "#ffffff",
+              color: "#000000",
+              border: "3px solid #000000",
               padding: "8px 16px",
-              borderRadius: "6px",
+              borderRadius: "4px",
               fontWeight: 900,
               fontSize: "0.85rem",
               cursor: "pointer",
+              boxShadow:
+                memoryTierTab === t.id
+                  ? "4px 4px 0px #000000"
+                  : "2px 2px 0px #000000",
+              transform:
+                memoryTierTab === t.id ? "translate(-2px, -2px)" : "none",
+              textTransform: "uppercase",
             }}
           >
             {t.label}
@@ -203,10 +204,11 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
             <div
               key={idx}
               style={{
-                background: "#f8f9fa",
-                padding: "16px",
-                borderRadius: "6px",
-                border: "2px solid #000000",
+                background: "#ffffff",
+                padding: "18px",
+                borderRadius: "4px",
+                border: "3px solid #000000",
+                boxShadow: "4px 4px 0px #000000",
               }}
             >
               <div
@@ -220,7 +222,7 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
                 <span
                   style={{
                     fontSize: "0.8rem",
-                    color: "#555555",
+                    color: "#000000",
                     fontWeight: 700,
                   }}
                 >
@@ -228,11 +230,11 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
                 </span>
               </div>
               <h4
+                className="neo-title"
                 style={{
-                  fontSize: "1.05rem",
-                  fontWeight: 900,
+                  fontSize: "1.1rem",
                   color: "#000000",
-                  marginBottom: "8px",
+                  marginBottom: "10px",
                 }}
               >
                 {ent.name}
@@ -242,12 +244,12 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
                 style={{
                   fontSize: "0.85rem",
                   color: "#000000",
-                  background: "#ffffff",
-                  padding: "12px",
+                  background: "var(--neo-bg)",
+                  padding: "14px",
                   borderRadius: "4px",
-                  border: "1px solid #000000",
+                  border: "2px solid #000000",
                   overflowX: "auto",
-                  fontWeight: 600,
+                  fontWeight: 700,
                 }}
               >
                 {JSON.stringify(ent.body, null, 2)}
@@ -258,15 +260,16 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
       )}
 
       {memoryTierTab === "cold" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {memoryDump?.cold_journal?.map((j, idx) => (
             <div
               key={idx}
               style={{
-                background: "#f8f9fa",
-                padding: "14px",
-                borderRadius: "6px",
-                border: "2px solid #000000",
+                background: "#ffffff",
+                padding: "16px",
+                borderRadius: "4px",
+                border: "3px solid #000000",
+                boxShadow: "3px 3px 0px #000000",
               }}
             >
               <div
@@ -280,15 +283,16 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
                   style={{
                     fontWeight: 900,
                     color: "#000000",
-                    fontSize: "0.95rem",
+                    fontSize: "1rem",
+                    textTransform: "uppercase",
                   }}
                 >
                   {j.action}
                 </span>
                 <span
                   style={{
-                    fontSize: "0.75rem",
-                    color: "#555555",
+                    fontSize: "0.8rem",
+                    color: "#000000",
                     fontWeight: 700,
                   }}
                 >
@@ -300,9 +304,9 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
                   className="font-mono"
                   style={{
                     fontSize: "0.85rem",
-                    color: "#0284c7",
-                    marginTop: "4px",
-                    fontWeight: 700,
+                    color: "#000000",
+                    marginTop: "6px",
+                    fontWeight: 900,
                   }}
                 >
                   Tx Hash: {j.tx_hash}
@@ -313,13 +317,13 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
                   className="font-mono"
                   style={{
                     fontSize: "0.8rem",
-                    color: "#222222",
-                    marginTop: "6px",
-                    background: "#ffffff",
-                    padding: "8px",
+                    color: "#000000",
+                    marginTop: "8px",
+                    background: "var(--neo-cyan-light)",
+                    padding: "10px",
                     borderRadius: "4px",
-                    border: "1px solid #000000",
-                    fontWeight: 600,
+                    border: "2px solid #000000",
+                    fontWeight: 700,
                   }}
                 >
                   {JSON.stringify(j.details, null, 2)}
@@ -333,18 +337,19 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
       {memoryTierTab === "hot" && (
         <div
           style={{
-            background: "#f8f9fa",
-            padding: "16px",
-            borderRadius: "6px",
-            border: "2px solid #000000",
+            background: "#ffffff",
+            padding: "18px",
+            borderRadius: "4px",
+            border: "3px solid #000000",
+            boxShadow: "4px 4px 0px #000000",
           }}
         >
           <h4
+            className="neo-title"
             style={{
-              fontSize: "1rem",
+              fontSize: "1.1rem",
               color: "#000000",
-              marginBottom: "8px",
-              fontWeight: 900,
+              marginBottom: "10px",
             }}
           >
             HOT Working State (Active Locks & Working Memory)
@@ -354,11 +359,11 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
             style={{
               fontSize: "0.85rem",
               color: "#000000",
-              background: "#ffffff",
-              padding: "14px",
+              background: "var(--neo-green-light)",
+              padding: "16px",
               borderRadius: "4px",
-              border: "1px solid #000000",
-              fontWeight: 600,
+              border: "2px solid #000000",
+              fontWeight: 700,
             }}
           >
             {JSON.stringify(memoryDump?.hot_state, null, 2)}
@@ -374,28 +379,29 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
                 <div
                   key={idx}
                   style={{
-                    background: "#f8f9fa",
-                    padding: "16px",
-                    borderRadius: "6px",
-                    border: "2px solid #000000",
+                    background: "#ffffff",
+                    padding: "18px",
+                    borderRadius: "4px",
+                    border: "3px solid #000000",
+                    boxShadow: "4px 4px 0px #000000",
                   }}
                 >
                   <h4
+                    className="neo-title"
                     style={{
-                      fontSize: "1rem",
-                      fontWeight: 900,
+                      fontSize: "1.1rem",
                       color: "#000000",
-                      marginBottom: "4px",
+                      marginBottom: "6px",
                     }}
                   >
                     {doc.title}
                   </h4>
                   <p
                     style={{
-                      fontSize: "0.875rem",
+                      fontSize: "0.9rem",
                       color: "#222222",
                       marginTop: "6px",
-                      fontWeight: 600,
+                      fontWeight: 700,
                     }}
                   >
                     {doc.content}

@@ -9,7 +9,7 @@ interface PortfolioPanelProps {
 export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
   return (
     <div
-      className="glass-panel"
+      className="neo-card"
       style={{ padding: "24px", background: "#ffffff" }}
     >
       <div
@@ -21,16 +21,16 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
         }}
       >
         <h3
+          className="neo-title"
           style={{
-            fontSize: "1.2rem",
-            fontWeight: 900,
+            fontSize: "1.3rem",
             color: "#000000",
             display: "flex",
             alignItems: "center",
             gap: "8px",
           }}
         >
-          <Cpu style={{ color: "#000000" }} size={22} /> Base Network Vault
+          <Cpu style={{ color: "#000000" }} size={24} /> Base Network Vault
           Portfolio
         </h3>
         <span className="badge badge-base">{status?.wallet_info?.chain}</span>
@@ -39,19 +39,20 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
       <div
         style={{
           marginBottom: "24px",
-          background: "#f8f9fa",
-          padding: "12px",
-          borderRadius: "6px",
-          border: "1px solid #000000",
+          background: "var(--neo-cyan-light)",
+          padding: "14px",
+          borderRadius: "4px",
+          border: "2px solid #000000",
+          boxShadow: "3px 3px 0px #000000",
         }}
       >
         <p
           style={{
             fontSize: "0.8rem",
-            color: "#555555",
+            color: "#000000",
             textTransform: "uppercase",
             letterSpacing: "0.05em",
-            fontWeight: 700,
+            fontWeight: 900,
           }}
         >
           Wallet Address
@@ -59,7 +60,7 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
         <p
           className="font-mono"
           style={{
-            fontSize: "0.875rem",
+            fontSize: "0.9rem",
             color: "#000000",
             marginTop: "4px",
             fontWeight: 700,
@@ -77,6 +78,8 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
           fontWeight: 900,
           color: "#000000",
           marginBottom: "14px",
+          textTransform: "uppercase",
+          letterSpacing: "0.04em",
         }}
       >
         Onchain Balances & Target Allocation
@@ -92,9 +95,9 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
                 style={{
                   background: "#ffffff",
                   padding: "14px 18px",
-                  borderRadius: "6px",
-                  border: "2px solid #000000",
-                  boxShadow: "2px 2px 0px #000000",
+                  borderRadius: "4px",
+                  border: "3px solid #000000",
+                  boxShadow: "4px 4px 0px #000000",
                 }}
               >
                 <div
@@ -105,17 +108,18 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
                   }}
                 >
                   <span
-                    style={{
-                      fontWeight: 900,
-                      color: "#000000",
-                      fontSize: "1.05rem",
-                    }}
+                    className="neo-title"
+                    style={{ color: "#000000", fontSize: "1.1rem" }}
                   >
                     {token}
                   </span>
                   <span
                     className="font-mono"
-                    style={{ color: "#000000", fontWeight: 700 }}
+                    style={{
+                      color: "#000000",
+                      fontWeight: 900,
+                      fontSize: "0.95rem",
+                    }}
                   >
                     {amount.toFixed(4)} {token} ($
                     {valueUsd.toLocaleString(undefined, {
@@ -128,8 +132,8 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
                 <div
                   style={{
                     fontSize: "0.8rem",
-                    color: "#555555",
-                    fontWeight: 600,
+                    color: "#333333",
+                    fontWeight: 700,
                   }}
                 >
                   Market Price: ${price.toFixed(2)} USD

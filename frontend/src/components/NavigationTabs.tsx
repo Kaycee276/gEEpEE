@@ -17,28 +17,34 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
       id: "overview" as TabType,
       label: "Portfolio & Base Engine",
       icon: Activity,
+      bg: "var(--neo-cyan)",
     },
     {
       id: "memory" as TabType,
       label: "Sibyl 5-Tier Memory Inspector",
       icon: Database,
+      bg: "var(--neo-yellow)",
     },
     {
       id: "strategy" as TabType,
       label: "Strategy & WARM Entities",
       icon: Sliders,
+      bg: "var(--neo-green)",
     },
-    { id: "acp" as TabType, label: "Virtuals ACP Protocol", icon: Radio },
+    {
+      id: "acp" as TabType,
+      label: "Virtuals ACP Protocol",
+      icon: Radio,
+      bg: "var(--neo-purple)",
+    },
   ];
 
   return (
     <div
       style={{
         display: "flex",
-        gap: "10px",
+        gap: "12px",
         marginBottom: "24px",
-        borderBottom: "2px solid #000000",
-        paddingBottom: "10px",
         flexWrap: "wrap",
       }}
     >
@@ -50,24 +56,27 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
             key={tab.id}
             onClick={() => onSelectTab(tab.id)}
             style={{
-              background: isActive ? "#000000" : "#ffffff",
-              color: isActive ? "#ffffff" : "#000000",
-              border: "2px solid #000000",
-              padding: "10px 20px",
-              borderRadius: "6px",
+              background: isActive ? tab.bg : "#ffffff",
+              color: "#000000",
+              border: "3px solid #000000",
+              padding: "12px 22px",
+              borderRadius: "4px",
               fontWeight: 900,
-              fontSize: "0.9rem",
+              fontSize: "0.95rem",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
               gap: "8px",
               boxShadow: isActive
-                ? "3px 3px 0px #555555"
-                : "2px 2px 0px #000000",
-              transition: "all 0.15s ease",
+                ? "5px 5px 0px #000000"
+                : "3px 3px 0px #000000",
+              transform: isActive ? "translate(-2px, -2px)" : "none",
+              transition: "all 0.1s ease",
+              textTransform: "uppercase",
+              letterSpacing: "0.04em",
             }}
           >
-            <Icon size={16} /> {tab.label}
+            <Icon size={18} /> {tab.label}
           </button>
         );
       })}

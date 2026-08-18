@@ -10,11 +10,11 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
   return (
     <header
-      className="glass-panel"
+      className="neo-card"
       style={{
         padding: "20px 24px",
         marginBottom: "24px",
-        background: "#ffffff",
+        background: "var(--neo-yellow)",
       }}
     >
       <div
@@ -29,41 +29,36 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <div
             style={{
-              width: "52px",
-              height: "52px",
-              borderRadius: "6px",
+              width: "56px",
+              height: "56px",
+              borderRadius: "4px",
               background: "#000000",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               color: "#ffffff",
-              border: "2px solid #000000",
-              boxShadow: "3px 3px 0px #000000",
+              border: "3px solid #000000",
+              boxShadow: "3px 3px 0px #ffffff",
             }}
           >
-            <Brain size={30} />
+            <Brain size={34} />
           </div>
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <h1
-                style={{
-                  fontSize: "2rem",
-                  fontWeight: 900,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  color: "#000000",
-                }}
+                className="neo-title"
+                style={{ fontSize: "2.2rem", color: "#000000", margin: 0 }}
               >
                 gEEpEE
               </h1>
-              <span className="badge badge-sibyl">Sibyl Labs Agent</span>
+              <span className="badge badge-virtuals">Sibyl Labs Agent</span>
             </div>
             <p
               style={{
-                color: "#333333",
-                fontSize: "0.9rem",
+                color: "#000000",
+                fontSize: "0.95rem",
                 marginTop: "2px",
-                fontWeight: 600,
+                fontWeight: 700,
               }}
             >
               Autonomous Memory-Driven Onchain Vault Agent on Base & Virtuals
@@ -77,7 +72,7 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "10px",
+            gap: "12px",
             flexWrap: "wrap",
           }}
         >

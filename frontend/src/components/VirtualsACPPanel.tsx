@@ -11,13 +11,13 @@ export const VirtualsACPPanel: React.FC<VirtualsACPPanelProps> = ({
 }) => {
   return (
     <div
-      className="glass-panel"
-      style={{ padding: "24px", background: "#ffffff" }}
+      className="neo-card"
+      style={{ padding: "28px", background: "#ffffff" }}
     >
       <h3
+        className="neo-title"
         style={{
-          fontSize: "1.3rem",
-          fontWeight: 900,
+          fontSize: "1.4rem",
           color: "#000000",
           marginBottom: "8px",
           display: "flex",
@@ -25,15 +25,15 @@ export const VirtualsACPPanel: React.FC<VirtualsACPPanelProps> = ({
           gap: "8px",
         }}
       >
-        <Radio style={{ color: "#6b21a8" }} size={24} /> Virtuals Protocol Agent
+        <Radio style={{ color: "#000000" }} size={26} /> Virtuals Protocol Agent
         Communication Protocol (ACP)
       </h3>
       <p
         style={{
-          fontSize: "0.875rem",
-          color: "#444444",
+          fontSize: "0.9rem",
+          color: "#333333",
           marginBottom: "24px",
-          fontWeight: 600,
+          fontWeight: 700,
         }}
       >
         gEEpEE broadcasts inter-agent signals to partner agents on the Virtuals
@@ -42,20 +42,17 @@ export const VirtualsACPPanel: React.FC<VirtualsACPPanelProps> = ({
 
       <div
         style={{
-          background: "#f3e8ff",
-          padding: "18px",
-          borderRadius: "6px",
+          background: "var(--neo-purple-light)",
+          padding: "20px",
+          borderRadius: "4px",
           marginBottom: "24px",
-          border: "2px solid #000000",
+          border: "3px solid #000000",
+          boxShadow: "4px 4px 0px #000000",
         }}
       >
         <h4
-          style={{
-            color: "#6b21a8",
-            fontSize: "1rem",
-            marginBottom: "8px",
-            fontWeight: 900,
-          }}
+          className="neo-title"
+          style={{ color: "#000000", fontSize: "1.1rem", marginBottom: "10px" }}
         >
           Registered Virtuals Agent Metadata
         </h4>
@@ -65,10 +62,10 @@ export const VirtualsACPPanel: React.FC<VirtualsACPPanelProps> = ({
             fontSize: "0.85rem",
             color: "#000000",
             background: "#ffffff",
-            padding: "12px",
+            padding: "14px",
             borderRadius: "4px",
-            border: "1px solid #000000",
-            fontWeight: 600,
+            border: "2px solid #000000",
+            fontWeight: 700,
           }}
         >
           {JSON.stringify(status?.virtuals_registry, null, 2)}

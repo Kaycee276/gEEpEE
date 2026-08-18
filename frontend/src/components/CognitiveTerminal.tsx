@@ -11,7 +11,7 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
 }) => {
   return (
     <div
-      className="glass-panel"
+      className="neo-card"
       style={{ padding: "24px", background: "#ffffff" }}
     >
       <div
@@ -23,16 +23,16 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
         }}
       >
         <h3
+          className="neo-title"
           style={{
-            fontSize: "1.2rem",
-            fontWeight: 900,
+            fontSize: "1.3rem",
             color: "#000000",
             display: "flex",
             alignItems: "center",
             gap: "8px",
           }}
         >
-          <Brain style={{ color: "#000000" }} size={22} /> gEEpEE Cognitive
+          <Brain style={{ color: "#000000" }} size={24} /> gEEpEE Cognitive
           Terminal
         </h3>
         <span
@@ -49,17 +49,18 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
           style={{
             textAlign: "center",
             padding: "40px 20px",
-            color: "#555555",
-            background: "#f8f9fa",
-            borderRadius: "6px",
-            border: "2px solid #000000",
+            color: "#000000",
+            background: "var(--neo-yellow-light)",
+            borderRadius: "4px",
+            border: "3px solid #000000",
+            boxShadow: "3px 3px 0px #000000",
           }}
         >
           <Activity
             size={40}
             style={{ margin: "0 auto 12px", color: "#000000" }}
           />
-          <p style={{ fontWeight: 700 }}>
+          <p style={{ fontWeight: 900, fontSize: "0.95rem" }}>
             Click "Run Autonomous Rebalance" above to observe gEEpEE's memory
             recall & Base onchain execution workflow.
           </p>
@@ -69,10 +70,11 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
           {rebalanceResult.error && (
             <div
               style={{
-                background: "#fee2e2",
-                border: "2px solid #000000",
+                background: "var(--neo-red-light)",
+                border: "3px solid #000000",
+                boxShadow: "4px 4px 0px #000000",
                 padding: "14px",
-                borderRadius: "6px",
+                borderRadius: "4px",
                 color: "#000000",
               }}
             >
@@ -82,7 +84,8 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
-                  color: "#b91c1c",
+                  color: "#000000",
+                  fontSize: "1rem",
                 }}
               >
                 <AlertTriangle size={20} /> Rebalance Halted (Litmus Gate
@@ -90,7 +93,7 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
               </div>
               <p
                 style={{
-                  fontSize: "0.85rem",
+                  fontSize: "0.9rem",
                   marginTop: "6px",
                   fontWeight: 700,
                 }}
@@ -104,11 +107,12 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
             <div
               key={idx}
               style={{
-                background: "#f8f9fa",
-                padding: "12px 16px",
-                borderRadius: "6px",
-                border: "2px solid #000000",
-                borderLeft: "8px solid #000000",
+                background: "#ffffff",
+                padding: "14px 16px",
+                borderRadius: "4px",
+                border: "3px solid #000000",
+                boxShadow: "3px 3px 0px #000000",
+                borderLeft: "10px solid #000000",
               }}
             >
               <div
@@ -119,18 +123,10 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
                   marginBottom: "4px",
                 }}
               >
+                <span className="badge badge-sibyl">{step.step}</span>
                 <span
                   style={{
-                    fontSize: "0.75rem",
-                    fontWeight: 900,
-                    color: "#000000",
-                  }}
-                >
-                  {step.step}
-                </span>
-                <span
-                  style={{
-                    fontSize: "0.9rem",
+                    fontSize: "0.95rem",
                     fontWeight: 900,
                     color: "#000000",
                   }}
@@ -142,8 +138,8 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
                 style={{
                   fontSize: "0.85rem",
                   color: "#222222",
-                  marginTop: "4px",
-                  fontWeight: 600,
+                  marginTop: "6px",
+                  fontWeight: 700,
                 }}
               >
                 {step.detail}
@@ -154,18 +150,20 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
           {rebalanceResult.executed_swap && (
             <div
               style={{
-                background: "#dcfce7",
-                border: "2px solid #000000",
+                background: "var(--neo-green-light)",
+                border: "3px solid #000000",
+                boxShadow: "4px 4px 0px #000000",
                 padding: "14px",
-                borderRadius: "6px",
+                borderRadius: "4px",
               }}
             >
               <div
                 style={{
-                  color: "#166534",
+                  color: "#000000",
                   fontWeight: 900,
-                  fontSize: "0.95rem",
+                  fontSize: "1rem",
                   marginBottom: "6px",
+                  textTransform: "uppercase",
                 }}
               >
                 Onchain Base Swap Verified
@@ -187,12 +185,12 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
                 rel="noreferrer"
                 style={{
                   fontSize: "0.85rem",
-                  color: "#0284c7",
+                  color: "#000000",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "4px",
                   marginTop: "8px",
-                  textDecoration: "none",
+                  textDecoration: "underline",
                   fontWeight: 900,
                 }}
               >

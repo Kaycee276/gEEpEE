@@ -36,18 +36,18 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
 
   return (
     <div
-      className="glass-panel"
+      className="neo-card"
       style={{
-        padding: "24px",
+        padding: "28px",
         maxWidth: "800px",
         margin: "0 auto",
         background: "#ffffff",
       }}
     >
       <h3
+        className="neo-title"
         style={{
-          fontSize: "1.3rem",
-          fontWeight: 900,
+          fontSize: "1.4rem",
           color: "#000000",
           marginBottom: "8px",
           display: "flex",
@@ -55,15 +55,15 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
           gap: "8px",
         }}
       >
-        <Sliders style={{ color: "#000000" }} size={24} /> Configure Target
+        <Sliders style={{ color: "#000000" }} size={26} /> Configure Target
         Strategy & Risk Rules
       </h3>
       <p
         style={{
-          fontSize: "0.875rem",
-          color: "#444444",
+          fontSize: "0.9rem",
+          color: "#333333",
           marginBottom: "24px",
-          fontWeight: 600,
+          fontWeight: 700,
         }}
       >
         Saving writes directly to Sibyl Memory WARM tier under unique constraint
@@ -78,7 +78,7 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "16px",
+            gap: "18px",
           }}
         >
           <div>
@@ -89,6 +89,7 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
                 color: "#000000",
                 marginBottom: "6px",
                 fontWeight: 900,
+                textTransform: "uppercase",
               }}
             >
               USDC Target Allocation (%)
@@ -97,15 +98,8 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
               type="number"
               value={usdcTarget}
               onChange={(e) => setUsdcTarget(Number(e.target.value))}
-              style={{
-                width: "100%",
-                background: "#ffffff",
-                border: "2px solid #000000",
-                padding: "10px",
-                borderRadius: "6px",
-                color: "#000000",
-                fontWeight: 800,
-              }}
+              className="neo-input"
+              style={{ width: "100%" }}
             />
           </div>
 
@@ -117,6 +111,7 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
                 color: "#000000",
                 marginBottom: "6px",
                 fontWeight: 900,
+                textTransform: "uppercase",
               }}
             >
               WETH Target Allocation (%)
@@ -125,15 +120,8 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
               type="number"
               value={wethTarget}
               onChange={(e) => setWethTarget(Number(e.target.value))}
-              style={{
-                width: "100%",
-                background: "#ffffff",
-                border: "2px solid #000000",
-                padding: "10px",
-                borderRadius: "6px",
-                color: "#000000",
-                fontWeight: 800,
-              }}
+              className="neo-input"
+              style={{ width: "100%" }}
             />
           </div>
 
@@ -145,6 +133,7 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
                 color: "#000000",
                 marginBottom: "6px",
                 fontWeight: 900,
+                textTransform: "uppercase",
               }}
             >
               AERO Target Allocation (%)
@@ -153,15 +142,8 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
               type="number"
               value={aeroTarget}
               onChange={(e) => setAeroTarget(Number(e.target.value))}
-              style={{
-                width: "100%",
-                background: "#ffffff",
-                border: "2px solid #000000",
-                padding: "10px",
-                borderRadius: "6px",
-                color: "#000000",
-                fontWeight: 800,
-              }}
+              className="neo-input"
+              style={{ width: "100%" }}
             />
           </div>
 
@@ -173,6 +155,7 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
                 color: "#000000",
                 marginBottom: "6px",
                 fontWeight: 900,
+                textTransform: "uppercase",
               }}
             >
               VIRTUAL Target Allocation (%)
@@ -181,15 +164,8 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
               type="number"
               value={virtualTarget}
               onChange={(e) => setVirtualTarget(Number(e.target.value))}
-              style={{
-                width: "100%",
-                background: "#ffffff",
-                border: "2px solid #000000",
-                padding: "10px",
-                borderRadius: "6px",
-                color: "#000000",
-                fontWeight: 800,
-              }}
+              className="neo-input"
+              style={{ width: "100%" }}
             />
           </div>
         </div>
@@ -202,6 +178,7 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
               color: "#000000",
               marginBottom: "6px",
               fontWeight: 900,
+              textTransform: "uppercase",
             }}
           >
             Max Slippage Tolerance (%)
@@ -211,31 +188,19 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
             step="0.1"
             value={slippage}
             onChange={(e) => setSlippage(Number(e.target.value))}
-            style={{
-              width: "100%",
-              background: "#ffffff",
-              border: "2px solid #000000",
-              padding: "10px",
-              borderRadius: "6px",
-              color: "#000000",
-              fontWeight: 800,
-            }}
+            className="neo-input"
+            style={{ width: "100%" }}
           />
         </div>
 
         <button
           type="submit"
+          className="neo-btn neo-btn-green"
           style={{
-            background: "#000000",
-            color: "#ffffff",
-            border: "2px solid #000000",
-            padding: "12px 24px",
-            borderRadius: "6px",
-            fontWeight: 900,
-            fontSize: "0.95rem",
-            cursor: "pointer",
             marginTop: "12px",
-            boxShadow: "3px 3px 0px #555555",
+            padding: "14px",
+            width: "100%",
+            justifyContent: "center",
           }}
         >
           Save Strategy to Sibyl Memory

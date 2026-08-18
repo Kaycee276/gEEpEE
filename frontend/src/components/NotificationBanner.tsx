@@ -14,13 +14,13 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
 
   return (
     <div
-      className="glass-panel"
+      className="neo-card"
       style={{
-        padding: "12px 20px",
+        padding: "14px 20px",
         marginBottom: "24px",
-        background: "#fef9c3",
-        border: "2px solid #000000",
-        boxShadow: "4px 4px 0px #000000",
+        background: "var(--neo-cyan-light)",
+        border: "3px solid #000000",
+        boxShadow: "5px 5px 0px #000000",
         color: "#000000",
         display: "flex",
         justifyContent: "space-between",
@@ -32,22 +32,28 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
           display: "flex",
           alignItems: "center",
           gap: "10px",
-          fontSize: "0.95rem",
-          fontWeight: 700,
+          fontSize: "1rem",
+          fontWeight: 900,
         }}
       >
-        <Sparkles size={20} style={{ color: "#000000" }} />
+        <Sparkles size={22} style={{ color: "#000000" }} />
         <span>{notice}</span>
       </div>
       <button
         onClick={onClose}
         style={{
-          background: "none",
-          border: "none",
-          color: "#000000",
+          background: "#000000",
+          color: "#ffffff",
+          border: "2px solid #000000",
+          borderRadius: "4px",
+          width: "28px",
+          height: "28px",
           cursor: "pointer",
           fontWeight: 900,
-          fontSize: "1.2rem",
+          fontSize: "1rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         &times;
