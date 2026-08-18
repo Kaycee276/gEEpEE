@@ -86,14 +86,14 @@ class GeePeeMemoryEngine:
                 )
             """)
             
-            # Tier 3: COLD Journal (Sequential Event Log)
+            # Tier 3: COLD Journal (Sequential Event Log with tx_hash UNIQUE constraint)
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS cold_journal (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     tenant_id TEXT DEFAULT 'geepee_default',
                     action TEXT NOT NULL,
                     details TEXT,
-                    tx_hash TEXT,
+                    tx_hash TEXT UNIQUE,
                     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """)
@@ -353,10 +353,19 @@ class GeePeeMemoryEngine:
         det_str = json.dumps(details) if isinstance(details, (dict, list)) else (str(details) if details else "")
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute("""
-                INSERT INTO cold_journal (tenant_id, action, details, tx_hash, timestamp)
-                VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
-            """, (tenant_id, action, det_str, tx_hash))
+            if tx_hash:
+                cursor.execute("""
+                    INSERT INTO cold_journal (tenant_id, action, details, tx_hash, timestamp)
+                    VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+                    ON CONFLICT(tx_hash) DO UPDATE SET
+                        details=excluded.details,
+                        timestamp=CURRENT_TIMESTAMP
+                """, (tenant_id, action, det_str, tx_hash))
+            else:
+                cursor.execute("""
+                    INSERT INTO cold_journal (tenant_id, action, details, tx_hash, timestamp)
+                    VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+                """, (tenant_id, action, det_str, tx_hash))
             
             try:
                 cursor.execute("""
@@ -368,11 +377,19 @@ class GeePeeMemoryEngine:
                 
             conn.commit()
 
-        if self.official_client:
-            try:
-                self.official_client.write_event(acted=[f"{action}: {det_str}"])
-            except (AttributeError, RuntimeError):
-                pass
+        if tx_hash:
+            self._sync_turso("""
+                INSERT INTO cold_journal (tenant_id, action, details, tx_hash, timestamp)
+                VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+                ON CONFLICT(tx_hash) DO UPDATE SET
+                    details=excluded.details,
+                    timestamp=CURRENT_TIMESTAMP
+            """, [tenant_id, action, det_str, tx_hash])
+        else:
+            self._sync_turso("""
+                INSERT INTO cold_journal (tenant_id, action, details, tx_hash, timestamp)
+                VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+            """, [tenant_id, action, det_str, tx_hash])
 
     def read_events(self, limit: int = 20, tenant_id: str = "geepee_default") -> list[dict[str, Any]]:
         if not self.load_bearing_enabled:

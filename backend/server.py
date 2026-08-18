@@ -43,6 +43,7 @@ class StrategyUpdateRequest(BaseModel):
     target_allocation: dict[str, float]
     max_slippage_pct: float | None = 0.5
     stop_loss_pct: float | None = 5.0
+    user_wallet: str | None = None
 
 class LoadBearingToggleRequest(BaseModel):
     enabled: bool
@@ -153,7 +154,8 @@ def trigger_agent_rebalance(req: RebalanceCycleRequest | None = None):
 
 @app.post("/api/agent/update-strategy")
 def update_user_strategy(req: StrategyUpdateRequest):
-    """Updates user strategy entity in Sibyl Memory WARM tier."""
+    """Updates user strategy entity in Sibyl Memory WARM tier partitioned by wallet address."""
+    tenant_id = req.user_wallet or "geepee_default"
     body = {
         "user_name": req.user_name,
         "risk_tolerance": req.risk_tolerance,
@@ -164,11 +166,14 @@ def update_user_strategy(req: StrategyUpdateRequest):
         "x402_feed_enabled": True
     }
     
-    memory_engine.set_entity("user_strategy", "default_profile", body)
+    memory_engine.set_entity("user_strategy", "default_profile", body, tenant_id=tenant_id)
     memory_engine.write_event(
         "strategy_updated",
-        {"user": req.user_name, "new_allocation": req.target_allocation}
+        {"user": req.user_name, "new_allocation": req.target_allocation},
+        tenant_id=tenant_id
     )
+    if req.user_wallet:
+        memory_engine.upsert_user_portfolio(wallet_address=req.user_wallet, strategy=body)
     
     return {
         "success": True,
@@ -180,6 +185,7 @@ def update_user_strategy(req: StrategyUpdateRequest):
 @app.post("/api/base/x402-fetch")
 def request_x402_feed(req: X402PaymentRequest):
     """Executes x402 payment header verification on Base network."""
+    tenant_id = req.user_wallet or "geepee_default"
     result = base_agent.verify_x402_micropayment(
         endpoint=req.endpoint,
         required_cost_usdc=req.cost_usdc,
@@ -190,7 +196,8 @@ def request_x402_feed(req: X402PaymentRequest):
         memory_engine.write_event(
             action="x402_payment_executed",
             details=result,
-            tx_hash=result.get("tx_hash")
+            tx_hash=result.get("tx_hash"),
+            tenant_id=tenant_id
         )
     return result
 

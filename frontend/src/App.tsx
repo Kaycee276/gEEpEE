@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAccount } from "wagmi";
 import type {
   StatusData,
   MemoryDump,
@@ -28,15 +29,15 @@ import { VirtualsACPPanel } from "./components/VirtualsACPPanel";
 import { DocsPanel } from "./components/DocsPanel";
 
 export default function App() {
+  const { address } = useAccount();
   const [status, setStatus] = useState<StatusData | null>(null);
   const [memoryDump, setMemoryDump] = useState<MemoryDump | null>(null);
-  const [activeTab, setActiveTab] = useState<TabType>("overview");
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
 
   const [isRebalancing, setIsRebalancing] = useState(false);
-  const [rebalanceResult, setRebalanceResult] =
-    useState<RebalanceResult | null>(null);
+  const [rebalanceResult, setRebalanceResult] = useState<RebalanceResult | null>(null);
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
@@ -51,7 +52,7 @@ export default function App() {
       setStatus(dataStatus);
       setMemoryDump(dataMem);
     } catch (err) {
-      console.error("API Sync Error:", err);
+      console.error('API Sync Error:', err);
     }
   };
 
@@ -77,8 +78,8 @@ export default function App() {
       console.error(err);
       setRebalanceResult({
         success: false,
-        gate_status: "Network Error",
-        error: "Network error connecting to gEEpEE backend server.",
+        gate_status: 'Network Error',
+        error: 'Network error connecting to gEEpEE backend server.',
       });
     } finally {
       setIsRebalancing(false);
@@ -86,9 +87,7 @@ export default function App() {
   };
 
   const handleRequireConnect = () => {
-    setNotice(
-      "🔒 Please connect your wallet using the 'Connect Wallet' button in the top right to execute live Base transactions!",
-    );
+    setNotice("🔒 Please connect your wallet using the 'Connect Wallet' button in the top right to execute live Base transactions!");
   };
 
   const handleToggleMemory = async (enabled: boolean) => {
@@ -132,7 +131,10 @@ export default function App() {
     max_slippage_pct: number;
   }) => {
     try {
-      const data = await updateStrategy(payload);
+      const data = await updateStrategy({
+        ...payload,
+        user_wallet: address
+      });
       setNotice(data.message);
       refreshAllData();
     } catch (err) {

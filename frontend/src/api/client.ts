@@ -66,6 +66,7 @@ export async function updateStrategy(payload: {
   risk_tolerance: string;
   target_allocation: Record<string, number>;
   max_slippage_pct: number;
+  user_wallet?: string;
 }): Promise<{ success: boolean; message: string }> {
   const res = await fetch(`${API_BASE}/agent/update-strategy`, {
     method: "POST",
