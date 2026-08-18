@@ -230,11 +230,22 @@ export default function App() {
   const memoryEnabled = status?.memory_stats?.load_bearing_enabled ?? true;
 
   return (
-    <div style={{ padding: "24px", maxWidth: "1400px", margin: "0 auto" }}>
+    <div
+      style={{
+        padding: "24px",
+        maxWidth: "1400px",
+        margin: "0 auto",
+        color: "#000000",
+      }}
+    >
       {/* HEADER BAR */}
       <header
         className="glass-panel"
-        style={{ padding: "20px 24px", marginBottom: "24px" }}
+        style={{
+          padding: "20px 24px",
+          marginBottom: "24px",
+          background: "#ffffff",
+        }}
       >
         <div
           style={{
@@ -248,18 +259,19 @@ export default function App() {
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <div
               style={{
-                width: "48px",
-                height: "48px",
-                borderRadius: "12px",
-                background: "linear-gradient(135deg, #eab308 0%, #06b6d4 100%)",
+                width: "52px",
+                height: "52px",
+                borderRadius: "6px",
+                background: "#000000",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#000",
-                fontWeight: "bold",
+                color: "#ffffff",
+                border: "2px solid #000000",
+                boxShadow: "3px 3px 0px #000000",
               }}
             >
-              <Brain size={28} />
+              <Brain size={30} />
             </div>
             <div>
               <div
@@ -267,10 +279,11 @@ export default function App() {
               >
                 <h1
                   style={{
-                    fontSize: "1.6rem",
-                    fontWeight: 700,
-                    letterSpacing: "-0.02em",
-                    color: "#fff",
+                    fontSize: "2rem",
+                    fontWeight: 900,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    color: "#000000",
                   }}
                 >
                   gEEpEE
@@ -279,9 +292,10 @@ export default function App() {
               </div>
               <p
                 style={{
-                  color: "var(--text-secondary)",
-                  fontSize: "0.875rem",
+                  color: "#333333",
+                  fontSize: "0.9rem",
                   marginTop: "2px",
+                  fontWeight: 600,
                 }}
               >
                 Autonomous Memory-Driven Onchain Vault Agent on Base & Virtuals
@@ -322,9 +336,10 @@ export default function App() {
           style={{
             padding: "12px 20px",
             marginBottom: "24px",
-            background: "rgba(6, 182, 212, 0.1)",
-            borderColor: "var(--accent-cyan)",
-            color: "#e0f2fe",
+            background: "#fef9c3",
+            border: "2px solid #000000",
+            boxShadow: "4px 4px 0px #000000",
+            color: "#000000",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -335,10 +350,11 @@ export default function App() {
               display: "flex",
               alignItems: "center",
               gap: "10px",
-              fontSize: "0.9rem",
+              fontSize: "0.95rem",
+              fontWeight: 700,
             }}
           >
-            <Sparkles size={18} style={{ color: "var(--accent-cyan)" }} />
+            <Sparkles size={20} style={{ color: "#000000" }} />
             <span>{notice}</span>
           </div>
           <button
@@ -346,8 +362,10 @@ export default function App() {
             style={{
               background: "none",
               border: "none",
-              color: "var(--text-muted)",
+              color: "#000000",
               cursor: "pointer",
+              fontWeight: 900,
+              fontSize: "1.2rem",
             }}
           >
             &times;
@@ -358,7 +376,11 @@ export default function App() {
       {/* GATE TESTING & ACTION BAR */}
       <section
         className="glass-panel"
-        style={{ padding: "20px 24px", marginBottom: "24px" }}
+        style={{
+          padding: "20px 24px",
+          marginBottom: "24px",
+          background: "#ffffff",
+        }}
       >
         <div
           style={{
@@ -382,19 +404,20 @@ export default function App() {
               onClick={handleRunRebalance}
               disabled={isRebalancing}
               style={{
-                background: "linear-gradient(135deg, #eab308 0%, #ca8a04 100%)",
-                color: "#000",
-                border: "none",
+                background: "#000000",
+                color: "#ffffff",
+                border: "2px solid #000000",
                 padding: "12px 24px",
-                borderRadius: "8px",
-                fontWeight: 700,
+                borderRadius: "6px",
+                fontWeight: 900,
                 fontSize: "0.95rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
                 cursor: isRebalancing ? "not-allowed" : "pointer",
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
-                boxShadow: "0 4px 14px rgba(234, 179, 8, 0.3)",
-                transition: "transform 0.15s ease",
+                boxShadow: "3px 3px 0px #555555",
               }}
             >
               {isRebalancing ? (
@@ -402,25 +425,24 @@ export default function App() {
               ) : (
                 <Zap size={18} />
               )}
-              {isRebalancing
-                ? "Running Rebalance Loop..."
-                : "Run Autonomous Rebalance"}
+              {isRebalancing ? "Rebalancing..." : "Run Autonomous Rebalance"}
             </button>
 
             <button
               onClick={handleColdStart}
               style={{
-                background: "var(--bg-card)",
-                color: "var(--text-primary)",
-                border: "1px solid var(--border-strong)",
+                background: "#ffffff",
+                color: "#000000",
+                border: "2px solid #000000",
                 padding: "12px 20px",
-                borderRadius: "8px",
-                fontWeight: 600,
+                borderRadius: "6px",
+                fontWeight: 800,
                 fontSize: "0.9rem",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
+                boxShadow: "3px 3px 0px #000000",
               }}
             >
               <RefreshCw size={16} /> Cold-Start Recall Demo
@@ -429,17 +451,18 @@ export default function App() {
             <button
               onClick={handleTriggerX402}
               style={{
-                background: "rgba(0, 82, 255, 0.15)",
-                color: "#60a5fa",
-                border: "1px solid rgba(0, 82, 255, 0.3)",
+                background: "#e0f2fe",
+                color: "#000000",
+                border: "2px solid #000000",
                 padding: "12px 20px",
-                borderRadius: "8px",
-                fontWeight: 600,
+                borderRadius: "6px",
+                fontWeight: 800,
                 fontSize: "0.9rem",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
+                boxShadow: "3px 3px 0px #000000",
               }}
             >
               <DollarSign size={16} /> Test Base x402 Header
@@ -452,18 +475,19 @@ export default function App() {
               display: "flex",
               alignItems: "center",
               gap: "14px",
-              background: "var(--bg-card)",
+              background: "#f8f9fa",
               padding: "10px 18px",
-              borderRadius: "10px",
-              border: "1px solid var(--border-color)",
+              borderRadius: "6px",
+              border: "2px solid #000000",
+              boxShadow: "3px 3px 0px #000000",
             }}
           >
             <div style={{ display: "flex", flexDirection: "column" }}>
               <span
                 style={{
                   fontSize: "0.75rem",
-                  fontWeight: 600,
-                  color: "var(--accent-gold)",
+                  fontWeight: 900,
+                  color: "#000000",
                   textTransform: "uppercase",
                   letterSpacing: "0.05em",
                 }}
@@ -473,15 +497,13 @@ export default function App() {
               <span
                 style={{
                   fontSize: "0.85rem",
-                  color: memoryEnabled
-                    ? "var(--accent-emerald)"
-                    : "var(--accent-red)",
-                  fontWeight: 600,
+                  color: memoryEnabled ? "#15803d" : "#b91c1c",
+                  fontWeight: 900,
                 }}
               >
                 {memoryEnabled
                   ? "Memory Layer: ACTIVE (Load-Bearing)"
-                  : "Memory Layer: REMOVED (Gate Test Mode)"}
+                  : "Memory Layer: REMOVED (Gate Failure)"}
               </span>
             </div>
 
@@ -489,15 +511,14 @@ export default function App() {
               onClick={() => handleToggleMemory(!memoryEnabled)}
               style={{
                 padding: "8px 16px",
-                borderRadius: "6px",
-                fontSize: "0.8rem",
-                fontWeight: 700,
+                borderRadius: "4px",
+                fontSize: "0.85rem",
+                fontWeight: 900,
                 cursor: "pointer",
-                border: "none",
-                background: memoryEnabled
-                  ? "var(--accent-red)"
-                  : "var(--accent-emerald)",
-                color: "#fff",
+                border: "2px solid #000000",
+                background: memoryEnabled ? "#fee2e2" : "#dcfce7",
+                color: "#000000",
+                boxShadow: "2px 2px 0px #000000",
               }}
             >
               {memoryEnabled ? "Simulate Delete Memory" : "Restore Memory"}
@@ -510,10 +531,11 @@ export default function App() {
       <div
         style={{
           display: "flex",
-          gap: "8px",
+          gap: "10px",
           marginBottom: "24px",
-          borderBottom: "1px solid var(--border-color)",
-          paddingBottom: "8px",
+          borderBottom: "2px solid #000000",
+          paddingBottom: "10px",
+          flexWrap: "wrap",
         }}
       >
         {[
@@ -533,22 +555,21 @@ export default function App() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
               style={{
-                background: isActive ? "var(--bg-card)" : "transparent",
-                color: isActive
-                  ? "var(--accent-gold)"
-                  : "var(--text-secondary)",
-                border: isActive
-                  ? "1px solid var(--border-strong)"
-                  : "1px solid transparent",
+                background: isActive ? "#000000" : "#ffffff",
+                color: isActive ? "#ffffff" : "#000000",
+                border: "2px solid #000000",
                 padding: "10px 20px",
-                borderRadius: "8px",
-                fontWeight: 600,
+                borderRadius: "6px",
+                fontWeight: 900,
                 fontSize: "0.9rem",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
-                transition: "all 0.2s ease",
+                boxShadow: isActive
+                  ? "3px 3px 0px #555555"
+                  : "2px 2px 0px #000000",
+                transition: "all 0.15s ease",
               }}
             >
               <Icon size={16} /> {tab.label}
@@ -567,7 +588,10 @@ export default function App() {
           }}
         >
           {/* BASE PORTFOLIO CARD */}
-          <div className="glass-panel" style={{ padding: "24px" }}>
+          <div
+            className="glass-panel"
+            style={{ padding: "24px", background: "#ffffff" }}
+          >
             <div
               style={{
                 display: "flex",
@@ -578,15 +602,15 @@ export default function App() {
             >
               <h3
                 style={{
-                  fontSize: "1.1rem",
-                  fontWeight: 700,
-                  color: "#fff",
+                  fontSize: "1.2rem",
+                  fontWeight: 900,
+                  color: "#000000",
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
                 }}
               >
-                <Cpu style={{ color: "#3b82f6" }} size={20} /> Base Network
+                <Cpu style={{ color: "#000000" }} size={22} /> Base Network
                 Vault Portfolio
               </h3>
               <span className="badge badge-base">
@@ -594,13 +618,22 @@ export default function App() {
               </span>
             </div>
 
-            <div style={{ marginBottom: "24px" }}>
+            <div
+              style={{
+                marginBottom: "24px",
+                background: "#f8f9fa",
+                padding: "12px",
+                borderRadius: "6px",
+                border: "1px solid #000000",
+              }}
+            >
               <p
                 style={{
                   fontSize: "0.8rem",
-                  color: "var(--text-muted)",
+                  color: "#555555",
                   textTransform: "uppercase",
                   letterSpacing: "0.05em",
+                  fontWeight: 700,
                 }}
               >
                 Wallet Address
@@ -608,9 +641,11 @@ export default function App() {
               <p
                 className="font-mono"
                 style={{
-                  fontSize: "0.9rem",
-                  color: "var(--accent-cyan)",
+                  fontSize: "0.875rem",
+                  color: "#000000",
                   marginTop: "4px",
+                  fontWeight: 700,
+                  wordBreak: "break-all",
                 }}
               >
                 {status?.wallet_info?.wallet_address}
@@ -620,16 +655,16 @@ export default function App() {
             {/* TOKEN BALANCES */}
             <h4
               style={{
-                fontSize: "0.9rem",
-                fontWeight: 600,
-                color: "var(--text-secondary)",
-                marginBottom: "12px",
+                fontSize: "1rem",
+                fontWeight: 900,
+                color: "#000000",
+                marginBottom: "14px",
               }}
             >
               Onchain Balances & Target Allocation
             </h4>
             <div
-              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+              style={{ display: "flex", flexDirection: "column", gap: "14px" }}
             >
               {Object.entries(status?.wallet_info?.balances || {}).map(
                 ([token, amount]) => {
@@ -639,10 +674,11 @@ export default function App() {
                     <div
                       key={token}
                       style={{
-                        background: "var(--bg-card)",
+                        background: "#ffffff",
                         padding: "14px 18px",
-                        borderRadius: "8px",
-                        border: "1px solid var(--border-color)",
+                        borderRadius: "6px",
+                        border: "2px solid #000000",
+                        boxShadow: "2px 2px 0px #000000",
                       }}
                     >
                       <div
@@ -652,12 +688,18 @@ export default function App() {
                           marginBottom: "6px",
                         }}
                       >
-                        <span style={{ fontWeight: 700, color: "#fff" }}>
+                        <span
+                          style={{
+                            fontWeight: 900,
+                            color: "#000000",
+                            fontSize: "1.05rem",
+                          }}
+                        >
                           {token}
                         </span>
                         <span
                           className="font-mono"
-                          style={{ color: "var(--text-primary)" }}
+                          style={{ color: "#000000", fontWeight: 700 }}
                         >
                           {amount.toFixed(4)} {token} ($
                           {valueUsd.toLocaleString(undefined, {
@@ -669,8 +711,9 @@ export default function App() {
                       </div>
                       <div
                         style={{
-                          fontSize: "0.75rem",
-                          color: "var(--text-muted)",
+                          fontSize: "0.8rem",
+                          color: "#555555",
+                          fontWeight: 600,
                         }}
                       >
                         Market Price: ${price.toFixed(2)} USD
@@ -683,7 +726,10 @@ export default function App() {
           </div>
 
           {/* AGENT COGNITIVE REASONING TERMINAL */}
-          <div className="glass-panel" style={{ padding: "24px" }}>
+          <div
+            className="glass-panel"
+            style={{ padding: "24px", background: "#ffffff" }}
+          >
             <div
               style={{
                 display: "flex",
@@ -694,16 +740,16 @@ export default function App() {
             >
               <h3
                 style={{
-                  fontSize: "1.1rem",
-                  fontWeight: 700,
-                  color: "#fff",
+                  fontSize: "1.2rem",
+                  fontWeight: 900,
+                  color: "#000000",
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
                 }}
               >
-                <Brain style={{ color: "var(--accent-gold)" }} size={20} />{" "}
-                gEEpEE Cognitive Terminal
+                <Brain style={{ color: "#000000" }} size={22} /> gEEpEE
+                Cognitive Terminal
               </h3>
               <span
                 className={`badge ${rebalanceResult?.memory_used ? "badge-success" : "badge-danger"}`}
@@ -719,14 +765,17 @@ export default function App() {
                 style={{
                   textAlign: "center",
                   padding: "40px 20px",
-                  color: "var(--text-muted)",
+                  color: "#555555",
+                  background: "#f8f9fa",
+                  borderRadius: "6px",
+                  border: "2px solid #000000",
                 }}
               >
                 <Activity
-                  size={36}
-                  style={{ margin: "0 auto 12px", opacity: 0.5 }}
+                  size={40}
+                  style={{ margin: "0 auto 12px", color: "#000000" }}
                 />
-                <p>
+                <p style={{ fontWeight: 700 }}>
                   Click "Run Autonomous Rebalance" above to observe gEEpEE's
                   memory recall & Base onchain execution workflow.
                 </p>
@@ -742,25 +791,32 @@ export default function App() {
                 {rebalanceResult.error && (
                   <div
                     style={{
-                      background: "rgba(239, 68, 68, 0.15)",
-                      border: "1px solid rgba(239, 68, 68, 0.3)",
+                      background: "#fee2e2",
+                      border: "2px solid #000000",
                       padding: "14px",
-                      borderRadius: "8px",
-                      color: "#fca5a5",
+                      borderRadius: "6px",
+                      color: "#000000",
                     }}
                   >
                     <div
                       style={{
-                        fontWeight: 700,
+                        fontWeight: 900,
                         display: "flex",
                         alignItems: "center",
                         gap: "8px",
+                        color: "#b91c1c",
                       }}
                     >
-                      <AlertTriangle size={18} /> Rebalance Halted (Litmus Gate
-                      Fail)
+                      <AlertTriangle size={20} /> Rebalance Halted (Litmus Gate
+                      Failure)
                     </div>
-                    <p style={{ fontSize: "0.85rem", marginTop: "6px" }}>
+                    <p
+                      style={{
+                        fontSize: "0.85rem",
+                        marginTop: "6px",
+                        fontWeight: 700,
+                      }}
+                    >
                       {rebalanceResult.error}
                     </p>
                   </div>
@@ -771,10 +827,11 @@ export default function App() {
                     <div
                       key={idx}
                       style={{
-                        background: "var(--bg-card)",
+                        background: "#f8f9fa",
                         padding: "12px 16px",
-                        borderRadius: "8px",
-                        borderLeft: "4px solid var(--accent-gold)",
+                        borderRadius: "6px",
+                        border: "2px solid #000000",
+                        borderLeft: "8px solid #000000",
                       }}
                     >
                       <div
@@ -788,17 +845,17 @@ export default function App() {
                         <span
                           style={{
                             fontSize: "0.75rem",
-                            fontWeight: 700,
-                            color: "var(--accent-gold)",
+                            fontWeight: 900,
+                            color: "#000000",
                           }}
                         >
                           {step.step}
                         </span>
                         <span
                           style={{
-                            fontSize: "0.85rem",
-                            fontWeight: 600,
-                            color: "#fff",
+                            fontSize: "0.9rem",
+                            fontWeight: 900,
+                            color: "#000000",
                           }}
                         >
                           {step.title}
@@ -806,9 +863,10 @@ export default function App() {
                       </div>
                       <p
                         style={{
-                          fontSize: "0.825rem",
-                          color: "var(--text-secondary)",
+                          fontSize: "0.85rem",
+                          color: "#222222",
                           marginTop: "4px",
+                          fontWeight: 600,
                         }}
                       >
                         {step.detail}
@@ -820,17 +878,17 @@ export default function App() {
                 {rebalanceResult.executed_swap && (
                   <div
                     style={{
-                      background: "rgba(16, 185, 129, 0.1)",
-                      border: "1px solid rgba(16, 185, 129, 0.3)",
+                      background: "#dcfce7",
+                      border: "2px solid #000000",
                       padding: "14px",
-                      borderRadius: "8px",
+                      borderRadius: "6px",
                     }}
                   >
                     <div
                       style={{
-                        color: "var(--accent-emerald)",
-                        fontWeight: 700,
-                        fontSize: "0.9rem",
+                        color: "#166534",
+                        fontWeight: 900,
+                        fontSize: "0.95rem",
                         marginBottom: "6px",
                       }}
                     >
@@ -839,8 +897,9 @@ export default function App() {
                     <p
                       className="font-mono"
                       style={{
-                        fontSize: "0.8rem",
-                        color: "var(--text-primary)",
+                        fontSize: "0.85rem",
+                        color: "#000000",
+                        fontWeight: 700,
                         wordBreak: "break-all",
                       }}
                     >
@@ -851,16 +910,17 @@ export default function App() {
                       target="_blank"
                       rel="noreferrer"
                       style={{
-                        fontSize: "0.8rem",
-                        color: "var(--accent-cyan)",
+                        fontSize: "0.85rem",
+                        color: "#0284c7",
                         display: "inline-flex",
                         alignItems: "center",
                         gap: "4px",
                         marginTop: "8px",
                         textDecoration: "none",
+                        fontWeight: 900,
                       }}
                     >
-                      View on Basescan <ExternalLink size={12} />
+                      View on Basescan <ExternalLink size={14} />
                     </a>
                   </div>
                 )}
@@ -872,7 +932,10 @@ export default function App() {
 
       {/* TAB CONTENT 2: SIBYL 5-TIER MEMORY INSPECTOR */}
       {activeTab === "memory" && (
-        <div className="glass-panel" style={{ padding: "24px" }}>
+        <div
+          className="glass-panel"
+          style={{ padding: "24px", background: "#ffffff" }}
+        >
           <div
             style={{
               display: "flex",
@@ -886,22 +949,23 @@ export default function App() {
             <div>
               <h3
                 style={{
-                  fontSize: "1.2rem",
-                  fontWeight: 700,
-                  color: "#fff",
+                  fontSize: "1.3rem",
+                  fontWeight: 900,
+                  color: "#000000",
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
                 }}
               >
-                <Database style={{ color: "var(--accent-gold)" }} size={22} />{" "}
-                Sibyl 5-Tier Memory Architecture Inspector
+                <Database style={{ color: "#000000" }} size={24} /> Sibyl 5-Tier
+                Memory Architecture Inspector
               </h3>
               <p
                 style={{
-                  fontSize: "0.85rem",
-                  color: "var(--text-secondary)",
+                  fontSize: "0.875rem",
+                  color: "#444444",
                   marginTop: "4px",
+                  fontWeight: 600,
                 }}
               >
                 Local SQLite Database (`{status?.memory_stats?.db_path}`). Zero
@@ -921,13 +985,14 @@ export default function App() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   style={{
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border-strong)",
+                    background: "#ffffff",
+                    border: "2px solid #000000",
                     padding: "8px 12px 8px 36px",
                     borderRadius: "6px",
-                    color: "#fff",
-                    fontSize: "0.875rem",
+                    color: "#000000",
+                    fontSize: "0.9rem",
                     width: "240px",
+                    fontWeight: 700,
                   }}
                 />
                 <Search
@@ -935,8 +1000,8 @@ export default function App() {
                   style={{
                     position: "absolute",
                     left: "10px",
-                    top: "10px",
-                    color: "var(--text-muted)",
+                    top: "12px",
+                    color: "#000000",
                   }}
                 />
               </div>
@@ -944,12 +1009,12 @@ export default function App() {
                 type="submit"
                 disabled={isSearching}
                 style={{
-                  background: "var(--accent-gold)",
-                  color: "#000",
-                  border: "none",
+                  background: "#000000",
+                  color: "#ffffff",
+                  border: "2px solid #000000",
                   padding: "8px 16px",
                   borderRadius: "6px",
-                  fontWeight: 600,
+                  fontWeight: 900,
                   fontSize: "0.85rem",
                   cursor: "pointer",
                 }}
@@ -963,18 +1028,19 @@ export default function App() {
           {searchResults.length > 0 && (
             <div
               style={{
-                background: "var(--bg-card)",
+                background: "#fef3c7",
                 padding: "16px",
-                borderRadius: "8px",
+                borderRadius: "6px",
                 marginBottom: "24px",
-                border: "1px solid var(--accent-gold)",
+                border: "2px solid #000000",
               }}
             >
               <h4
                 style={{
-                  fontSize: "0.9rem",
-                  color: "var(--accent-gold)",
+                  fontSize: "0.95rem",
+                  color: "#000000",
                   marginBottom: "10px",
+                  fontWeight: 900,
                 }}
               >
                 FTS5 Search Results for "{searchQuery}":
@@ -987,7 +1053,8 @@ export default function App() {
                     key={idx}
                     style={{
                       fontSize: "0.85rem",
-                      color: "var(--text-primary)",
+                      color: "#000000",
+                      fontWeight: 600,
                     }}
                   >
                     <span className="badge badge-sibyl">{item.category}</span>{" "}
@@ -1004,8 +1071,9 @@ export default function App() {
               display: "flex",
               gap: "10px",
               marginBottom: "20px",
-              borderBottom: "1px solid var(--border-color)",
+              borderBottom: "2px solid #000000",
               paddingBottom: "10px",
+              flexWrap: "wrap",
             }}
           >
             {[
@@ -1024,21 +1092,12 @@ export default function App() {
                 key={t.id}
                 onClick={() => setMemoryTierTab(t.id as any)}
                 style={{
-                  background:
-                    memoryTierTab === t.id
-                      ? "var(--accent-gold-glow)"
-                      : "transparent",
-                  color:
-                    memoryTierTab === t.id
-                      ? "var(--accent-gold)"
-                      : "var(--text-secondary)",
-                  border:
-                    memoryTierTab === t.id
-                      ? "1px solid var(--accent-gold)"
-                      : "1px solid transparent",
+                  background: memoryTierTab === t.id ? "#000000" : "#ffffff",
+                  color: memoryTierTab === t.id ? "#ffffff" : "#000000",
+                  border: "2px solid #000000",
                   padding: "8px 16px",
                   borderRadius: "6px",
-                  fontWeight: 600,
+                  fontWeight: 900,
                   fontSize: "0.85rem",
                   cursor: "pointer",
                 }}
@@ -1057,10 +1116,10 @@ export default function App() {
                 <div
                   key={idx}
                   style={{
-                    background: "var(--bg-card)",
+                    background: "#f8f9fa",
                     padding: "16px",
-                    borderRadius: "8px",
-                    border: "1px solid var(--border-color)",
+                    borderRadius: "6px",
+                    border: "2px solid #000000",
                   }}
                 >
                   <div
@@ -1072,16 +1131,20 @@ export default function App() {
                   >
                     <span className="badge badge-sibyl">{ent.category}</span>
                     <span
-                      style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}
+                      style={{
+                        fontSize: "0.8rem",
+                        color: "#555555",
+                        fontWeight: 700,
+                      }}
                     >
                       Updated: {ent.updated_at}
                     </span>
                   </div>
                   <h4
                     style={{
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                      color: "#fff",
+                      fontSize: "1.05rem",
+                      fontWeight: 900,
+                      color: "#000000",
                       marginBottom: "8px",
                     }}
                   >
@@ -1090,12 +1153,14 @@ export default function App() {
                   <pre
                     className="font-mono"
                     style={{
-                      fontSize: "0.8rem",
-                      color: "var(--accent-cyan)",
-                      background: "var(--bg-surface)",
+                      fontSize: "0.85rem",
+                      color: "#000000",
+                      background: "#ffffff",
                       padding: "12px",
-                      borderRadius: "6px",
+                      borderRadius: "4px",
+                      border: "1px solid #000000",
                       overflowX: "auto",
+                      fontWeight: 600,
                     }}
                   >
                     {JSON.stringify(ent.body, null, 2)}
@@ -1113,10 +1178,10 @@ export default function App() {
                 <div
                   key={idx}
                   style={{
-                    background: "var(--bg-card)",
+                    background: "#f8f9fa",
                     padding: "14px",
-                    borderRadius: "8px",
-                    border: "1px solid var(--border-color)",
+                    borderRadius: "6px",
+                    border: "2px solid #000000",
                   }}
                 >
                   <div
@@ -1128,9 +1193,9 @@ export default function App() {
                   >
                     <span
                       style={{
-                        fontWeight: 700,
-                        color: "var(--accent-gold)",
-                        fontSize: "0.9rem",
+                        fontWeight: 900,
+                        color: "#000000",
+                        fontSize: "0.95rem",
                       }}
                     >
                       {j.action}
@@ -1138,7 +1203,8 @@ export default function App() {
                     <span
                       style={{
                         fontSize: "0.75rem",
-                        color: "var(--text-muted)",
+                        color: "#555555",
+                        fontWeight: 700,
                       }}
                     >
                       {j.timestamp}
@@ -1148,9 +1214,10 @@ export default function App() {
                     <div
                       className="font-mono"
                       style={{
-                        fontSize: "0.8rem",
-                        color: "var(--accent-cyan)",
+                        fontSize: "0.85rem",
+                        color: "#0284c7",
                         marginTop: "4px",
+                        fontWeight: 700,
                       }}
                     >
                       Tx Hash: {j.tx_hash}
@@ -1160,12 +1227,14 @@ export default function App() {
                     <pre
                       className="font-mono"
                       style={{
-                        fontSize: "0.78rem",
-                        color: "var(--text-secondary)",
+                        fontSize: "0.8rem",
+                        color: "#222222",
                         marginTop: "6px",
-                        background: "var(--bg-surface)",
+                        background: "#ffffff",
                         padding: "8px",
                         borderRadius: "4px",
+                        border: "1px solid #000000",
+                        fontWeight: 600,
                       }}
                     >
                       {JSON.stringify(j.details, null, 2)}
@@ -1179,16 +1248,18 @@ export default function App() {
           {memoryTierTab === "hot" && (
             <div
               style={{
-                background: "var(--bg-card)",
+                background: "#f8f9fa",
                 padding: "16px",
-                borderRadius: "8px",
+                borderRadius: "6px",
+                border: "2px solid #000000",
               }}
             >
               <h4
                 style={{
-                  fontSize: "0.9rem",
-                  color: "#fff",
+                  fontSize: "1rem",
+                  color: "#000000",
                   marginBottom: "8px",
+                  fontWeight: 900,
                 }}
               >
                 HOT Working State (Active Locks & Working Memory)
@@ -1197,10 +1268,12 @@ export default function App() {
                 className="font-mono"
                 style={{
                   fontSize: "0.85rem",
-                  color: "var(--accent-cyan)",
-                  background: "var(--bg-surface)",
+                  color: "#000000",
+                  background: "#ffffff",
                   padding: "14px",
-                  borderRadius: "6px",
+                  borderRadius: "4px",
+                  border: "1px solid #000000",
+                  fontWeight: 600,
                 }}
               >
                 {JSON.stringify(memoryDump?.hot_state, null, 2)}
@@ -1218,16 +1291,17 @@ export default function App() {
                     <div
                       key={idx}
                       style={{
-                        background: "var(--bg-card)",
+                        background: "#f8f9fa",
                         padding: "16px",
-                        borderRadius: "8px",
+                        borderRadius: "6px",
+                        border: "2px solid #000000",
                       }}
                     >
                       <h4
                         style={{
-                          fontSize: "0.95rem",
-                          fontWeight: 700,
-                          color: "#fff",
+                          fontSize: "1rem",
+                          fontWeight: 900,
+                          color: "#000000",
                           marginBottom: "4px",
                         }}
                       >
@@ -1235,9 +1309,10 @@ export default function App() {
                       </h4>
                       <p
                         style={{
-                          fontSize: "0.85rem",
-                          color: "var(--text-secondary)",
+                          fontSize: "0.875rem",
+                          color: "#222222",
                           marginTop: "6px",
+                          fontWeight: 600,
                         }}
                       >
                         {doc.content}
@@ -1254,27 +1329,33 @@ export default function App() {
       {activeTab === "strategy" && (
         <div
           className="glass-panel"
-          style={{ padding: "24px", maxWidth: "800px", margin: "0 auto" }}
+          style={{
+            padding: "24px",
+            maxWidth: "800px",
+            margin: "0 auto",
+            background: "#ffffff",
+          }}
         >
           <h3
             style={{
-              fontSize: "1.2rem",
-              fontWeight: 700,
-              color: "#fff",
+              fontSize: "1.3rem",
+              fontWeight: 900,
+              color: "#000000",
               marginBottom: "8px",
               display: "flex",
               alignItems: "center",
               gap: "8px",
             }}
           >
-            <Sliders style={{ color: "var(--accent-gold)" }} size={22} />{" "}
-            Configure Target Strategy & Risk Rules
+            <Sliders style={{ color: "#000000" }} size={24} /> Configure Target
+            Strategy & Risk Rules
           </h3>
           <p
             style={{
-              fontSize: "0.85rem",
-              color: "var(--text-secondary)",
+              fontSize: "0.875rem",
+              color: "#444444",
               marginBottom: "24px",
+              fontWeight: 600,
             }}
           >
             Saving writes directly to Sibyl Memory WARM tier under unique
@@ -1297,8 +1378,9 @@ export default function App() {
                   style={{
                     display: "block",
                     fontSize: "0.85rem",
-                    color: "var(--text-secondary)",
+                    color: "#000000",
                     marginBottom: "6px",
+                    fontWeight: 900,
                   }}
                 >
                   USDC Target Allocation (%)
@@ -1309,11 +1391,12 @@ export default function App() {
                   onChange={(e) => setUsdcTarget(Number(e.target.value))}
                   style={{
                     width: "100%",
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border-strong)",
+                    background: "#ffffff",
+                    border: "2px solid #000000",
                     padding: "10px",
                     borderRadius: "6px",
-                    color: "#fff",
+                    color: "#000000",
+                    fontWeight: 800,
                   }}
                 />
               </div>
@@ -1323,8 +1406,9 @@ export default function App() {
                   style={{
                     display: "block",
                     fontSize: "0.85rem",
-                    color: "var(--text-secondary)",
+                    color: "#000000",
                     marginBottom: "6px",
+                    fontWeight: 900,
                   }}
                 >
                   WETH Target Allocation (%)
@@ -1335,11 +1419,12 @@ export default function App() {
                   onChange={(e) => setWethTarget(Number(e.target.value))}
                   style={{
                     width: "100%",
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border-strong)",
+                    background: "#ffffff",
+                    border: "2px solid #000000",
                     padding: "10px",
                     borderRadius: "6px",
-                    color: "#fff",
+                    color: "#000000",
+                    fontWeight: 800,
                   }}
                 />
               </div>
@@ -1349,8 +1434,9 @@ export default function App() {
                   style={{
                     display: "block",
                     fontSize: "0.85rem",
-                    color: "var(--text-secondary)",
+                    color: "#000000",
                     marginBottom: "6px",
+                    fontWeight: 900,
                   }}
                 >
                   AERO Target Allocation (%)
@@ -1361,11 +1447,12 @@ export default function App() {
                   onChange={(e) => setAeroTarget(Number(e.target.value))}
                   style={{
                     width: "100%",
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border-strong)",
+                    background: "#ffffff",
+                    border: "2px solid #000000",
                     padding: "10px",
                     borderRadius: "6px",
-                    color: "#fff",
+                    color: "#000000",
+                    fontWeight: 800,
                   }}
                 />
               </div>
@@ -1375,8 +1462,9 @@ export default function App() {
                   style={{
                     display: "block",
                     fontSize: "0.85rem",
-                    color: "var(--text-secondary)",
+                    color: "#000000",
                     marginBottom: "6px",
+                    fontWeight: 900,
                   }}
                 >
                   VIRTUAL Target Allocation (%)
@@ -1387,11 +1475,12 @@ export default function App() {
                   onChange={(e) => setVirtualTarget(Number(e.target.value))}
                   style={{
                     width: "100%",
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border-strong)",
+                    background: "#ffffff",
+                    border: "2px solid #000000",
                     padding: "10px",
                     borderRadius: "6px",
-                    color: "#fff",
+                    color: "#000000",
+                    fontWeight: 800,
                   }}
                 />
               </div>
@@ -1402,8 +1491,9 @@ export default function App() {
                 style={{
                   display: "block",
                   fontSize: "0.85rem",
-                  color: "var(--text-secondary)",
+                  color: "#000000",
                   marginBottom: "6px",
+                  fontWeight: 900,
                 }}
               >
                 Max Slippage Tolerance (%)
@@ -1415,11 +1505,12 @@ export default function App() {
                 onChange={(e) => setSlippage(Number(e.target.value))}
                 style={{
                   width: "100%",
-                  background: "var(--bg-card)",
-                  border: "1px solid var(--border-strong)",
+                  background: "#ffffff",
+                  border: "2px solid #000000",
                   padding: "10px",
                   borderRadius: "6px",
-                  color: "#fff",
+                  color: "#000000",
+                  fontWeight: 800,
                 }}
               />
             </div>
@@ -1427,15 +1518,16 @@ export default function App() {
             <button
               type="submit"
               style={{
-                background: "linear-gradient(135deg, #eab308 0%, #ca8a04 100%)",
-                color: "#000",
-                border: "none",
+                background: "#000000",
+                color: "#ffffff",
+                border: "2px solid #000000",
                 padding: "12px 24px",
-                borderRadius: "8px",
-                fontWeight: 700,
+                borderRadius: "6px",
+                fontWeight: 900,
                 fontSize: "0.95rem",
                 cursor: "pointer",
                 marginTop: "12px",
+                boxShadow: "3px 3px 0px #555555",
               }}
             >
               Save Strategy to Sibyl Memory
@@ -1446,26 +1538,30 @@ export default function App() {
 
       {/* TAB CONTENT 4: VIRTUALS ACP PROTOCOL */}
       {activeTab === "acp" && (
-        <div className="glass-panel" style={{ padding: "24px" }}>
+        <div
+          className="glass-panel"
+          style={{ padding: "24px", background: "#ffffff" }}
+        >
           <h3
             style={{
-              fontSize: "1.2rem",
-              fontWeight: 700,
-              color: "#fff",
+              fontSize: "1.3rem",
+              fontWeight: 900,
+              color: "#000000",
               marginBottom: "8px",
               display: "flex",
               alignItems: "center",
               gap: "8px",
             }}
           >
-            <Radio style={{ color: "#c084fc" }} size={22} /> Virtuals Protocol
+            <Radio style={{ color: "#6b21a8" }} size={24} /> Virtuals Protocol
             Agent Communication Protocol (ACP)
           </h3>
           <p
             style={{
-              fontSize: "0.85rem",
-              color: "var(--text-secondary)",
+              fontSize: "0.875rem",
+              color: "#444444",
               marginBottom: "24px",
+              fontWeight: 600,
             }}
           >
             gEEpEE broadcasts inter-agent signals to partner agents on the
@@ -1474,18 +1570,19 @@ export default function App() {
 
           <div
             style={{
-              background: "var(--bg-card)",
+              background: "#f3e8ff",
               padding: "18px",
-              borderRadius: "8px",
+              borderRadius: "6px",
               marginBottom: "24px",
-              border: "1px solid rgba(168, 85, 247, 0.3)",
+              border: "2px solid #000000",
             }}
           >
             <h4
               style={{
-                color: "#c084fc",
-                fontSize: "0.95rem",
+                color: "#6b21a8",
+                fontSize: "1rem",
                 marginBottom: "8px",
+                fontWeight: 900,
               }}
             >
               Registered Virtuals Agent Metadata
@@ -1494,10 +1591,12 @@ export default function App() {
               className="font-mono"
               style={{
                 fontSize: "0.85rem",
-                color: "#e9d5ff",
-                background: "var(--bg-surface)",
+                color: "#000000",
+                background: "#ffffff",
                 padding: "12px",
-                borderRadius: "6px",
+                borderRadius: "4px",
+                border: "1px solid #000000",
+                fontWeight: 600,
               }}
             >
               {JSON.stringify(status?.virtuals_registry, null, 2)}

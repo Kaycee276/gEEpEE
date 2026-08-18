@@ -1,25 +1,25 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap");
 
 :root {
-  --bg-primary: #0a0c0f;
-  --bg-surface: #12161f;
-  --bg-card: #181e2b;
-  --bg-card-hover: #1e2638;
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
+  --bg-primary: #ffffff;
+  --bg-surface: #f8f9fa;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --border-color: #000000;
+  --border-strong: #000000;
 
-  --text-primary: #f3f4f6;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
+  --text-primary: #000000;
+  --text-secondary: #222222;
+  --text-muted: #555555;
 
-  --accent-gold: #eab308;
-  --accent-gold-glow: rgba(234, 179, 8, 0.15);
-  --accent-cyan: #06b6d4;
-  --accent-cyan-glow: rgba(6, 182, 212, 0.15);
-  --accent-emerald: #10b981;
-  --accent-red: #ef4444;
+  --accent-gold: #000000;
+  --accent-gold-glow: rgba(0, 0, 0, 0.08);
+  --accent-cyan: #0284c7;
+  --accent-cyan-glow: rgba(2, 132, 199, 0.12);
+  --accent-emerald: #15803d;
+  --accent-red: #b91c1c;
 
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-black-ops: "Black Ops One", cursive, sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
 }
 
@@ -32,9 +32,25 @@
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-sans);
+  font-family: var(--font-black-ops);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.03em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+select,
+textarea,
+.badge,
+nav {
+  font-family: var(--font-black-ops);
 }
 
 code,
@@ -43,36 +59,36 @@ pre,
   font-family: var(--font-mono);
 }
 
-/* Custom scrollbars */
+/* Custom scrollbars for black-on-white theme */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: #ffffff;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a3447;
-  border-radius: 3px;
+  background: #000000;
+  border-radius: 0px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3b4861;
+  background: #333333;
 }
 
-/* Glass & Card Utilities */
+/* High Contrast Card Utilities */
 .glass-panel {
   background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  border: 2px solid #000000;
+  border-radius: 8px;
+  box-shadow: 4px 4px 0px #000000;
 }
 
 .glow-gold {
-  box-shadow: 0 0 15px var(--accent-gold-glow);
+  box-shadow: 4px 4px 0px #000000;
 }
 
 .glow-cyan {
-  box-shadow: 0 0 15px var(--accent-cyan-glow);
+  box-shadow: 4px 4px 0px #0284c7;
 }
 
 .badge {
@@ -80,41 +96,42 @@ pre,
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 4px;
   font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  border: 1px solid #000000;
 }
 
 .badge-base {
-  background: rgba(0, 82, 255, 0.15);
-  color: #3b82f6;
-  border: 1px solid rgba(0, 82, 255, 0.3);
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1.5px solid #0284c7;
 }
 
 .badge-virtuals {
-  background: rgba(168, 85, 247, 0.15);
-  color: #c084fc;
-  border: 1px solid rgba(168, 85, 247, 0.3);
+  background: #f3e8ff;
+  color: #6b21a8;
+  border: 1.5px solid #9333ea;
 }
 
 .badge-sibyl {
-  background: var(--accent-gold-glow);
-  color: var(--accent-gold);
-  border: 1px solid rgba(234, 179, 8, 0.3);
+  background: #fef3c7;
+  color: #92400e;
+  border: 1.5px solid #d97706;
 }
 
 .badge-success {
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--accent-emerald);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: #dcfce7;
+  color: #166534;
+  border: 1.5px solid #15803d;
 }
 
 .badge-danger {
-  background: rgba(239, 68, 68, 0.15);
-  color: var(--accent-red);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1.5px solid #b91c1c;
 }
 
 /* Animations */
