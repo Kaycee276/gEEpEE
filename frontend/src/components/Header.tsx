@@ -1,5 +1,6 @@
 import React from "react";
-import { Cpu, Radio, Database } from "lucide-react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Radio, Database } from "lucide-react";
 import type { StatusData } from "../types";
 
 interface HeaderProps {
@@ -11,7 +12,7 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
   return (
     <header
       className="neo-card"
-      style={{ padding: "20px 24px", background: "var(--neo-yellow)" }}
+      style={{ padding: "18px 24px", background: "var(--neo-yellow)" }}
     >
       <div
         style={{
@@ -59,18 +60,15 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
           </div>
         </div>
 
-        {/* NETWORK & HEALTH BADGES */}
+        {/* CONNECT WALLET & NETWORK BADGES */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "10px",
+            gap: "12px",
             flexWrap: "wrap",
           }}
         >
-          <div className="badge badge-base">
-            <Cpu size={14} /> Base Mainnet (8453)
-          </div>
           <div className="badge badge-virtuals">
             <Radio size={14} /> Virtuals ACP Active
           </div>
@@ -80,6 +78,13 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
             <Database size={14} /> SQLite 5-Tier (
             {status?.memory_stats?.db_size_kb || 0} KB)
           </div>
+
+          {/* RAINBOWKIT CONNECT WALLET & CHAIN SWITCHER BUTTON */}
+          <ConnectButton
+            accountStatus="avatar"
+            chainStatus="full"
+            showBalance={true}
+          />
         </div>
       </div>
     </header>

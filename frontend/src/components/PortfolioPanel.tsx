@@ -1,5 +1,6 @@
 import React from "react";
-import { Cpu } from "lucide-react";
+import { Cpu, Wallet } from "lucide-react";
+import { useAccount, useChainId } from "wagmi";
 import type { StatusData } from "../types";
 
 interface PortfolioPanelProps {
@@ -7,6 +8,15 @@ interface PortfolioPanelProps {
 }
 
 export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
+  const { address, isConnected } = useAccount();
+  const chainId = useChainId();
+
+  const activeWalletAddress =
+    isConnected && address ? address : status?.wallet_info?.wallet_address;
+  const activeChainLabel = isConnected
+    ? `RainbowKit Connected (Chain ID ${chainId})`
+    : status?.wallet_info?.chain || "Base Network (8453)";
+
   return (
     <div
       className="neo-card"
@@ -34,40 +44,59 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
           <Cpu style={{ color: "#000000" }} size={24} /> Base Network Vault
           Portfolio
         </h3>
-        <span className="badge badge-base">{status?.wallet_info?.chain}</span>
+        <span className="badge badge-base">{activeChainLabel}</span>
       </div>
 
       <div
         style={{
           marginBottom: "24px",
-          background: "var(--neo-cyan-light)",
+          background: isConnected
+            ? "var(--neo-green-light)"
+            : "var(--neo-cyan-light)",
           padding: "14px",
-          border: "2px solid #000000",
+          border: "3px solid #000000",
           boxShadow: "3px 3px 0px #000000",
         }}
       >
-        <p
+        <div
           style={{
-            fontSize: "0.8rem",
-            color: "#000000",
-            textTransform: "uppercase",
-            letterSpacing: "0.05em",
-            fontWeight: 900,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          Wallet Address
-        </p>
+          <p
+            style={{
+              fontSize: "0.8rem",
+              color: "#000000",
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              fontWeight: 900,
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <Wallet size={16} />{" "}
+            {isConnected
+              ? "User Connected Wallet (RainbowKit)"
+              : "Vault Agent Wallet Address"}
+          </p>
+          {isConnected && (
+            <span className="badge badge-success">Live Web3 Connected</span>
+          )}
+        </div>
         <p
           className="font-mono"
           style={{
             fontSize: "0.9rem",
             color: "#000000",
-            marginTop: "4px",
-            fontWeight: 700,
+            marginTop: "6px",
+            fontWeight: 900,
             wordBreak: "break-all",
           }}
         >
-          {status?.wallet_info?.wallet_address}
+          {activeWalletAddress}
         </p>
       </div>
 
