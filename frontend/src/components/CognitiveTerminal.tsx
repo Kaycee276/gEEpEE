@@ -51,7 +51,7 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
             padding: "40px 20px",
             color: "#000000",
             background: "var(--neo-yellow-light)",
-            borderRadius: "4px",
+            borderRadius: "0px",
             border: "3px solid #000000",
             boxShadow: "3px 3px 0px #000000",
           }}
@@ -74,7 +74,7 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
                 border: "3px solid #000000",
                 boxShadow: "4px 4px 0px #000000",
                 padding: "14px",
-                borderRadius: "4px",
+                borderRadius: "0px",
                 color: "#000000",
               }}
             >
@@ -109,7 +109,7 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
               style={{
                 background: "#ffffff",
                 padding: "14px 16px",
-                borderRadius: "4px",
+                borderRadius: "0px",
                 border: "3px solid #000000",
                 boxShadow: "3px 3px 0px #000000",
                 borderLeft: "10px solid #000000",
@@ -154,7 +154,7 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
                 border: "3px solid #000000",
                 boxShadow: "4px 4px 0px #000000",
                 padding: "14px",
-                borderRadius: "4px",
+                borderRadius: "0px",
               }}
             >
               <div

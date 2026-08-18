@@ -44,7 +44,7 @@ export const VirtualsACPPanel: React.FC<VirtualsACPPanelProps> = ({
         style={{
           background: "var(--neo-purple-light)",
           padding: "20px",
-          borderRadius: "4px",
+          borderRadius: "0px",
           marginBottom: "24px",
           border: "3px solid #000000",
           boxShadow: "4px 4px 0px #000000",
@@ -63,7 +63,7 @@ export const VirtualsACPPanel: React.FC<VirtualsACPPanelProps> = ({
             color: "#000000",
             background: "#ffffff",
             padding: "14px",
-            borderRadius: "4px",
+            borderRadius: "0px",
             border: "2px solid #000000",
             fontWeight: 700,
           }}

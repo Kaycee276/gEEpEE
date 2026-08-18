@@ -77,7 +77,7 @@ export const ControlBar: React.FC<ControlBarProps> = ({
               ? "var(--neo-green-light)"
               : "var(--neo-red-light)",
             padding: "12px 18px",
-            borderRadius: "4px",
+            borderRadius: "0px",
             border: "3px solid #000000",
             boxShadow: "4px 4px 0px #000000",
           }}

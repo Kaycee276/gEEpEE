@@ -137,7 +137,7 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
                   background: "#ffffff",
                   padding: "10px",
                   border: "2px solid #000000",
-                  borderRadius: "4px",
+                  borderRadius: "0px",
                 }}
               >
                 <span className="badge badge-sibyl">{item.category}</span>{" "}
@@ -179,7 +179,7 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
               color: "#000000",
               border: "3px solid #000000",
               padding: "8px 16px",
-              borderRadius: "4px",
+              borderRadius: "0px",
               fontWeight: 900,
               fontSize: "0.85rem",
               cursor: "pointer",
@@ -206,7 +206,7 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
               style={{
                 background: "#ffffff",
                 padding: "18px",
-                borderRadius: "4px",
+                borderRadius: "0px",
                 border: "3px solid #000000",
                 boxShadow: "4px 4px 0px #000000",
               }}
@@ -246,7 +246,7 @@ export const MemoryInspector: React.FC<MemoryInspectorProps> = ({
                   color: "#000000",
                   background: "var(--neo-bg)",
                   padding: "14px",
-                  borderRadius: "4px",
+                  borderRadius: "0px",
                   border: "2px solid #000000",
                   overflowX: "auto",
                   fontWeight: 700,

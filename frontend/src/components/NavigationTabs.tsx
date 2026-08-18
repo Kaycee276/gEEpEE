@@ -60,7 +60,7 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
               color: "#000000",
               border: "3px solid #000000",
               padding: "12px 22px",
-              borderRadius: "4px",
+              borderRadius: "0px",
               fontWeight: 900,
               fontSize: "0.95rem",
               cursor: "pointer",

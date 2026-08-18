@@ -45,7 +45,7 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
           background: "#000000",
           color: "#ffffff",
           border: "2px solid #000000",
-          borderRadius: "4px",
+          borderRadius: "0px",
           width: "28px",
           height: "28px",
           cursor: "pointer",

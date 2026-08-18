@@ -28,15 +28,16 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
       >
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <img
-            src="/logo.jpg"
-            alt="gEEpEE Logo"
+            src="/logo.png"
+            alt="gEEpEE Monogram Logo"
             style={{
-              width: "58px",
-              height: "58px",
-              borderRadius: "4px",
+              width: "60px",
+              height: "60px",
+              borderRadius: "0px",
               border: "3px solid #000000",
               boxShadow: "3px 3px 0px #000000",
-              objectFit: "cover",
+              objectFit: "contain",
+              background: "transparent",
             }}
           />
           <div>

@@ -41,7 +41,7 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
           marginBottom: "24px",
           background: "var(--neo-cyan-light)",
           padding: "14px",
-          borderRadius: "4px",
+          borderRadius: "0px",
           border: "2px solid #000000",
           boxShadow: "3px 3px 0px #000000",
         }}
@@ -95,7 +95,7 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
                 style={{
                   background: "#ffffff",
                   padding: "14px 18px",
-                  borderRadius: "4px",
+                  borderRadius: "0px",
                   border: "3px solid #000000",
                   boxShadow: "4px 4px 0px #000000",
                 }}
