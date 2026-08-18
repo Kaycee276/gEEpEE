@@ -6,7 +6,7 @@ interface StrategyFormProps {
     risk_tolerance: string;
     target_allocation: Record<string, number>;
     max_slippage_pct: number;
-  }) => void;
+  }) => Promise<void> | void;
 }
 
 export const StrategyForm: React.FC<StrategyFormProps> = ({ onSaveStrategy }) => {
@@ -18,19 +18,26 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({ onSaveStrategy }) =>
   const [virtualAlloc, setVirtualAlloc] = useState(10);
   const [maxSlippage, setMaxSlippage] = useState(0.5);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSaveStrategy({
-      user_name: userName,
-      risk_tolerance: riskTolerance,
-      target_allocation: {
-        USDC: usdcAlloc,
-        WETH: wethAlloc,
-        AERO: aeroAlloc,
-        VIRTUAL: virtualAlloc,
-      },
-      max_slippage_pct: maxSlippage,
-    });
+    setIsSaving(true);
+    try {
+      await onSaveStrategy({
+        user_name: userName,
+        risk_tolerance: riskTolerance,
+        target_allocation: {
+          USDC: usdcAlloc,
+          WETH: wethAlloc,
+          AERO: aeroAlloc,
+          VIRTUAL: virtualAlloc,
+        },
+        max_slippage_pct: maxSlippage,
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -115,8 +122,22 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({ onSaveStrategy }) =>
           />
         </div>
 
-        <button type="submit" className="neo-btn neo-btn-green" style={{ marginTop: '6px' }}>
-          Save Strategy to Sibyl Memory (WARM Tier)
+        <button
+          type="submit"
+          disabled={isSaving}
+          className="neo-btn neo-btn-green"
+          style={{
+            marginTop: '6px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            opacity: isSaving ? 0.6 : 1,
+            cursor: isSaving ? 'wait' : 'pointer'
+          }}
+        >
+          {isSaving && <span className="animate-spin" style={{ display: 'inline-block' }}>⏳</span>}
+          {isSaving ? 'Saving to Sibyl Memory (WARM Tier)...' : 'Save Strategy to Sibyl Memory (WARM Tier)'}
         </button>
       </form>
     </div>
