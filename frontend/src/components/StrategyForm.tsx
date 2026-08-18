@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Sliders } from "lucide-react";
+import React, { useState } from 'react';
 
 interface StrategyFormProps {
   onSaveStrategy: (payload: {
@@ -10,200 +9,114 @@ interface StrategyFormProps {
   }) => void;
 }
 
-export const StrategyForm: React.FC<StrategyFormProps> = ({
-  onSaveStrategy,
-}) => {
-  const [usdcTarget, setUsdcTarget] = useState(40);
-  const [wethTarget, setWethTarget] = useState(35);
-  const [aeroTarget, setAeroTarget] = useState(15);
-  const [virtualTarget, setVirtualTarget] = useState(10);
-  const [slippage, setSlippage] = useState(0.5);
+export const StrategyForm: React.FC<StrategyFormProps> = ({ onSaveStrategy }) => {
+  const [userName, setUserName] = useState('Hackathon Judge');
+  const [riskTolerance, setRiskTolerance] = useState('moderate');
+  const [usdcAlloc, setUsdcAlloc] = useState(40);
+  const [wethAlloc, setWethAlloc] = useState(30);
+  const [aeroAlloc, setAeroAlloc] = useState(20);
+  const [virtualAlloc, setVirtualAlloc] = useState(10);
+  const [maxSlippage, setMaxSlippage] = useState(0.5);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSaveStrategy({
-      user_name: "Hackathon Judge",
-      risk_tolerance: "moderate",
+      user_name: userName,
+      risk_tolerance: riskTolerance,
       target_allocation: {
-        USDC: usdcTarget,
-        WETH: wethTarget,
-        AERO: aeroTarget,
-        VIRTUAL: virtualTarget,
+        USDC: usdcAlloc,
+        WETH: wethAlloc,
+        AERO: aeroAlloc,
+        VIRTUAL: virtualAlloc,
       },
-      max_slippage_pct: slippage,
+      max_slippage_pct: maxSlippage,
     });
   };
 
   return (
-    <div
-      className="neo-card"
-      style={{
-        padding: "28px",
-        maxWidth: "800px",
-        margin: "0 auto",
-        background: "#ffffff",
-      }}
-    >
-      <h3
-        className="neo-title"
-        style={{
-          fontSize: "1.4rem",
-          color: "#000000",
-          marginBottom: "8px",
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-        }}
-      >
-        <Sliders style={{ color: "#000000" }} size={26} /> Configure Target
-        Strategy & Risk Rules
-      </h3>
-      <p
-        style={{
-          fontSize: "0.9rem",
-          color: "#333333",
-          marginBottom: "24px",
-          fontWeight: 700,
-        }}
-      >
-        Saving writes directly to Sibyl Memory WARM tier under unique constraint
-        `(tenant_id, 'user_strategy', 'default_profile')`.
-      </p>
+    <div className="neo-card" style={{ padding: '20px', background: '#ffffff' }}>
+      <div style={{ marginBottom: '16px' }}>
+        <h3 className="neo-title" style={{ fontSize: '1.2rem', color: '#000000', margin: 0 }}>
+          Vault Strategy & WARM Entity Configurator
+        </h3>
+        <p style={{ fontSize: '0.8rem', color: '#333333', marginTop: '2px', fontWeight: 700 }}>
+          Data: User risk tolerance, token target allocation %, max slippage limits saved into Sibyl Memory WARM tier with UNIQUE constraints.
+        </p>
+      </div>
 
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "18px",
-          }}
-        >
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
           <div>
-            <label
-              style={{
-                display: "block",
-                fontSize: "0.85rem",
-                color: "#000000",
-                marginBottom: "6px",
-                fontWeight: 900,
-                textTransform: "uppercase",
-              }}
-            >
-              USDC Target Allocation (%)
+            <label style={{ fontSize: '0.78rem', fontWeight: 900, textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+              Profile Name
             </label>
             <input
-              type="number"
-              value={usdcTarget}
-              onChange={(e) => setUsdcTarget(Number(e.target.value))}
+              type="text"
               className="neo-input"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
             />
           </div>
 
           <div>
-            <label
-              style={{
-                display: "block",
-                fontSize: "0.85rem",
-                color: "#000000",
-                marginBottom: "6px",
-                fontWeight: 900,
-                textTransform: "uppercase",
-              }}
-            >
-              WETH Target Allocation (%)
+            <label style={{ fontSize: '0.78rem', fontWeight: 900, textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+              Risk Profile
             </label>
-            <input
-              type="number"
-              value={wethTarget}
-              onChange={(e) => setWethTarget(Number(e.target.value))}
+            <select
               className="neo-input"
-              style={{ width: "100%" }}
-            />
+              style={{ width: '100%' }}
+              value={riskTolerance}
+              onChange={(e) => setRiskTolerance(e.target.value)}
+            >
+              <option value="conservative">Conservative</option>
+              <option value="moderate">Moderate</option>
+              <option value="aggressive">Aggressive (DeFi Degen)</option>
+            </select>
           </div>
+        </div>
 
-          <div>
-            <label
-              style={{
-                display: "block",
-                fontSize: "0.85rem",
-                color: "#000000",
-                marginBottom: "6px",
-                fontWeight: 900,
-                textTransform: "uppercase",
-              }}
-            >
-              AERO Target Allocation (%)
-            </label>
-            <input
-              type="number"
-              value={aeroTarget}
-              onChange={(e) => setAeroTarget(Number(e.target.value))}
-              className="neo-input"
-              style={{ width: "100%" }}
-            />
-          </div>
-
-          <div>
-            <label
-              style={{
-                display: "block",
-                fontSize: "0.85rem",
-                color: "#000000",
-                marginBottom: "6px",
-                fontWeight: 900,
-                textTransform: "uppercase",
-              }}
-            >
-              VIRTUAL Target Allocation (%)
-            </label>
-            <input
-              type="number"
-              value={virtualTarget}
-              onChange={(e) => setVirtualTarget(Number(e.target.value))}
-              className="neo-input"
-              style={{ width: "100%" }}
-            />
+        <div style={{ background: 'var(--neo-yellow-light)', border: '2px solid #000000', padding: '12px' }}>
+          <h4 style={{ fontSize: '0.88rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: '10px' }}>
+            Target Portfolio Allocation (%)
+          </h4>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div>
+              <label style={{ fontSize: '0.75rem', fontWeight: 900 }}>USDC: {usdcAlloc}%</label>
+              <input type="range" min="0" max="100" value={usdcAlloc} onChange={(e) => setUsdcAlloc(Number(e.target.value))} style={{ width: '100%' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: '0.75rem', fontWeight: 900 }}>WETH: {wethAlloc}%</label>
+              <input type="range" min="0" max="100" value={wethAlloc} onChange={(e) => setWethAlloc(Number(e.target.value))} style={{ width: '100%' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: '0.75rem', fontWeight: 900 }}>AERO: {aeroAlloc}%</label>
+              <input type="range" min="0" max="100" value={aeroAlloc} onChange={(e) => setAeroAlloc(Number(e.target.value))} style={{ width: '100%' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: '0.75rem', fontWeight: 900 }}>VIRTUAL: {virtualAlloc}%</label>
+              <input type="range" min="0" max="100" value={virtualAlloc} onChange={(e) => setVirtualAlloc(Number(e.target.value))} style={{ width: '100%' }} />
+            </div>
           </div>
         </div>
 
         <div>
-          <label
-            style={{
-              display: "block",
-              fontSize: "0.85rem",
-              color: "#000000",
-              marginBottom: "6px",
-              fontWeight: 900,
-              textTransform: "uppercase",
-            }}
-          >
-            Max Slippage Tolerance (%)
+          <label style={{ fontSize: '0.78rem', fontWeight: 900, textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+            Max DEX Slippage Threshold (%): {maxSlippage}%
           </label>
           <input
             type="number"
             step="0.1"
-            value={slippage}
-            onChange={(e) => setSlippage(Number(e.target.value))}
             className="neo-input"
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
+            value={maxSlippage}
+            onChange={(e) => setMaxSlippage(Number(e.target.value))}
           />
         </div>
 
-        <button
-          type="submit"
-          className="neo-btn neo-btn-green"
-          style={{
-            marginTop: "12px",
-            padding: "14px",
-            width: "100%",
-            justifyContent: "center",
-          }}
-        >
-          Save Strategy to Sibyl Memory
+        <button type="submit" className="neo-btn neo-btn-green" style={{ marginTop: '6px' }}>
+          Save Strategy to Sibyl Memory (WARM Tier)
         </button>
       </form>
     </div>

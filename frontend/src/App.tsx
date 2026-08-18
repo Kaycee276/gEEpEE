@@ -187,7 +187,7 @@ export default function App() {
         {activeTab === "overview" && (
           <div className="responsive-grid">
             <PortfolioPanel status={status} />
-            <CognitiveTerminal rebalanceResult={rebalanceResult} />
+            <CognitiveTerminal rebalanceResult={rebalanceResult} isRebalancing={isRebalancing} />
           </div>
         )}
 
