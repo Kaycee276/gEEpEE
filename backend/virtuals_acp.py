@@ -1,6 +1,6 @@
-import time
 import hashlib
-from typing import Dict, Any, List
+import time
+from typing import Any
 
 
 class VirtualsACPProtocol:
@@ -20,12 +20,12 @@ class VirtualsACPProtocol:
             "reputation_score": 98.4,
             "total_acp_jobs_executed": 42
         }
-        self.jobs_history: List[Dict[str, Any]] = []
+        self.jobs_history: list[dict[str, Any]] = []
 
-    def get_agent_registry_info(self) -> Dict[str, Any]:
+    def get_agent_registry_info(self) -> dict[str, Any]:
         return self.registered_agent
 
-    def broadcast_acp_job(self, job_type: str, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def broadcast_acp_job(self, job_type: str, payload: dict[str, Any]) -> dict[str, Any]:
         """
         Creates and signs an ACP Job to broadcast across the Virtuals network.
         """
@@ -47,5 +47,5 @@ class VirtualsACPProtocol:
         
         return job_record
 
-    def get_recent_acp_jobs(self, limit: int = 10) -> List[Dict[str, Any]]:
+    def get_recent_acp_jobs(self, limit: int = 10) -> list[dict[str, Any]]:
         return self.jobs_history[:limit]

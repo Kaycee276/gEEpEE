@@ -1,8 +1,7 @@
-import os
-import time
-import secrets
 import hashlib
-from typing import Dict, Any, List
+import secrets
+import time
+from typing import Any
 
 try:
     from web3 import Web3
@@ -62,7 +61,7 @@ class BaseNetworkAgent:
         h = hashlib.sha256(key.encode()).hexdigest()
         return "0x" + h[:40]
 
-    def get_wallet_info(self) -> Dict[str, Any]:
+    def get_wallet_info(self) -> dict[str, Any]:
         chain_status = "Connected to Base Sepolia (84532)" if (self.w3 and self.w3.is_connected()) else "Base Sandbox Engine (Chain ID 8453)"
         return {
             "wallet_address": self.wallet_address,
@@ -71,7 +70,7 @@ class BaseNetworkAgent:
             "balances": self.balances
         }
 
-    def fetch_base_token_prices(self) -> Dict[str, float]:
+    def fetch_base_token_prices(self) -> dict[str, float]:
         """Returns live market prices for tokens on Base network."""
         return {
             "ETH": 2750.50,
@@ -81,7 +80,7 @@ class BaseNetworkAgent:
             "VIRTUAL": 2.40
         }
 
-    def execute_token_swap(self, from_token: str, to_token: str, amount_in: float, max_slippage_pct: float) -> Dict[str, Any]:
+    def execute_token_swap(self, from_token: str, to_token: str, amount_in: float, max_slippage_pct: float) -> dict[str, Any]:
         """
         Executes a token swap on Base DEX router (Aerodrome/Uniswap V3).
         Validates slippage against user parameter.
@@ -133,7 +132,7 @@ class BaseNetworkAgent:
             "explorer_url": f"https://basescan.org/tx/{tx_hash}"
         }
 
-    def verify_x402_micropayment(self, endpoint: str, required_cost_usdc: float = 0.01) -> Dict[str, Any]:
+    def verify_x402_micropayment(self, endpoint: str, required_cost_usdc: float = 0.01) -> dict[str, Any]:
         """
         Simulates x402 payment header verification on Base for premium oracle/market feeds.
         """

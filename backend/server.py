@@ -1,15 +1,18 @@
-import os
-import sys
-from typing import Dict, Any, Optional
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # Import gEEpEE backend modules
-from geepee_memory import GeePeeMemoryEngine
-from base_agent import BaseNetworkAgent
-from virtuals_acp import VirtualsACPProtocol
-from agent_brain import GeePeeAgentBrain
+try:
+    from backend.agent_brain import GeePeeAgentBrain
+    from backend.base_agent import BaseNetworkAgent
+    from backend.geepee_memory import GeePeeMemoryEngine
+    from backend.virtuals_acp import VirtualsACPProtocol
+except ImportError:
+    from agent_brain import GeePeeAgentBrain
+    from base_agent import BaseNetworkAgent
+    from geepee_memory import GeePeeMemoryEngine
+    from virtuals_acp import VirtualsACPProtocol
 
 app = FastAPI(
     title="gEEpEE Agent API",
@@ -35,11 +38,11 @@ agent_brain = GeePeeAgentBrain(memory_engine, base_agent, virtuals_acp)
 
 # Pydantic schemas
 class StrategyUpdateRequest(BaseModel):
-    user_name: Optional[str] = "Hackathon Judge"
-    risk_tolerance: Optional[str] = "moderate"
-    target_allocation: Dict[str, float]
-    max_slippage_pct: Optional[float] = 0.5
-    stop_loss_pct: Optional[float] = 5.0
+    user_name: str | None = "Hackathon Judge"
+    risk_tolerance: str | None = "moderate"
+    target_allocation: dict[str, float]
+    max_slippage_pct: float | None = 0.5
+    stop_loss_pct: float | None = 5.0
 
 class LoadBearingToggleRequest(BaseModel):
     enabled: bool

@@ -1,8 +1,7 @@
-import os
 import json
+import os
 import sqlite3
-import datetime
-from typing import Dict, Any, List, Optional
+from typing import Any
 
 # Attempt to import official sibyl_memory_client if available
 try:
@@ -146,7 +145,7 @@ class GeePeeMemoryEngine:
             return default
 
     # ------------------ WARM ENTITIES ------------------
-    def set_entity(self, category: str, name: str, body: Dict[str, Any], tenant_id: str = "geepee_default"):
+    def set_entity(self, category: str, name: str, body: dict[str, Any], tenant_id: str = "geepee_default"):
         if not self.load_bearing_enabled:
             return
         
@@ -178,7 +177,7 @@ class GeePeeMemoryEngine:
             except Exception:
                 pass
 
-    def get_entity(self, category: str, name: str, tenant_id: str = "geepee_default") -> Optional[Dict[str, Any]]:
+    def get_entity(self, category: str, name: str, tenant_id: str = "geepee_default") -> dict[str, Any] | None:
         if not self.load_bearing_enabled:
             return None
             
@@ -190,7 +189,7 @@ class GeePeeMemoryEngine:
                 return json.loads(row['body'])
             return None
 
-    def list_entities(self, category: Optional[str] = None, tenant_id: str = "geepee_default") -> List[Dict[str, Any]]:
+    def list_entities(self, category: str | None = None, tenant_id: str = "geepee_default") -> list[dict[str, Any]]:
         if not self.load_bearing_enabled:
             return []
             
@@ -215,7 +214,7 @@ class GeePeeMemoryEngine:
             ]
 
     # ------------------ COLD JOURNAL ------------------
-    def write_event(self, action: str, details: Any = None, tx_hash: Optional[str] = None, tenant_id: str = "geepee_default"):
+    def write_event(self, action: str, details: Any = None, tx_hash: str | None = None, tenant_id: str = "geepee_default"):
         if not self.load_bearing_enabled:
             return
             
@@ -243,7 +242,7 @@ class GeePeeMemoryEngine:
             except Exception:
                 pass
 
-    def read_events(self, limit: int = 20, tenant_id: str = "geepee_default") -> List[Dict[str, Any]]:
+    def read_events(self, limit: int = 20, tenant_id: str = "geepee_default") -> list[dict[str, Any]]:
         if not self.load_bearing_enabled:
             return []
             
@@ -279,7 +278,7 @@ class GeePeeMemoryEngine:
             """, (key, title, content))
             conn.commit()
 
-    def get_reference(self, key: str) -> Optional[Dict[str, str]]:
+    def get_reference(self, key: str) -> dict[str, str] | None:
         if not self.load_bearing_enabled:
             return None
         with self._get_connection() as conn:
@@ -315,7 +314,7 @@ class GeePeeMemoryEngine:
             return True
 
     # ------------------ FTS5 SEARCH ------------------
-    def search_memory(self, query: str, limit: int = 10) -> List[Dict[str, Any]]:
+    def search_memory(self, query: str, limit: int = 10) -> list[dict[str, Any]]:
         if not self.load_bearing_enabled:
             return []
             
@@ -333,7 +332,7 @@ class GeePeeMemoryEngine:
                 return [{"category": r["category"], "name": r["name"], "snippet": r["content"]} for r in rows]
 
     # ------------------ DEMO & GATE HELPER METHODS ------------------
-    def get_full_stats(self) -> Dict[str, Any]:
+    def get_full_stats(self) -> dict[str, Any]:
         with self._get_connection() as conn:
             cursor = conn.cursor()
             hot_count = cursor.execute("SELECT COUNT(*) FROM hot_state").fetchone()[0]

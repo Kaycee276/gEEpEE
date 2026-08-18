@@ -1,10 +1,14 @@
 import time
-import datetime
-from typing import Dict, Any, List
+from typing import Any
 
-from geepee_memory import GeePeeMemoryEngine
-from base_agent import BaseNetworkAgent
-from virtuals_acp import VirtualsACPProtocol
+try:
+    from backend.base_agent import BaseNetworkAgent
+    from backend.geepee_memory import GeePeeMemoryEngine
+    from backend.virtuals_acp import VirtualsACPProtocol
+except ImportError:
+    from base_agent import BaseNetworkAgent
+    from geepee_memory import GeePeeMemoryEngine
+    from virtuals_acp import VirtualsACPProtocol
 
 
 class GeePeeAgentBrain:
@@ -22,7 +26,7 @@ class GeePeeAgentBrain:
         if self.memory.load_bearing_enabled and not self.memory.get_entity("user_strategy", "default_profile"):
             self.memory.seed_initial_knowledge()
 
-    def run_rebalance_cycle(self) -> Dict[str, Any]:
+    def run_rebalance_cycle(self) -> dict[str, Any]:
         """
         Executes a complete autonomous rebalance cycle.
         Demonstrates why Sibyl Memory is LOAD-BEARING.
