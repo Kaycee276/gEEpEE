@@ -1,5 +1,4 @@
 import React from 'react';
-import { Zap, RefreshCw, DollarSign } from 'lucide-react';
 
 interface ControlBarProps {
   isRebalancing: boolean;
@@ -29,7 +28,6 @@ export const ControlBar: React.FC<ControlBarProps> = ({
             disabled={isRebalancing}
             className="neo-btn neo-btn-yellow"
           >
-            {isRebalancing ? <RefreshCw className="animate-spin" size={15} /> : <Zap size={15} />}
             {isRebalancing ? 'Rebalancing...' : 'Run Rebalance'}
           </button>
 
@@ -37,14 +35,14 @@ export const ControlBar: React.FC<ControlBarProps> = ({
             onClick={onColdStart}
             className="neo-btn neo-btn-white"
           >
-            <RefreshCw size={14} /> Cold-Start Recall
+            Cold-Start Recall
           </button>
 
           <button
             onClick={onTriggerX402}
             className="neo-btn neo-btn-cyan"
           >
-            <DollarSign size={14} /> Test x402 Header
+            Test x402 Header
           </button>
         </div>
 

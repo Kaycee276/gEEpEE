@@ -1,5 +1,4 @@
 import React from 'react';
-import { Cpu, Wallet } from 'lucide-react';
 import { useAccount, useChainId } from 'wagmi';
 import type { StatusData } from '../types';
 
@@ -19,16 +18,16 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
   return (
     <div className="neo-card" style={{ padding: '16px', background: '#ffffff' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
-        <h3 className="neo-title" style={{ fontSize: '1.1rem', color: '#000000', display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
-          <Cpu style={{ color: '#000000' }} size={20} /> Base Network Vault Portfolio
+        <h3 className="neo-title" style={{ fontSize: '1.1rem', color: '#000000', margin: 0 }}>
+          Base Network Vault Portfolio
         </h3>
         <span className="badge badge-base">{activeChainLabel}</span>
       </div>
 
       <div style={{ marginBottom: '16px', background: isConnected ? 'var(--neo-green-light)' : 'var(--neo-cyan-light)', padding: '10px 12px', border: '2px solid #000000', boxShadow: '2px 2px 0px #000000' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <p style={{ fontSize: '0.72rem', color: '#000000', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 900, display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Wallet size={14} /> {isConnected ? 'Connected Wallet' : 'Vault Wallet Address'}
+          <p style={{ fontSize: '0.72rem', color: '#000000', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 900 }}>
+            {isConnected ? 'Connected Wallet' : 'Vault Wallet Address'}
           </p>
           {isConnected && <span className="badge badge-success" style={{ fontSize: '0.65rem' }}>Live Web3</span>}
         </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Brain, Activity, AlertTriangle, ExternalLink } from 'lucide-react';
 import type { RebalanceResult } from '../types';
 
 interface CognitiveTerminalProps {
@@ -10,8 +9,8 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({ rebalanceR
   return (
     <div className="neo-card" style={{ padding: '16px', background: '#ffffff' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
-        <h3 className="neo-title" style={{ fontSize: '1.1rem', color: '#000000', display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
-          <Brain style={{ color: '#000000' }} size={20} /> gEEpEE Cognitive Terminal
+        <h3 className="neo-title" style={{ fontSize: '1.1rem', color: '#000000', margin: 0 }}>
+          gEEpEE Cognitive Terminal
         </h3>
         <span className={`badge ${rebalanceResult?.memory_used ? 'badge-success' : 'badge-danger'}`}>
           {rebalanceResult ? rebalanceResult.gate_status : 'Ready for Rebalance'}
@@ -20,7 +19,6 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({ rebalanceR
 
       {!rebalanceResult ? (
         <div style={{ textAlign: 'center', padding: '24px 14px', color: '#000000', background: 'var(--neo-yellow-light)', border: '2px solid #000000', boxShadow: '3px 3px 0px #000000' }}>
-          <Activity size={30} style={{ margin: '0 auto 8px', color: '#000000' }} />
           <p style={{ fontWeight: 900, fontSize: '0.85rem' }}>
             Click "Run Rebalance" above to observe gEEpEE's memory recall & Base onchain execution workflow.
           </p>
@@ -30,8 +28,8 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({ rebalanceR
           
           {rebalanceResult.error && (
             <div style={{ background: 'var(--neo-red-light)', border: '2px solid #000000', boxShadow: '3px 3px 0px #000000', padding: '10px 12px', color: '#000000' }}>
-              <div style={{ fontWeight: 900, display: 'flex', alignItems: 'center', gap: '6px', color: '#000000', fontSize: '0.88rem' }}>
-                <AlertTriangle size={18} /> Rebalance Halted (Litmus Gate Failure)
+              <div style={{ fontWeight: 900, color: '#000000', fontSize: '0.88rem' }}>
+                ⚠️ Rebalance Halted (Litmus Gate Failure)
               </div>
               <p style={{ fontSize: '0.8rem', marginTop: '4px', fontWeight: 700 }}>{rebalanceResult.error}</p>
             </div>
@@ -65,9 +63,9 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({ rebalanceR
                 href={rebalanceResult.executed_swap.explorer_url}
                 target="_blank"
                 rel="noreferrer"
-                style={{ fontSize: '0.78rem', color: '#000000', display: 'inline-flex', alignItems: 'center', gap: '4px', marginTop: '4px', textDecoration: 'underline', fontWeight: 900 }}
+                style={{ fontSize: '0.78rem', color: '#000000', display: 'inline-block', marginTop: '4px', textDecoration: 'underline', fontWeight: 900 }}
               >
-                View on Basescan <ExternalLink size={12} />
+                View on Basescan ↗
               </a>
             </div>
           )}
