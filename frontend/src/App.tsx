@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import type {
   StatusData,
   MemoryDump,
   RebalanceResult,
   SearchResultItem,
-} from './types';
+} from "./types";
 import {
   fetchStatus,
   fetchMemory,
@@ -14,28 +14,29 @@ import {
   searchMemory,
   updateStrategy,
   triggerX402Payment,
-} from './api/client';
+} from "./api/client";
 
-import { Header } from './components/Header';
-import { NotificationBanner } from './components/NotificationBanner';
-import { ControlBar } from './components/ControlBar';
-import { NavigationTabs, type TabType } from './components/NavigationTabs';
-import { PortfolioPanel } from './components/PortfolioPanel';
-import { CognitiveTerminal } from './components/CognitiveTerminal';
-import { MemoryInspector } from './components/MemoryInspector';
-import { StrategyForm } from './components/StrategyForm';
-import { VirtualsACPPanel } from './components/VirtualsACPPanel';
-import { DocsPanel } from './components/DocsPanel';
+import { Header } from "./components/Header";
+import { NotificationBanner } from "./components/NotificationBanner";
+import { ControlBar } from "./components/ControlBar";
+import { NavigationTabs, type TabType } from "./components/NavigationTabs";
+import { PortfolioPanel } from "./components/PortfolioPanel";
+import { CognitiveTerminal } from "./components/CognitiveTerminal";
+import { MemoryInspector } from "./components/MemoryInspector";
+import { StrategyForm } from "./components/StrategyForm";
+import { VirtualsACPPanel } from "./components/VirtualsACPPanel";
+import { DocsPanel } from "./components/DocsPanel";
 
 export default function App() {
   const [status, setStatus] = useState<StatusData | null>(null);
   const [memoryDump, setMemoryDump] = useState<MemoryDump | null>(null);
-  const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [activeTab, setActiveTab] = useState<TabType>("overview");
 
   const [isRebalancing, setIsRebalancing] = useState(false);
-  const [rebalanceResult, setRebalanceResult] = useState<RebalanceResult | null>(null);
+  const [rebalanceResult, setRebalanceResult] =
+    useState<RebalanceResult | null>(null);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
@@ -50,7 +51,7 @@ export default function App() {
       setStatus(dataStatus);
       setMemoryDump(dataMem);
     } catch (err) {
-      console.error('API Sync Error:', err);
+      console.error("API Sync Error:", err);
     }
   };
 
@@ -76,8 +77,8 @@ export default function App() {
       console.error(err);
       setRebalanceResult({
         success: false,
-        gate_status: 'Network Error',
-        error: 'Network error connecting to gEEpEE backend server.',
+        gate_status: "Network Error",
+        error: "Network error connecting to gEEpEE backend server.",
       });
     } finally {
       setIsRebalancing(false);
@@ -85,7 +86,9 @@ export default function App() {
   };
 
   const handleRequireConnect = () => {
-    setNotice("🔒 Please connect your wallet using the 'Connect Wallet' button in the top right to execute live Base transactions!");
+    setNotice(
+      "🔒 Please connect your wallet using the 'Connect Wallet' button in the top right to execute live Base transactions!",
+    );
   };
 
   const handleToggleMemory = async (enabled: boolean) => {
@@ -143,7 +146,9 @@ export default function App() {
   }) => {
     try {
       const data = await triggerX402Payment();
-      const txNotice = payload?.real_tx_hash ? ` (Tx: ${payload.real_tx_hash.slice(0, 10)}...)` : '';
+      const txNotice = payload?.real_tx_hash
+        ? ` (Tx: ${payload.real_tx_hash.slice(0, 10)}...)`
+        : "";
       setNotice(
         `x402 Micropayment Result: Header ${data.x402_payment_header}${txNotice}`,
       );
@@ -179,14 +184,14 @@ export default function App() {
 
       {/* MAIN CONTENT AREA WITH RESPONSIVE GRID */}
       <main>
-        {activeTab === 'overview' && (
+        {activeTab === "overview" && (
           <div className="responsive-grid">
             <PortfolioPanel status={status} />
             <CognitiveTerminal rebalanceResult={rebalanceResult} />
           </div>
         )}
 
-        {activeTab === 'memory' && (
+        {activeTab === "memory" && (
           <MemoryInspector
             status={status}
             memoryDump={memoryDump}
@@ -198,13 +203,13 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'strategy' && (
+        {activeTab === "strategy" && (
           <StrategyForm onSaveStrategy={handleSaveStrategy} />
         )}
 
-        {activeTab === 'acp' && <VirtualsACPPanel status={status} />}
+        {activeTab === "acp" && <VirtualsACPPanel status={status} />}
 
-        {activeTab === 'docs' && <DocsPanel status={status} />}
+        {activeTab === "docs" && <DocsPanel status={status} />}
       </main>
     </div>
   );
