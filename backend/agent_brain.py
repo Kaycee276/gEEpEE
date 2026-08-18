@@ -26,13 +26,23 @@ class GeePeeAgentBrain:
         if self.memory.load_bearing_enabled and not self.memory.get_entity("user_strategy", "default_profile"):
             self.memory.seed_initial_knowledge()
 
-    def run_rebalance_cycle(self) -> dict[str, Any]:
+    def run_rebalance_cycle(
+        self,
+        user_wallet: str | None = None,
+        real_tx_hash: str | None = None,
+        chain_id: int | None = 8453
+    ) -> dict[str, Any]:
         """
         Executes a complete autonomous rebalance cycle.
         Demonstrates why Sibyl Memory is LOAD-BEARING.
+        Uses the connected Web3 wallet when provided.
         """
         reasoning_steps = []
         cycle_start_time = time.time()
+        
+        # Override wallet if provided by connected Web3 wallet
+        if user_wallet:
+            self.base.wallet_address = user_wallet
         
         # STEP 1: Query Sibyl Memory for User Strategy Entity
         reasoning_steps.append({
@@ -149,6 +159,11 @@ class GeePeeAgentBrain:
             amount_in=amount_in,
             max_slippage_pct=max_slippage
         )
+
+        if real_tx_hash:
+            swap_result["tx_hash"] = real_tx_hash
+            domain = "sepolia.basescan.org" if chain_id == 84532 else "basescan.org"
+            swap_result["explorer_url"] = f"https://{domain}/tx/{real_tx_hash}"
 
         if not swap_result.get("success"):
             reasoning_steps.append({

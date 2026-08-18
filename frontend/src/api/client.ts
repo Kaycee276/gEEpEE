@@ -19,8 +19,16 @@ export async function fetchMemory(): Promise<MemoryDump> {
   return res.json();
 }
 
-export async function runRebalance(): Promise<RebalanceResult> {
-  const res = await fetch(`${API_BASE}/agent/rebalance`, { method: "POST" });
+export async function runRebalance(payload?: {
+  user_wallet?: string;
+  real_tx_hash?: string;
+  chain_id?: number;
+}): Promise<RebalanceResult> {
+  const res = await fetch(`${API_BASE}/agent/rebalance`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload || {}),
+  });
   return res.json();
 }
 

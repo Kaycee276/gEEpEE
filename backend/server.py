@@ -50,6 +50,11 @@ class LoadBearingToggleRequest(BaseModel):
 class SearchQueryRequest(BaseModel):
     query: str
 
+class RebalanceCycleRequest(BaseModel):
+    user_wallet: str | None = None
+    real_tx_hash: str | None = None
+    chain_id: int | None = 8453
+
 class X402PaymentRequest(BaseModel):
     endpoint: str = "market-feed/base-volatility"
     cost_usdc: float = 0.01
@@ -129,9 +134,16 @@ def trigger_cold_start():
 
 
 @app.post("/api/agent/rebalance")
-def trigger_agent_rebalance():
+def trigger_agent_rebalance(req: RebalanceCycleRequest | None = None):
     """Triggers autonomous rebalance cycle in gEEpEE Agent Brain."""
-    result = agent_brain.run_rebalance_cycle()
+    user_wallet = req.user_wallet if req else None
+    real_tx_hash = req.real_tx_hash if req else None
+    chain_id = req.chain_id if req else 8453
+    result = agent_brain.run_rebalance_cycle(
+        user_wallet=user_wallet,
+        real_tx_hash=real_tx_hash,
+        chain_id=chain_id
+    )
     return result
 
 
