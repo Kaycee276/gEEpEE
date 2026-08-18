@@ -1,7 +1,7 @@
 import hashlib
 import secrets
 import time
-from typing import Any
+from typing import Any, ClassVar
 
 try:
     from web3 import Web3
@@ -22,7 +22,7 @@ class BaseNetworkAgent:
     BASE_RPC_MAINNET = "https://mainnet.base.org"
 
     # Known token addresses on Base Sepolia / Mainnet
-    TOKENS = {
+    TOKENS: ClassVar[dict[str, dict[str, Any]]] = {
         "ETH": {"address": "0x0000000000000000000000000000000000000000", "decimals": 18},
         "USDC": {"address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", "decimals": 6},
         "WETH": {"address": "0x4200000000000000000000000000000000000006", "decimals": 18},
@@ -30,7 +30,7 @@ class BaseNetworkAgent:
         "VIRTUAL": {"address": "0x0b3e80b213b1b0e882703875f07c688d0859ef09", "decimals": 18}
     }
 
-    def __init__(self, private_key: str = None, rpc_url: str = None):
+    def __init__(self, private_key: str | None = None, rpc_url: str | None = None):
         self.rpc_url = rpc_url or self.BASE_RPC_SEPOLIA
         self.w3 = Web3(Web3.HTTPProvider(self.rpc_url)) if WEB3_AVAILABLE else None
         
@@ -43,7 +43,7 @@ class BaseNetworkAgent:
             try:
                 account = self.w3.eth.account.from_key(self.private_key)
                 self.wallet_address = account.address
-            except Exception:
+            except (ValueError, AttributeError):
                 self.wallet_address = self._generate_simulated_address(self.private_key)
         else:
             self.wallet_address = self._generate_simulated_address(self.private_key)

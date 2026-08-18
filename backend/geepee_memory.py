@@ -21,7 +21,7 @@ class GeePeeMemoryEngine:
       4. REFERENCE: Immutable contract specifications & strategy docs
       5. ARCHIVE: Preserved historical or deactivated memory items
     """
-    def __init__(self, db_path: str = None):
+    def __init__(self, db_path: str | None = None):
         if not db_path:
             base_dir = os.path.expanduser("~/.sibyl-memory")
             os.makedirs(base_dir, exist_ok=True)
@@ -36,7 +36,7 @@ class GeePeeMemoryEngine:
         if OFFICIAL_SDK_AVAILABLE:
             try:
                 self.official_client = OfficialMemoryClient.local(self.db_path)
-            except Exception as e:
+            except (ImportError, ValueError, RuntimeError) as e:
                 print(f"[gEEpEE Memory] Official SDK init notice: {e}")
 
     def _get_connection(self):
@@ -114,7 +114,7 @@ class GeePeeMemoryEngine:
                         content
                     )
                 """)
-            except Exception:
+            except sqlite3.OperationalError:
                 pass # SQLite version without FTS5 fallback handled in query
                 
             conn.commit()
@@ -140,7 +140,7 @@ class GeePeeMemoryEngine:
             if row:
                 try:
                     return json.loads(row['value'])
-                except Exception:
+                except (json.JSONDecodeError, TypeError):
                     return row['value']
             return default
 
@@ -166,7 +166,7 @@ class GeePeeMemoryEngine:
                     INSERT INTO fts_memory (category, name, content)
                     VALUES (?, ?, ?)
                 """, (category, name, f"{category} {name} {body_json}"))
-            except Exception:
+            except sqlite3.OperationalError:
                 pass
                 
             conn.commit()
@@ -174,7 +174,7 @@ class GeePeeMemoryEngine:
         if self.official_client:
             try:
                 self.official_client.set_entity(category, name, body)
-            except Exception:
+            except (AttributeError, RuntimeError):
                 pass
 
     def get_entity(self, category: str, name: str, tenant_id: str = "geepee_default") -> dict[str, Any] | None:
@@ -231,7 +231,7 @@ class GeePeeMemoryEngine:
                     INSERT INTO fts_memory (category, name, content)
                     VALUES ('journal', ?, ?)
                 """, (action, f"{action} {det_str} {tx_hash or ''}"))
-            except Exception:
+            except sqlite3.OperationalError:
                 pass
                 
             conn.commit()
@@ -239,7 +239,7 @@ class GeePeeMemoryEngine:
         if self.official_client:
             try:
                 self.official_client.write_event(acted=[f"{action}: {det_str}"])
-            except Exception:
+            except (AttributeError, RuntimeError):
                 pass
 
     def read_events(self, limit: int = 20, tenant_id: str = "geepee_default") -> list[dict[str, Any]]:
@@ -256,7 +256,7 @@ class GeePeeMemoryEngine:
                 det = r["details"]
                 try:
                     det = json.loads(det)
-                except Exception:
+                except (json.JSONDecodeError, TypeError):
                     pass
                 res.append({
                     "action": r["action"],
@@ -324,7 +324,7 @@ class GeePeeMemoryEngine:
                     SELECT category, name, content FROM fts_memory WHERE fts_memory MATCH ? LIMIT ?
                 """, (f"{query}*", limit)).fetchall()
                 return [{"category": r["category"], "name": r["name"], "snippet": r["content"]} for r in rows]
-            except Exception:
+            except sqlite3.OperationalError:
                 # Fallback LIKE search
                 rows = conn.cursor().execute("""
                     SELECT category, name, body as content FROM warm_entities WHERE body LIKE ? OR name LIKE ? LIMIT ?
