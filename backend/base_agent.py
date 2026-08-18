@@ -70,7 +70,19 @@ class BaseNetworkAgent:
         return "0x" + h[:40]
 
     def get_wallet_info(self) -> dict[str, Any]:
-        chain_status = "Connected to Base Sepolia (84532)" if (self.w3 and self.w3.is_connected()) else "Base Sandbox Engine (Chain ID 8453)"
+        chain_status = "Base Sandbox Engine (Chain ID 8453)"
+        if self.w3 and WEB3_AVAILABLE:
+            try:
+                if self.w3.is_connected():
+                    chain_id = self.w3.eth.chain_id
+                    chain_status = f"Connected to Base (Chain ID {chain_id})"
+                    # Fetch live ETH balance
+                    raw_bal = self.w3.eth.get_balance(self.wallet_address)
+                    eth_bal = round(raw_bal / 1e18, 6)
+                    self.balances["ETH"] = eth_bal
+            except (AttributeError, ValueError, RuntimeError):
+                pass
+
         return {
             "wallet_address": self.wallet_address,
             "chain": "Base (Layer 2)",
