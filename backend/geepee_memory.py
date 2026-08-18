@@ -1,6 +1,9 @@
 import json
 import os
 import sqlite3
+import urllib.error
+import urllib.parse
+import urllib.request
 from typing import Any
 
 try:
@@ -117,6 +120,16 @@ class GeePeeMemoryEngine:
                 )
             """)
 
+            # User Portfolios Table (Wallet Address UNIQUE Primary Key)
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS user_portfolios (
+                    wallet_address TEXT PRIMARY KEY,
+                    strategy TEXT,
+                    last_balances TEXT,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+
             # FTS5 Full Text Search Table across all entities & journal
             try:
                 cursor.execute("""
@@ -130,6 +143,99 @@ class GeePeeMemoryEngine:
                 pass # SQLite version without FTS5 fallback handled in query
                 
             conn.commit()
+            
+        # Sync Schema to Turso Cloud DB if configured
+        self._sync_turso_schema()
+
+    def _sync_turso(self, sql: str, params: list[Any] | None = None):
+        """Executes query on Turso Cloud DB via LibSQL REST HTTP API."""
+        if not self.turso_url or not self.turso_token:
+            return
+            
+        try:
+            url = self.turso_url.replace("libsql://", "https://")
+            if not url.endswith("/v2/pipeline"):
+                url = url.rstrip("/") + "/v2/pipeline"
+                
+            # Build LibSQL HTTP pipeline payload
+            args_payload = []
+            if params:
+                for p in params:
+                    if p is None:
+                        args_payload.append({"type": "null"})
+                    elif isinstance(p, (int, float)):
+                        args_payload.append({"type": "numeric", "value": str(p)})
+                    else:
+                        args_payload.append({"type": "text", "value": str(p)})
+
+            payload = {
+                "requests": [
+                    {
+                        "type": "execute",
+                        "stmt": {
+                            "sql": sql,
+                            "args": args_payload
+                        }
+                    },
+                    {"type": "close"}
+                ]
+            }
+
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={
+                    "Authorization": f"Bearer {self.turso_token}",
+                    "Content-Type": "application/json"
+                },
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=3) as resp:
+                _ = resp.read()
+        except (urllib.error.URLError, urllib.error.HTTPError, OSError, ValueError):
+            # Silent fallback to local-first SQLite if Turso Cloud DB is offline or invalid
+            pass
+
+    def _sync_turso_schema(self):
+        """Initializes Turso Cloud DB schema on startup."""
+        schemas = [
+            "CREATE TABLE IF NOT EXISTS hot_state (key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+            "CREATE TABLE IF NOT EXISTS warm_entities (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id TEXT DEFAULT 'geepee_default', category TEXT NOT NULL, name TEXT NOT NULL, body TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE(tenant_id, category, name))",
+            "CREATE TABLE IF NOT EXISTS cold_journal (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id TEXT DEFAULT 'geepee_default', action TEXT NOT NULL, details TEXT, tx_hash TEXT, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+            "CREATE TABLE IF NOT EXISTS reference_docs (key TEXT PRIMARY KEY, title TEXT NOT NULL, content TEXT NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+            "CREATE TABLE IF NOT EXISTS archive_entities (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id TEXT DEFAULT 'geepee_default', category TEXT NOT NULL, name TEXT NOT NULL, body TEXT NOT NULL, archived_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+            "CREATE TABLE IF NOT EXISTS user_portfolios (wallet_address TEXT PRIMARY KEY, strategy TEXT, last_balances TEXT, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
+        ]
+        for s in schemas:
+            self._sync_turso(s)
+
+    def upsert_user_portfolio(self, wallet_address: str, strategy: dict[str, Any] | None = None, last_balances: dict[str, Any] | None = None):
+        """Upserts user portfolio in SQLite & Turso Cloud DB using wallet_address as UNIQUE primary key."""
+        if not self.load_bearing_enabled or not wallet_address:
+            return
+            
+        strat_str = json.dumps(strategy) if strategy else None
+        bal_str = json.dumps(last_balances) if last_balances else None
+        
+        with self._get_connection() as conn:
+            conn.cursor().execute("""
+                INSERT INTO user_portfolios (wallet_address, strategy, last_balances, updated_at)
+                VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+                ON CONFLICT(wallet_address) DO UPDATE SET
+                    strategy=COALESCE(excluded.strategy, user_portfolios.strategy),
+                    last_balances=COALESCE(excluded.last_balances, user_portfolios.last_balances),
+                    updated_at=CURRENT_TIMESTAMP
+            """, (wallet_address, strat_str, bal_str))
+            conn.commit()
+            
+        self._sync_turso("""
+            INSERT INTO user_portfolios (wallet_address, strategy, last_balances, updated_at)
+            VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(wallet_address) DO UPDATE SET
+                strategy=COALESCE(excluded.strategy, user_portfolios.strategy),
+                last_balances=COALESCE(excluded.last_balances, user_portfolios.last_balances),
+                updated_at=CURRENT_TIMESTAMP
+        """, [wallet_address, strat_str, bal_str])
 
     # ------------------ HOT STATE ------------------
     def set_state(self, key: str, value: Any):
@@ -143,6 +249,12 @@ class GeePeeMemoryEngine:
                 ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=CURRENT_TIMESTAMP
             """, (key, val_str))
             conn.commit()
+            
+        self._sync_turso("""
+            INSERT INTO hot_state (key, value, updated_at)
+            VALUES (?, ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=CURRENT_TIMESTAMP
+        """, [key, val_str])
 
     def get_state(self, key: str, default: Any = None) -> Any:
         if not self.load_bearing_enabled:
@@ -182,6 +294,14 @@ class GeePeeMemoryEngine:
                 pass
                 
             conn.commit()
+            
+        self._sync_turso("""
+            INSERT INTO warm_entities (tenant_id, category, name, body, updated_at)
+            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(tenant_id, category, name) DO UPDATE SET
+                body=excluded.body,
+                updated_at=CURRENT_TIMESTAMP
+        """, [tenant_id, category, name, body_json])
             
         if self.official_client:
             try:
