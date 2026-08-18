@@ -3,6 +3,12 @@ import os
 import sqlite3
 from typing import Any
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # Attempt to import official sibyl_memory_client if available
 try:
     from sibyl_memory_client import MemoryClient as OfficialMemoryClient
@@ -20,14 +26,20 @@ class GeePeeMemoryEngine:
       3. COLD: Time-series sequential event journal
       4. REFERENCE: Immutable contract specifications & strategy docs
       5. ARCHIVE: Preserved historical or deactivated memory items
+    Supports Turso DB cloud sync via TURSO_DATABASE_URL & TURSO_AUTH_TOKEN.
     """
     def __init__(self, db_path: str | None = None):
+        if not db_path:
+            db_path = os.getenv("SIBYL_MEMORY_DB_PATH")
+            
         if not db_path:
             base_dir = os.path.expanduser("~/.sibyl-memory")
             os.makedirs(base_dir, exist_ok=True)
             db_path = os.path.join(base_dir, "geepee_memory.db")
         
         self.db_path = db_path
+        self.turso_url = os.getenv("TURSO_DATABASE_URL")
+        self.turso_token = os.getenv("TURSO_AUTH_TOKEN")
         self.load_bearing_enabled = True # For Litmus Gate testing
         self._init_db()
         

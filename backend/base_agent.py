@@ -1,7 +1,14 @@
 import hashlib
+import os
 import secrets
 import time
 from typing import Any, ClassVar
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 try:
     from web3 import Web3
@@ -31,10 +38,11 @@ class BaseNetworkAgent:
     }
 
     def __init__(self, private_key: str | None = None, rpc_url: str | None = None):
-        self.rpc_url = rpc_url or self.BASE_RPC_SEPOLIA
+        self.rpc_url = rpc_url or os.getenv("BASE_RPC_URL") or self.BASE_RPC_SEPOLIA
         self.w3 = Web3(Web3.HTTPProvider(self.rpc_url)) if WEB3_AVAILABLE else None
         
         # Generate or load wallet
+        private_key = private_key or os.getenv("BASE_PRIVATE_KEY")
         if not private_key:
             private_key = "0x" + secrets.token_hex(32)
         
