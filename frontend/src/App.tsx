@@ -32,12 +32,13 @@ export default function App() {
   const { address } = useAccount();
   const [status, setStatus] = useState<StatusData | null>(null);
   const [memoryDump, setMemoryDump] = useState<MemoryDump | null>(null);
-  const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [activeTab, setActiveTab] = useState<TabType>("overview");
 
   const [isRebalancing, setIsRebalancing] = useState(false);
-  const [rebalanceResult, setRebalanceResult] = useState<RebalanceResult | null>(null);
+  const [rebalanceResult, setRebalanceResult] =
+    useState<RebalanceResult | null>(null);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
@@ -52,7 +53,7 @@ export default function App() {
       setStatus(dataStatus);
       setMemoryDump(dataMem);
     } catch (err) {
-      console.error('API Sync Error:', err);
+      console.error("API Sync Error:", err);
     }
   };
 
@@ -78,8 +79,8 @@ export default function App() {
       console.error(err);
       setRebalanceResult({
         success: false,
-        gate_status: 'Network Error',
-        error: 'Network error connecting to gEEpEE backend server.',
+        gate_status: "Network Error",
+        error: "Network error connecting to gEEpEE backend server.",
       });
     } finally {
       setIsRebalancing(false);
@@ -87,7 +88,9 @@ export default function App() {
   };
 
   const handleRequireConnect = () => {
-    setNotice("🔒 Please connect your wallet using the 'Connect Wallet' button in the top right to execute live Base transactions!");
+    setNotice(
+      "🔒 Please connect your wallet using the 'Connect Wallet' button in the top right to execute live Base transactions!",
+    );
   };
 
   const handleToggleMemory = async (enabled: boolean) => {
@@ -133,7 +136,7 @@ export default function App() {
     try {
       const data = await updateStrategy({
         ...payload,
-        user_wallet: address
+        user_wallet: address,
       });
       setNotice(data.message);
       refreshAllData();
@@ -149,7 +152,9 @@ export default function App() {
   }) => {
     try {
       const data = await triggerX402Payment(payload);
-      const txNotice = data.explorer_url ? ` | View on Basescan: ${data.explorer_url}` : '';
+      const txNotice = data.explorer_url
+        ? ` | View on Basescan: ${data.explorer_url}`
+        : "";
       setNotice(
         `x402 Payment Verified: ${data.x402_payment_header}${txNotice}`,
       );
@@ -188,7 +193,10 @@ export default function App() {
         {activeTab === "overview" && (
           <div className="responsive-grid">
             <PortfolioPanel status={status} />
-            <CognitiveTerminal rebalanceResult={rebalanceResult} isRebalancing={isRebalancing} />
+            <CognitiveTerminal
+              rebalanceResult={rebalanceResult}
+              isRebalancing={isRebalancing}
+            />
           </div>
         )}
 

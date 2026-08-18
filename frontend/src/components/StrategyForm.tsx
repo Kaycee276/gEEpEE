@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import type { StatusData } from '../types';
+import React, { useState, useEffect } from "react";
+import type { StatusData } from "../types";
 
 interface StrategyFormProps {
   status: StatusData | null;
@@ -11,9 +11,12 @@ interface StrategyFormProps {
   }) => Promise<void> | void;
 }
 
-export const StrategyForm: React.FC<StrategyFormProps> = ({ status, onSaveStrategy }) => {
-  const [userName, setUserName] = useState('Hackathon Judge');
-  const [riskTolerance, setRiskTolerance] = useState('moderate');
+export const StrategyForm: React.FC<StrategyFormProps> = ({
+  status,
+  onSaveStrategy,
+}) => {
+  const [userName, setUserName] = useState("Hackathon Judge");
+  const [riskTolerance, setRiskTolerance] = useState("moderate");
   const [usdcAlloc, setUsdcAlloc] = useState(40);
   const [wethAlloc, setWethAlloc] = useState(30);
   const [aeroAlloc, setAeroAlloc] = useState(20);
@@ -26,18 +29,23 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({ status, onSaveStrate
   useEffect(() => {
     if (status?.recalled_strategy) {
       const raw = status.recalled_strategy;
-      const strat = raw.body ? (typeof raw.body === 'string' ? JSON.parse(raw.body) : raw.body) : raw;
+      const strat = raw.body
+        ? typeof raw.body === "string"
+          ? JSON.parse(raw.body)
+          : raw.body
+        : raw;
 
       if (strat?.user_name) setUserName(strat.user_name);
       if (strat?.risk_tolerance) setRiskTolerance(strat.risk_tolerance);
-      if (typeof strat?.max_slippage_pct === 'number') setMaxSlippage(strat.max_slippage_pct);
+      if (typeof strat?.max_slippage_pct === "number")
+        setMaxSlippage(strat.max_slippage_pct);
 
       if (strat?.target_allocation) {
         const alloc = strat.target_allocation;
-        if (typeof alloc.USDC === 'number') setUsdcAlloc(alloc.USDC);
-        if (typeof alloc.WETH === 'number') setWethAlloc(alloc.WETH);
-        if (typeof alloc.AERO === 'number') setAeroAlloc(alloc.AERO);
-        if (typeof alloc.VIRTUAL === 'number') setVirtualAlloc(alloc.VIRTUAL);
+        if (typeof alloc.USDC === "number") setUsdcAlloc(alloc.USDC);
+        if (typeof alloc.WETH === "number") setWethAlloc(alloc.WETH);
+        if (typeof alloc.AERO === "number") setAeroAlloc(alloc.AERO);
+        if (typeof alloc.VIRTUAL === "number") setVirtualAlloc(alloc.VIRTUAL);
       }
     }
   }, [JSON.stringify(status?.recalled_strategy)]);
@@ -63,38 +71,78 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({ status, onSaveStrate
   };
 
   return (
-    <div className="neo-card" style={{ padding: '20px', background: '#ffffff' }}>
-      <div style={{ marginBottom: '16px' }}>
-        <h3 className="neo-title" style={{ fontSize: '1.2rem', color: '#000000', margin: 0 }}>
-          Vault Strategy & WARM Entity Configurator (Drizzle ORM + Turso Cloud Sync)
+    <div
+      className="neo-card"
+      style={{ padding: "20px", background: "#ffffff" }}
+    >
+      <div style={{ marginBottom: "16px" }}>
+        <h3
+          className="neo-title"
+          style={{ fontSize: "1.2rem", color: "#000000", margin: 0 }}
+        >
+          Vault Strategy & WARM Entity Configurator (Drizzle ORM + Turso Cloud
+          Sync)
         </h3>
-        <p style={{ fontSize: '0.8rem', color: '#333333', marginTop: '2px', fontWeight: 700 }}>
-          Data: User risk tolerance, token target allocation %, max slippage limits saved into Sibyl Memory WARM tier with UNIQUE constraints.
+        <p
+          style={{
+            fontSize: "0.8rem",
+            color: "#333333",
+            marginTop: "2px",
+            fontWeight: 700,
+          }}
+        >
+          Data: User risk tolerance, token target allocation %, max slippage
+          limits saved into Sibyl Memory WARM tier with UNIQUE constraints.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", gap: "14px" }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "12px",
+          }}
+        >
           <div>
-            <label style={{ fontSize: '0.78rem', fontWeight: 900, textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+            <label
+              style={{
+                fontSize: "0.78rem",
+                fontWeight: 900,
+                textTransform: "uppercase",
+                display: "block",
+                marginBottom: "4px",
+              }}
+            >
               Profile Name
             </label>
             <input
               type="text"
               className="neo-input"
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
           </div>
 
           <div>
-            <label style={{ fontSize: '0.78rem', fontWeight: 900, textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+            <label
+              style={{
+                fontSize: "0.78rem",
+                fontWeight: 900,
+                textTransform: "uppercase",
+                display: "block",
+                marginBottom: "4px",
+              }}
+            >
               Risk Profile
             </label>
             <select
               className="neo-input"
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
               value={riskTolerance}
               onChange={(e) => setRiskTolerance(e.target.value)}
             >
@@ -105,40 +153,103 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({ status, onSaveStrate
           </div>
         </div>
 
-        <div style={{ background: 'var(--neo-yellow-light)', border: '2px solid #000000', padding: '12px' }}>
-          <h4 style={{ fontSize: '0.88rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: '10px' }}>
+        <div
+          style={{
+            background: "var(--neo-yellow-light)",
+            border: "2px solid #000000",
+            padding: "12px",
+          }}
+        >
+          <h4
+            style={{
+              fontSize: "0.88rem",
+              fontWeight: 900,
+              textTransform: "uppercase",
+              marginBottom: "10px",
+            }}
+          >
             Target Portfolio Allocation (%)
           </h4>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "10px",
+            }}
+          >
             <div>
-              <label style={{ fontSize: '0.75rem', fontWeight: 900 }}>USDC: {usdcAlloc}%</label>
-              <input type="range" min="0" max="100" value={usdcAlloc} onChange={(e) => setUsdcAlloc(Number(e.target.value))} style={{ width: '100%' }} />
+              <label style={{ fontSize: "0.75rem", fontWeight: 900 }}>
+                USDC: {usdcAlloc}%
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={usdcAlloc}
+                onChange={(e) => setUsdcAlloc(Number(e.target.value))}
+                style={{ width: "100%" }}
+              />
             </div>
             <div>
-              <label style={{ fontSize: '0.75rem', fontWeight: 900 }}>WETH: {wethAlloc}%</label>
-              <input type="range" min="0" max="100" value={wethAlloc} onChange={(e) => setWethAlloc(Number(e.target.value))} style={{ width: '100%' }} />
+              <label style={{ fontSize: "0.75rem", fontWeight: 900 }}>
+                WETH: {wethAlloc}%
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={wethAlloc}
+                onChange={(e) => setWethAlloc(Number(e.target.value))}
+                style={{ width: "100%" }}
+              />
             </div>
             <div>
-              <label style={{ fontSize: '0.75rem', fontWeight: 900 }}>AERO: {aeroAlloc}%</label>
-              <input type="range" min="0" max="100" value={aeroAlloc} onChange={(e) => setAeroAlloc(Number(e.target.value))} style={{ width: '100%' }} />
+              <label style={{ fontSize: "0.75rem", fontWeight: 900 }}>
+                AERO: {aeroAlloc}%
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={aeroAlloc}
+                onChange={(e) => setAeroAlloc(Number(e.target.value))}
+                style={{ width: "100%" }}
+              />
             </div>
             <div>
-              <label style={{ fontSize: '0.75rem', fontWeight: 900 }}>VIRTUAL: {virtualAlloc}%</label>
-              <input type="range" min="0" max="100" value={virtualAlloc} onChange={(e) => setVirtualAlloc(Number(e.target.value))} style={{ width: '100%' }} />
+              <label style={{ fontSize: "0.75rem", fontWeight: 900 }}>
+                VIRTUAL: {virtualAlloc}%
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={virtualAlloc}
+                onChange={(e) => setVirtualAlloc(Number(e.target.value))}
+                style={{ width: "100%" }}
+              />
             </div>
           </div>
         </div>
 
         <div>
-          <label style={{ fontSize: '0.78rem', fontWeight: 900, textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+          <label
+            style={{
+              fontSize: "0.78rem",
+              fontWeight: 900,
+              textTransform: "uppercase",
+              display: "block",
+              marginBottom: "4px",
+            }}
+          >
             Max DEX Slippage Threshold (%): {maxSlippage}%
           </label>
           <input
             type="number"
             step="0.1"
             className="neo-input"
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             value={maxSlippage}
             onChange={(e) => setMaxSlippage(Number(e.target.value))}
           />
@@ -149,17 +260,23 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({ status, onSaveStrate
           disabled={isSaving}
           className="neo-btn neo-btn-green"
           style={{
-            marginTop: '6px',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
+            marginTop: "6px",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
             opacity: isSaving ? 0.6 : 1,
-            cursor: isSaving ? 'wait' : 'pointer'
+            cursor: isSaving ? "wait" : "pointer",
           }}
         >
-          {isSaving && <span className="animate-spin" style={{ display: 'inline-block' }}>⏳</span>}
-          {isSaving ? 'Saving to Sibyl Memory (WARM Tier)...' : 'Save Strategy to Sibyl Memory (WARM Tier)'}
+          {isSaving && (
+            <span className="animate-spin" style={{ display: "inline-block" }}>
+              ⏳
+            </span>
+          )}
+          {isSaving
+            ? "Saving to Sibyl Memory (WARM Tier)..."
+            : "Save Strategy to Sibyl Memory (WARM Tier)"}
         </button>
       </form>
     </div>
