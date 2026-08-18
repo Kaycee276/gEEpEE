@@ -120,10 +120,7 @@ export const ControlBar: React.FC<ControlBarProps> = ({
             alignItems: "center",
           }}
         >
-          <span>
-            🔒 Wallet Not Connected. Onchain buttons are locked. Connect wallet
-            via RainbowKit above to execute real Base transactions.
-          </span>
+          <span>Wallet Not Connected.</span>
         </div>
       )}
 

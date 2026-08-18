@@ -106,7 +106,7 @@ def toggle_load_bearing(req: LoadBearingToggleRequest):
     Used for the Litmus Gate Deletion Test during judging.
     """
     memory_engine.load_bearing_enabled = req.enabled
-    status_str = "ENABLED (Normal Operations)" if req.enabled else "DISABLED (Simulating Memory Removal for Gate Test)"
+    status_str = "ENABLED (Normal Operations)" if req.enabled else "DISABLED (Litmus Gate Memory Removal Active)"
     
     return {
         "success": True,
@@ -118,7 +118,7 @@ def toggle_load_bearing(req: LoadBearingToggleRequest):
 @app.post("/api/memory/cold-start")
 def trigger_cold_start():
     """
-    Simulates a fresh session restart (Cold-Start Recall Beat).
+    Triggers a fresh session restart (Cold-Start Recall Beat).
     Verifies that gEEpEE recalls persistent user state from SQLite disk.
     """
     # Re-read memory from disk
@@ -127,7 +127,7 @@ def trigger_cold_start():
     
     return {
         "success": True,
-        "message": "Simulated cold start restart. gEEpEE successfully reloaded state from SQLite database file on disk.",
+        "message": "Cold-start session restart. gEEpEE reloaded state directly from local SQLite database file on disk.",
         "recalled_strategy": recalled_strategy,
         "journal_events_count": journal_count
     }
