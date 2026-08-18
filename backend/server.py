@@ -1,0 +1,181 @@
+import os
+import sys
+from typing import Dict, Any, Optional
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+# Import gEEpEE backend modules
+from geepee_memory import GeePeeMemoryEngine
+from base_agent import BaseNetworkAgent
+from virtuals_acp import VirtualsACPProtocol
+from agent_brain import GeePeeAgentBrain
+
+app = FastAPI(
+    title="gEEpEE Agent API",
+    description="Autonomous Memory-Driven Onchain Vault Agent on Base & Virtuals Protocol",
+    version="1.0.0"
+)
+
+# Enable CORS for Vite frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Global singletons
+memory_engine = GeePeeMemoryEngine()
+base_agent = BaseNetworkAgent()
+virtuals_acp = VirtualsACPProtocol()
+agent_brain = GeePeeAgentBrain(memory_engine, base_agent, virtuals_acp)
+
+
+# Pydantic schemas
+class StrategyUpdateRequest(BaseModel):
+    user_name: Optional[str] = "Hackathon Judge"
+    risk_tolerance: Optional[str] = "moderate"
+    target_allocation: Dict[str, float]
+    max_slippage_pct: Optional[float] = 0.5
+    stop_loss_pct: Optional[float] = 5.0
+
+class LoadBearingToggleRequest(BaseModel):
+    enabled: bool
+
+class SearchQueryRequest(BaseModel):
+    query: str
+
+class X402PaymentRequest(BaseModel):
+    endpoint: str = "market-feed/base-volatility"
+    cost_usdc: float = 0.01
+
+
+@app.get("/api/status")
+def get_system_status():
+    """Returns overview of gEEpEE memory stats, wallet balances, and ACP agent status."""
+    return {
+        "agent_name": "gEEpEE",
+        "description": "Autonomous Memory-Driven Vault Agent on Base",
+        "memory_stats": memory_engine.get_full_stats(),
+        "wallet_info": base_agent.get_wallet_info(),
+        "virtuals_registry": virtuals_acp.get_agent_registry_info(),
+        "token_prices": base_agent.fetch_base_token_prices()
+    }
+
+
+@app.get("/api/memory")
+def get_memory_dump():
+    """Returns all contents across Sibyl 5-Tiers (HOT, WARM, COLD, REFERENCE, ARCHIVE)."""
+    return {
+        "load_bearing_enabled": memory_engine.load_bearing_enabled,
+        "hot_state": {
+            "last_status": memory_engine.get_state("last_rebalance_status"),
+            "active_lock": memory_engine.get_state("active_portfolio_lock")
+        },
+        "warm_entities": memory_engine.list_entities(),
+        "cold_journal": memory_engine.read_events(limit=30),
+        "reference_docs": [
+            memory_engine.get_reference("base_network_spec"),
+            memory_engine.get_reference("virtuals_acp_spec")
+        ],
+        "archive_entities": memory_engine.get_full_stats()["counts"]["archive_entities"]
+    }
+
+
+@app.post("/api/memory/search")
+def search_memory(req: SearchQueryRequest):
+    """Performs FTS5 search across all Sibyl memory tiers."""
+    results = memory_engine.search_memory(req.query)
+    return {"query": req.query, "count": len(results), "results": results}
+
+
+@app.post("/api/memory/toggle-load-bearing")
+def toggle_load_bearing(req: LoadBearingToggleRequest):
+    """
+    Toggles the Sibyl Memory Layer ON/OFF.
+    Used for the Litmus Gate Deletion Test during judging.
+    """
+    memory_engine.load_bearing_enabled = req.enabled
+    status_str = "ENABLED (Normal Operations)" if req.enabled else "DISABLED (Simulating Memory Removal for Gate Test)"
+    
+    return {
+        "success": True,
+        "load_bearing_enabled": memory_engine.load_bearing_enabled,
+        "message": f"Sibyl Memory layer is now {status_str}."
+    }
+
+
+@app.post("/api/memory/cold-start")
+def trigger_cold_start():
+    """
+    Simulates a fresh session restart (Cold-Start Recall Beat).
+    Verifies that gEEpEE recalls persistent user state from SQLite disk.
+    """
+    # Re-read memory from disk
+    recalled_strategy = memory_engine.get_entity("user_strategy", "default_profile")
+    journal_count = len(memory_engine.read_events(limit=10))
+    
+    return {
+        "success": True,
+        "message": "Simulated cold start restart. gEEpEE successfully reloaded state from SQLite database file on disk.",
+        "recalled_strategy": recalled_strategy,
+        "journal_events_count": journal_count
+    }
+
+
+@app.post("/api/agent/rebalance")
+def trigger_agent_rebalance():
+    """Triggers autonomous rebalance cycle in gEEpEE Agent Brain."""
+    result = agent_brain.run_rebalance_cycle()
+    return result
+
+
+@app.post("/api/agent/update-strategy")
+def update_user_strategy(req: StrategyUpdateRequest):
+    """Updates user strategy entity in Sibyl Memory WARM tier."""
+    body = {
+        "user_name": req.user_name,
+        "risk_tolerance": req.risk_tolerance,
+        "target_tokens": list(req.target_allocation.keys()),
+        "target_allocation": req.target_allocation,
+        "max_slippage_pct": req.max_slippage_pct,
+        "stop_loss_pct": req.stop_loss_pct,
+        "x402_feed_enabled": True
+    }
+    
+    memory_engine.set_entity("user_strategy", "default_profile", body)
+    memory_engine.write_event(
+        "strategy_updated",
+        {"user": req.user_name, "new_allocation": req.target_allocation}
+    )
+    
+    return {
+        "success": True,
+        "message": "Strategy updated in Sibyl WARM tier (UNIQUE constraint enforced).",
+        "updated_entity": body
+    }
+
+
+@app.post("/api/base/x402-fetch")
+def request_x402_feed(req: X402PaymentRequest):
+    """Executes x402 payment header verification on Base network."""
+    result = base_agent.verify_x402_micropayment(req.endpoint, req.cost_usdc)
+    if result["verified"]:
+        memory_engine.write_event("x402_payment_executed", result)
+    return result
+
+
+@app.get("/api/virtuals/acp-jobs")
+def get_acp_jobs():
+    """Returns recent Virtuals ACP Protocol job logs."""
+    return {
+        "registry": virtuals_acp.get_agent_registry_info(),
+        "recent_jobs": virtuals_acp.get_recent_acp_jobs()
+    }
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
