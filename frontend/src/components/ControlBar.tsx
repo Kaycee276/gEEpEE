@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useAccount, useSendTransaction, useChainId } from 'wagmi';
-import { parseEther } from 'viem';
+import React, { useState } from "react";
+import { useAccount, useSendTransaction, useChainId } from "wagmi";
+import { parseEther } from "viem";
 
 interface ControlBarProps {
   isRebalancing: boolean;
@@ -53,11 +53,14 @@ export const ControlBar: React.FC<ControlBarProps> = ({
         try {
           const tx = await sendTransactionAsync({
             to: address,
-            value: parseEther('0.000001'),
+            value: parseEther("0.000001"),
           });
           realTxHash = tx;
         } catch (err) {
-          console.warn('Onchain wallet signature user cancelled or rejected:', err);
+          console.warn(
+            "Onchain wallet signature user cancelled or rejected:",
+            err,
+          );
           return; // Strictly abort if user cancelled in wallet
         }
       }
@@ -68,7 +71,7 @@ export const ControlBar: React.FC<ControlBarProps> = ({
         chain_id: chainId,
       });
     } catch (err) {
-      console.error('Rebalance execution error:', err);
+      console.error("Rebalance execution error:", err);
     }
   };
 
@@ -88,11 +91,11 @@ export const ControlBar: React.FC<ControlBarProps> = ({
         try {
           const tx = await sendTransactionAsync({
             to: address,
-            value: parseEther('0.000001'),
+            value: parseEther("0.000001"),
           });
           realTxHash = tx;
         } catch (err) {
-          console.warn('x402 signature user cancelled or rejected:', err);
+          console.warn("x402 signature user cancelled or rejected:", err);
           return; // Strictly abort if user cancelled in wallet
         }
       }
@@ -102,7 +105,7 @@ export const ControlBar: React.FC<ControlBarProps> = ({
         real_tx_hash: realTxHash,
       });
     } catch (err) {
-      console.error('x402 test execution error:', err);
+      console.error("x402 test execution error:", err);
     } finally {
       setIsSigningX402(false);
     }
@@ -127,61 +130,92 @@ export const ControlBar: React.FC<ControlBarProps> = ({
   };
 
   return (
-    <section className="neo-card" style={{ padding: '10px 14px', background: '#ffffff', position: 'relative' }}>
-      
+    <section
+      className="neo-card"
+      style={{
+        padding: "10px 14px",
+        background: "#ffffff",
+        position: "relative",
+      }}
+    >
       {/* WARNING BANNERS FOR DISCONNECTED WALLET OR REMOVED MEMORY */}
       {!isConnected ? (
-        <div style={{
-          background: 'var(--neo-yellow-light)',
-          border: '2px solid #000000',
-          boxShadow: '2px 2px 0px #000000',
-          padding: '6px 12px',
-          marginBottom: '10px',
-          fontSize: '0.78rem',
-          fontWeight: 900,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <span>🔒 Wallet Not Connected. Connect wallet via RainbowKit above to execute live Base transactions.</span>
+        <div
+          style={{
+            background: "var(--neo-yellow-light)",
+            border: "2px solid #000000",
+            boxShadow: "2px 2px 0px #000000",
+            padding: "6px 12px",
+            marginBottom: "10px",
+            fontSize: "0.78rem",
+            fontWeight: 900,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span>Wallet Not Connected.</span>
         </div>
       ) : !memoryEnabled ? (
-        <div style={{
-          background: 'var(--neo-red-light)',
-          border: '2px solid #000000',
-          boxShadow: '2px 2px 0px #000000',
-          padding: '6px 12px',
-          marginBottom: '10px',
-          fontSize: '0.78rem',
-          fontWeight: 900,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <span>🔒 Memory Removed (Litmus Gate Active). Onchain action buttons locked until memory is restored.</span>
+        <div
+          style={{
+            background: "var(--neo-red-light)",
+            border: "2px solid #000000",
+            boxShadow: "2px 2px 0px #000000",
+            padding: "6px 12px",
+            marginBottom: "10px",
+            fontSize: "0.78rem",
+            fontWeight: 900,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span>Memory Removed (Litmus Gate Active).</span>
         </div>
       ) : null}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
-        
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "10px",
+        }}
+      >
         {/* PRIMARY ONCHAIN ACTIONS (BLURRED & LOCKED WHEN DISCONNECTED OR MEMORY REMOVED) */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-          
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            flexWrap: "wrap",
+          }}
+        >
           <button
             onClick={handleRebalanceClick}
             disabled={isActionLocked || isRebalancing}
             className="neo-btn neo-btn-yellow"
             style={{
-              filter: isActionLocked ? 'blur(1.5px)' : 'none',
+              filter: isActionLocked ? "blur(1.5px)" : "none",
               opacity: isActionLocked || isRebalancing ? 0.45 : 1,
-              cursor: isActionLocked || isRebalancing ? 'not-allowed' : 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px'
+              cursor:
+                isActionLocked || isRebalancing ? "not-allowed" : "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
             }}
           >
-            {isRebalancing && <span className="animate-spin" style={{ display: 'inline-block' }}>⏳</span>}
-            {isRebalancing ? 'Prompting Wallet & Rebalancing...' : 'Run Rebalance'}
+            {isRebalancing && (
+              <span
+                className="animate-spin"
+                style={{ display: "inline-block" }}
+              ></span>
+            )}
+            {isRebalancing
+              ? "Prompting Wallet & Rebalancing..."
+              : "Run Rebalance"}
           </button>
 
           <button
@@ -189,16 +223,24 @@ export const ControlBar: React.FC<ControlBarProps> = ({
             disabled={isActionLocked || isSigningX402}
             className="neo-btn neo-btn-cyan"
             style={{
-              filter: isActionLocked ? 'blur(1.5px)' : 'none',
+              filter: isActionLocked ? "blur(1.5px)" : "none",
               opacity: isActionLocked || isSigningX402 ? 0.45 : 1,
-              cursor: isActionLocked || isSigningX402 ? 'not-allowed' : 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px'
+              cursor:
+                isActionLocked || isSigningX402 ? "not-allowed" : "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
             }}
           >
-            {isSigningX402 && <span className="animate-spin" style={{ display: 'inline-block' }}>⏳</span>}
-            {isSigningX402 ? 'Prompting Wallet & Verifying...' : 'Test x402 Header'}
+            {isSigningX402 && (
+              <span
+                className="animate-spin"
+                style={{ display: "inline-block" }}
+              ></span>
+            )}
+            {isSigningX402
+              ? "Prompting Wallet & Verifying..."
+              : "Test x402 Header"}
           </button>
 
           <button
@@ -206,48 +248,80 @@ export const ControlBar: React.FC<ControlBarProps> = ({
             disabled={isColdStarting}
             className="neo-btn neo-btn-white"
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
               opacity: isColdStarting ? 0.6 : 1,
-              cursor: isColdStarting ? 'wait' : 'pointer'
+              cursor: isColdStarting ? "wait" : "pointer",
             }}
           >
-            {isColdStarting && <span className="animate-spin" style={{ display: 'inline-block' }}>⏳</span>}
-            {isColdStarting ? 'Recalling Disk State...' : 'Cold-Start Recall'}
+            {isColdStarting && (
+              <span
+                className="animate-spin"
+                style={{ display: "inline-block" }}
+              ></span>
+            )}
+            {isColdStarting ? "Recalling Disk State..." : "Cold-Start Recall"}
           </button>
         </div>
 
         {/* LITMUS GATE TEST SWITCH */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          background: memoryEnabled ? 'var(--neo-green-light)' : 'var(--neo-red-light)',
-          padding: '6px 12px',
-          border: '2px solid #000000',
-          boxShadow: '2px 2px 0px #000000'
-        }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: '0.68rem', fontWeight: 900, color: '#000000', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            background: memoryEnabled
+              ? "var(--neo-green-light)"
+              : "var(--neo-red-light)",
+            padding: "6px 12px",
+            border: "2px solid #000000",
+            boxShadow: "2px 2px 0px #000000",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span
+              style={{
+                fontSize: "0.68rem",
+                fontWeight: 900,
+                color: "#000000",
+                textTransform: "uppercase",
+                letterSpacing: "0.04em",
+              }}
+            >
               Litmus Gate Test
             </span>
-            <span style={{ fontSize: '0.78rem', color: '#000000', fontWeight: 900 }}>
-              {memoryEnabled ? 'Memory: ACTIVE' : 'Memory: REMOVED'}
+            <span
+              style={{ fontSize: "0.78rem", color: "#000000", fontWeight: 900 }}
+            >
+              {memoryEnabled ? "Memory: ACTIVE" : "Memory: REMOVED"}
             </span>
           </div>
 
           <button
             onClick={handleToggleMemoryClick}
             disabled={isTogglingMemory}
-            className={`neo-btn ${memoryEnabled ? 'neo-btn-red' : 'neo-btn-green'}`}
-            style={{ padding: '4px 8px', fontSize: '0.72rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+            className={`neo-btn ${memoryEnabled ? "neo-btn-red" : "neo-btn-green"}`}
+            style={{
+              padding: "4px 8px",
+              fontSize: "0.72rem",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "4px",
+            }}
           >
-            {isTogglingMemory && <span className="animate-spin" style={{ fontSize: '0.65rem' }}>⏳</span>}
-            {isTogglingMemory ? 'Updating...' : (memoryEnabled ? 'Delete' : 'Restore')}
+            {isTogglingMemory && (
+              <span className="animate-spin" style={{ fontSize: "0.65rem" }}>
+                ⏳
+              </span>
+            )}
+            {isTogglingMemory
+              ? "Updating..."
+              : memoryEnabled
+                ? "Delete"
+                : "Restore"}
           </button>
         </div>
-
       </div>
     </section>
   );

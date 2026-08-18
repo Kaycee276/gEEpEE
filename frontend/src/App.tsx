@@ -203,7 +203,7 @@ export default function App() {
         )}
 
         {activeTab === "strategy" && (
-          <StrategyForm onSaveStrategy={handleSaveStrategy} />
+          <StrategyForm status={status} onSaveStrategy={handleSaveStrategy} />
         )}
 
         {activeTab === "acp" && <VirtualsACPPanel status={status} />}

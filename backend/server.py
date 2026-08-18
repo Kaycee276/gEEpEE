@@ -65,10 +65,11 @@ class X402PaymentRequest(BaseModel):
 
 @app.get("/api/status")
 def get_system_status():
-    """Returns overview of gEEpEE memory stats, wallet balances, and ACP agent status."""
+    """Returns overview of gEEpEE memory stats, wallet balances, recalled strategy, and ACP agent status."""
     return {
         "agent_name": "gEEpEE",
         "description": "Autonomous Memory-Driven Vault Agent on Base",
+        "recalled_strategy": memory_engine.get_entity("user_strategy", "default_profile"),
         "memory_stats": memory_engine.get_full_stats(),
         "wallet_info": base_agent.get_wallet_info(),
         "virtuals_registry": virtuals_acp.get_agent_registry_info(),

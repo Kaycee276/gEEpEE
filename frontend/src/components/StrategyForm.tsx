@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import type { StatusData } from '../types';
 
 interface StrategyFormProps {
+  status: StatusData | null;
   onSaveStrategy: (payload: {
     user_name: string;
     risk_tolerance: string;
@@ -9,7 +11,7 @@ interface StrategyFormProps {
   }) => Promise<void> | void;
 }
 
-export const StrategyForm: React.FC<StrategyFormProps> = ({ onSaveStrategy }) => {
+export const StrategyForm: React.FC<StrategyFormProps> = ({ status, onSaveStrategy }) => {
   const [userName, setUserName] = useState('Hackathon Judge');
   const [riskTolerance, setRiskTolerance] = useState('moderate');
   const [usdcAlloc, setUsdcAlloc] = useState(40);
@@ -19,6 +21,23 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({ onSaveStrategy }) =>
   const [maxSlippage, setMaxSlippage] = useState(0.5);
 
   const [isSaving, setIsSaving] = useState(false);
+
+  // Sync form state with strategy loaded from Sibyl Memory (SQLite / status)
+  useEffect(() => {
+    if (status?.recalled_strategy) {
+      const strat = status.recalled_strategy;
+      if (strat.user_name) setUserName(strat.user_name);
+      if (strat.risk_tolerance) setRiskTolerance(strat.risk_tolerance);
+      if (strat.max_slippage_pct) setMaxSlippage(strat.max_slippage_pct);
+
+      if (strat.target_allocation) {
+        if (typeof strat.target_allocation.USDC === 'number') setUsdcAlloc(strat.target_allocation.USDC);
+        if (typeof strat.target_allocation.WETH === 'number') setWethAlloc(strat.target_allocation.WETH);
+        if (typeof strat.target_allocation.AERO === 'number') setAeroAlloc(strat.target_allocation.AERO);
+        if (typeof strat.target_allocation.VIRTUAL === 'number') setVirtualAlloc(strat.target_allocation.VIRTUAL);
+      }
+    }
+  }, [status?.recalled_strategy]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

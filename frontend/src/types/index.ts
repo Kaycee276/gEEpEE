@@ -30,6 +30,7 @@ export interface VirtualsRegistry {
 export interface StatusData {
   agent_name: string;
   description: string;
+  recalled_strategy?: Record<string, any> | null;
   memory_stats: MemoryStats;
   wallet_info: WalletInfo;
   virtuals_registry: VirtualsRegistry;
