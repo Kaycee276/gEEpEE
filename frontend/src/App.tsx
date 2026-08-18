@@ -145,8 +145,8 @@ export default function App() {
   const memoryEnabled = status?.memory_stats?.load_bearing_enabled ?? true;
 
   return (
-    <div className="app-viewport">
-      {/* COMPACT HEADER */}
+    <div className="app-container">
+      {/* HEADER */}
       <Header status={status} memoryEnabled={memoryEnabled} />
 
       {/* NOTIFICATION BANNER */}
@@ -165,10 +165,10 @@ export default function App() {
       {/* NAVIGATION TABS */}
       <NavigationTabs activeTab={activeTab} onSelectTab={setActiveTab} />
 
-      {/* MAIN VIEWPORT CONTENT AREA (STRICT 100vh NO-SCROLL) */}
-      <main className="app-main-content">
+      {/* MAIN CONTENT AREA WITH RESPONSIVE GRID */}
+      <main>
         {activeTab === "overview" && (
-          <div className="no-scroll-grid">
+          <div className="responsive-grid">
             <PortfolioPanel status={status} />
             <CognitiveTerminal rebalanceResult={rebalanceResult} />
           </div>

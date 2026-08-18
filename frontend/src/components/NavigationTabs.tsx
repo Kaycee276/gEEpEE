@@ -15,7 +15,7 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
   const tabs = [
     {
       id: "overview" as TabType,
-      label: "Live Vault & Agent Terminal",
+      label: "Portfolio & Base Engine",
       icon: Activity,
       bg: "var(--neo-cyan)",
     },
@@ -46,7 +46,7 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
   ];
 
   return (
-    <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+    <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
       {tabs.map((tab) => {
         const Icon = tab.icon;
         const isActive = activeTab === tab.id;
@@ -57,24 +57,24 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
             style={{
               background: isActive ? tab.bg : "#ffffff",
               color: "#000000",
-              border: "2.5px solid #000000",
-              padding: "8px 16px",
+              border: "3px solid #000000",
+              padding: "12px 20px",
               fontWeight: 900,
-              fontSize: "0.85rem",
+              fontSize: "0.92rem",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
-              gap: "6px",
+              gap: "8px",
               boxShadow: isActive
-                ? "4px 4px 0px #000000"
-                : "2px 2px 0px #000000",
-              transform: isActive ? "translate(-1px, -1px)" : "none",
+                ? "5px 5px 0px #000000"
+                : "3px 3px 0px #000000",
+              transform: isActive ? "translate(-2px, -2px)" : "none",
               transition: "all 0.1s ease",
               textTransform: "uppercase",
-              letterSpacing: "0.03em",
+              letterSpacing: "0.04em",
             }}
           >
-            <Icon size={16} /> {tab.label}
+            <Icon size={18} /> {tab.label}
           </button>
         );
       })}

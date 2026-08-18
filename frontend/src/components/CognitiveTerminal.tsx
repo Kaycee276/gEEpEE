@@ -12,36 +12,28 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
   return (
     <div
       className="neo-card"
-      style={{
-        padding: "16px",
-        background: "#ffffff",
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        minHeight: 0,
-      }}
+      style={{ padding: "24px", background: "#ffffff" }}
     >
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "12px",
-          flexShrink: 0,
+          marginBottom: "20px",
         }}
       >
         <h3
           className="neo-title"
           style={{
-            fontSize: "1.1rem",
+            fontSize: "1.3rem",
             color: "#000000",
             display: "flex",
             alignItems: "center",
-            gap: "6px",
+            gap: "8px",
             margin: 0,
           }}
         >
-          <Brain style={{ color: "#000000" }} size={20} /> gEEpEE Cognitive
+          <Brain style={{ color: "#000000" }} size={24} /> gEEpEE Cognitive
           Terminal
         </h3>
         <span
@@ -57,43 +49,32 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
         <div
           style={{
             textAlign: "center",
-            padding: "30px 16px",
+            padding: "40px 20px",
             color: "#000000",
             background: "var(--neo-yellow-light)",
-            border: "2px solid #000000",
-            boxShadow: "3px 3px 0px #000000",
-            margin: "auto 0",
+            border: "3px solid #000000",
+            boxShadow: "4px 4px 0px #000000",
           }}
         >
           <Activity
-            size={32}
-            style={{ margin: "0 auto 8px", color: "#000000" }}
+            size={40}
+            style={{ margin: "0 auto 12px", color: "#000000" }}
           />
-          <p style={{ fontWeight: 900, fontSize: "0.85rem" }}>
+          <p style={{ fontWeight: 900, fontSize: "0.95rem" }}>
             Click "Run Autonomous Rebalance" above to observe gEEpEE's memory
             recall & Base onchain execution workflow.
           </p>
         </div>
       ) : (
-        <div
-          className="scrollable-internal"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            flex: 1,
-            paddingRight: "4px",
-          }}
-        >
+        <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
           {rebalanceResult.error && (
             <div
               style={{
                 background: "var(--neo-red-light)",
-                border: "2px solid #000000",
-                boxShadow: "3px 3px 0px #000000",
-                padding: "10px 12px",
+                border: "3px solid #000000",
+                boxShadow: "4px 4px 0px #000000",
+                padding: "14px",
                 color: "#000000",
-                flexShrink: 0,
               }}
             >
               <div
@@ -101,18 +82,18 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
                   fontWeight: 900,
                   display: "flex",
                   alignItems: "center",
-                  gap: "6px",
+                  gap: "8px",
                   color: "#000000",
-                  fontSize: "0.88rem",
+                  fontSize: "1rem",
                 }}
               >
-                <AlertTriangle size={18} /> Rebalance Halted (Litmus Gate
+                <AlertTriangle size={20} /> Rebalance Halted (Litmus Gate
                 Failure)
               </div>
               <p
                 style={{
-                  fontSize: "0.8rem",
-                  marginTop: "4px",
+                  fontSize: "0.9rem",
+                  marginTop: "6px",
                   fontWeight: 700,
                 }}
               >
@@ -126,11 +107,10 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
               key={idx}
               style={{
                 background: "#ffffff",
-                padding: "10px 12px",
-                border: "2px solid #000000",
-                boxShadow: "2px 2px 0px #000000",
-                borderLeft: "8px solid #000000",
-                flexShrink: 0,
+                padding: "14px 16px",
+                border: "3px solid #000000",
+                boxShadow: "3px 3px 0px #000000",
+                borderLeft: "10px solid #000000",
               }}
             >
               <div
@@ -138,13 +118,13 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  marginBottom: "2px",
+                  marginBottom: "4px",
                 }}
               >
                 <span className="badge badge-sibyl">{step.step}</span>
                 <span
                   style={{
-                    fontSize: "0.85rem",
+                    fontSize: "0.95rem",
                     fontWeight: 900,
                     color: "#000000",
                   }}
@@ -154,9 +134,9 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
               </div>
               <p
                 style={{
-                  fontSize: "0.8rem",
+                  fontSize: "0.85rem",
                   color: "#222222",
-                  marginTop: "4px",
+                  marginTop: "6px",
                   fontWeight: 700,
                 }}
               >
@@ -169,18 +149,17 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
             <div
               style={{
                 background: "var(--neo-green-light)",
-                border: "2px solid #000000",
-                boxShadow: "3px 3px 0px #000000",
-                padding: "10px 12px",
-                flexShrink: 0,
+                border: "3px solid #000000",
+                boxShadow: "4px 4px 0px #000000",
+                padding: "14px",
               }}
             >
               <div
                 style={{
                   color: "#000000",
                   fontWeight: 900,
-                  fontSize: "0.88rem",
-                  marginBottom: "4px",
+                  fontSize: "1rem",
+                  marginBottom: "6px",
                   textTransform: "uppercase",
                 }}
               >
@@ -189,7 +168,7 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
               <p
                 className="font-mono"
                 style={{
-                  fontSize: "0.78rem",
+                  fontSize: "0.85rem",
                   color: "#000000",
                   fontWeight: 700,
                   wordBreak: "break-all",
@@ -202,17 +181,17 @@ export const CognitiveTerminal: React.FC<CognitiveTerminalProps> = ({
                 target="_blank"
                 rel="noreferrer"
                 style={{
-                  fontSize: "0.78rem",
+                  fontSize: "0.85rem",
                   color: "#000000",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "4px",
-                  marginTop: "4px",
+                  marginTop: "8px",
                   textDecoration: "underline",
                   fontWeight: 900,
                 }}
               >
-                View on Basescan <ExternalLink size={12} />
+                View on Basescan <ExternalLink size={14} />
               </a>
             </div>
           )}

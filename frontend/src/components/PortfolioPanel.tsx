@@ -10,36 +10,28 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
   return (
     <div
       className="neo-card"
-      style={{
-        padding: "16px",
-        background: "#ffffff",
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        minHeight: 0,
-      }}
+      style={{ padding: "24px", background: "#ffffff" }}
     >
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "12px",
-          flexShrink: 0,
+          marginBottom: "20px",
         }}
       >
         <h3
           className="neo-title"
           style={{
-            fontSize: "1.1rem",
+            fontSize: "1.3rem",
             color: "#000000",
             display: "flex",
             alignItems: "center",
-            gap: "6px",
+            gap: "8px",
             margin: 0,
           }}
         >
-          <Cpu style={{ color: "#000000" }} size={20} /> Base Network Vault
+          <Cpu style={{ color: "#000000" }} size={24} /> Base Network Vault
           Portfolio
         </h3>
         <span className="badge badge-base">{status?.wallet_info?.chain}</span>
@@ -47,17 +39,16 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
 
       <div
         style={{
-          marginBottom: "12px",
+          marginBottom: "24px",
           background: "var(--neo-cyan-light)",
-          padding: "10px 12px",
+          padding: "14px",
           border: "2px solid #000000",
-          boxShadow: "2px 2px 0px #000000",
-          flexShrink: 0,
+          boxShadow: "3px 3px 0px #000000",
         }}
       >
         <p
           style={{
-            fontSize: "0.72rem",
+            fontSize: "0.8rem",
             color: "#000000",
             textTransform: "uppercase",
             letterSpacing: "0.05em",
@@ -69,9 +60,9 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
         <p
           className="font-mono"
           style={{
-            fontSize: "0.8rem",
+            fontSize: "0.9rem",
             color: "#000000",
-            marginTop: "2px",
+            marginTop: "4px",
             fontWeight: 700,
             wordBreak: "break-all",
           }}
@@ -80,30 +71,20 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
         </p>
       </div>
 
-      {/* TOKEN BALANCES INTERNAL SCROLL CONTAINER */}
+      {/* TOKEN BALANCES */}
       <h4
         style={{
-          fontSize: "0.85rem",
+          fontSize: "1rem",
           fontWeight: 900,
           color: "#000000",
-          marginBottom: "8px",
+          marginBottom: "14px",
           textTransform: "uppercase",
-          flexShrink: 0,
+          letterSpacing: "0.04em",
         }}
       >
-        Onchain Balances & Allocation
+        Onchain Balances & Target Allocation
       </h4>
-
-      <div
-        className="scrollable-internal"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          flex: 1,
-          paddingRight: "4px",
-        }}
-      >
+      <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
         {Object.entries(status?.wallet_info?.balances || {}).map(
           ([token, amount]) => {
             const price = status?.token_prices?.[token] || 1;
@@ -113,22 +94,21 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
                 key={token}
                 style={{
                   background: "#ffffff",
-                  padding: "10px 14px",
-                  border: "2px solid #000000",
-                  boxShadow: "3px 3px 0px #000000",
-                  flexShrink: 0,
+                  padding: "14px 18px",
+                  border: "3px solid #000000",
+                  boxShadow: "4px 4px 0px #000000",
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    marginBottom: "4px",
+                    marginBottom: "6px",
                   }}
                 >
                   <span
                     className="neo-title"
-                    style={{ color: "#000000", fontSize: "1rem" }}
+                    style={{ color: "#000000", fontSize: "1.1rem" }}
                   >
                     {token}
                   </span>
@@ -137,7 +117,7 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
                     style={{
                       color: "#000000",
                       fontWeight: 900,
-                      fontSize: "0.85rem",
+                      fontSize: "0.95rem",
                     }}
                   >
                     {amount.toFixed(4)} {token} ($
@@ -150,7 +130,7 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
                 </div>
                 <div
                   style={{
-                    fontSize: "0.75rem",
+                    fontSize: "0.8rem",
                     color: "#333333",
                     fontWeight: 700,
                   }}

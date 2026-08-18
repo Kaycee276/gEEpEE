@@ -21,38 +21,45 @@ export const ControlBar: React.FC<ControlBarProps> = ({
   return (
     <section
       className="neo-card"
-      style={{ padding: "10px 16px", background: "#ffffff", flexShrink: 0 }}
+      style={{ padding: "18px 24px", background: "#ffffff" }}
     >
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          flexWrap: "nowrap",
-          gap: "12px",
+          flexWrap: "wrap",
+          gap: "16px",
         }}
       >
         {/* PRIMARY ACTIONS */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            flexWrap: "wrap",
+          }}
+        >
           <button
             onClick={onRunRebalance}
             disabled={isRebalancing}
             className="neo-btn neo-btn-yellow"
           >
             {isRebalancing ? (
-              <RefreshCw className="animate-spin" size={16} />
+              <RefreshCw className="animate-spin" size={18} />
             ) : (
-              <Zap size={16} />
+              <Zap size={18} />
             )}
             {isRebalancing ? "Rebalancing..." : "Run Autonomous Rebalance"}
           </button>
 
           <button onClick={onColdStart} className="neo-btn neo-btn-white">
-            <RefreshCw size={14} /> Cold-Start Recall Demo
+            <RefreshCw size={16} /> Cold-Start Recall Demo
           </button>
 
           <button onClick={onTriggerX402} className="neo-btn neo-btn-cyan">
-            <DollarSign size={14} /> Test Base x402 Header
+            <DollarSign size={16} /> Test Base x402 Header
           </button>
         </div>
 
@@ -61,39 +68,40 @@ export const ControlBar: React.FC<ControlBarProps> = ({
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "10px",
+            gap: "14px",
             background: memoryEnabled
               ? "var(--neo-green-light)"
               : "var(--neo-red-light)",
-            padding: "6px 12px",
-            border: "2px solid #000000",
-            boxShadow: "2px 2px 0px #000000",
+            padding: "10px 16px",
+            border: "3px solid #000000",
+            boxShadow: "4px 4px 0px #000000",
           }}
         >
           <div style={{ display: "flex", flexDirection: "column" }}>
             <span
               style={{
-                fontSize: "0.68rem",
+                fontSize: "0.75rem",
                 fontWeight: 900,
                 color: "#000000",
                 textTransform: "uppercase",
+                letterSpacing: "0.05em",
               }}
             >
-              Litmus Gate Test
+              Litmus Gate Test (Judges)
             </span>
             <span
-              style={{ fontSize: "0.78rem", color: "#000000", fontWeight: 900 }}
+              style={{ fontSize: "0.85rem", color: "#000000", fontWeight: 900 }}
             >
               {memoryEnabled
-                ? "Memory: LOAD-BEARING"
-                : "Memory: REMOVED (Gate Failure)"}
+                ? "Memory Layer: ACTIVE (Load-Bearing)"
+                : "Memory Layer: REMOVED (Gate Failure)"}
             </span>
           </div>
 
           <button
             onClick={() => onToggleMemory(!memoryEnabled)}
             className={`neo-btn ${memoryEnabled ? "neo-btn-red" : "neo-btn-green"}`}
-            style={{ padding: "4px 8px", fontSize: "0.75rem" }}
+            style={{ padding: "6px 12px", fontSize: "0.8rem" }}
           >
             {memoryEnabled ? "Delete Memory" : "Restore Memory"}
           </button>
