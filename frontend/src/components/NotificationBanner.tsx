@@ -28,27 +28,30 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({ notice, 
 
   if (!notice) return null;
 
-  // Timed Dropdown Toast for Normal Notifications
+  // Timed Top-Center Dropdown Toast for Normal Notifications
   if (!isCritical) {
     return (
       <div style={{
         position: 'fixed',
         top: '16px',
-        right: '16px',
+        left: '50%',
+        transform: 'translateX(-50%)',
         zIndex: 9999,
-        maxWidth: '380px',
+        minWidth: '320px',
+        maxWidth: '520px',
+        width: '90%',
         background: 'var(--neo-yellow)',
         color: '#000000',
         border: '2.5px solid #000000',
         boxShadow: '4px 4px 0px #000000',
-        padding: '10px 14px',
+        padding: '10px 16px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: '10px',
-        animation: 'slideInDown 0.2s ease-out'
+        gap: '12px',
+        animation: 'slideDownFromTop 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
       }}>
-        <div style={{ fontSize: '0.82rem', fontWeight: 900, lineHeight: 1.3 }}>
+        <div style={{ fontSize: '0.85rem', fontWeight: 900, lineHeight: 1.3, textAlign: 'center', flex: 1 }}>
           {notice}
         </div>
         <button
@@ -57,10 +60,11 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({ notice, 
             background: '#000000',
             color: '#ffffff',
             border: 'none',
-            padding: '2px 6px',
-            fontSize: '0.75rem',
+            padding: '2px 8px',
+            fontSize: '0.78rem',
             fontWeight: 900,
-            cursor: 'pointer'
+            cursor: 'pointer',
+            flexShrink: 0
           }}
         >
           ✕

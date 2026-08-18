@@ -245,6 +245,18 @@ code, pre, .font-mono {
   50% { opacity: 0.5; }
 }
 
+@keyframes slideDownFromTop {
+  from {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
 .animate-pulse-fast {
   animation: pulse-subtle 1.5s infinite;
 }
+
