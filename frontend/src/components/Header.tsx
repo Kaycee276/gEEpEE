@@ -1,5 +1,5 @@
 import React from "react";
-import { Brain, Cpu, Radio, Database } from "lucide-react";
+import { Cpu, Radio, Database } from "lucide-react";
 import type { StatusData } from "../types";
 
 interface HeaderProps {
@@ -27,22 +27,18 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <div
+          <img
+            src="/logo.jpg"
+            alt="gEEpEE Logo"
             style={{
-              width: "56px",
-              height: "56px",
+              width: "58px",
+              height: "58px",
               borderRadius: "4px",
-              background: "#000000",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#ffffff",
               border: "3px solid #000000",
-              boxShadow: "3px 3px 0px #ffffff",
+              boxShadow: "3px 3px 0px #000000",
+              objectFit: "cover",
             }}
-          >
-            <Brain size={34} />
-          </div>
+          />
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <h1
