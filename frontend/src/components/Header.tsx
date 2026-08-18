@@ -12,9 +12,9 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
     <header
       className="neo-card"
       style={{
-        padding: "20px 24px",
-        marginBottom: "24px",
+        padding: "12px 18px",
         background: "var(--neo-yellow)",
+        flexShrink: 0,
       }}
     >
       <div
@@ -22,29 +22,33 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          flexWrap: "wrap",
-          gap: "16px",
+          flexWrap: "nowrap",
+          gap: "12px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <img
             src="/logo.png"
             alt="gEEpEE Monogram Logo"
             style={{
-              width: "60px",
-              height: "60px",
-              borderRadius: "0px",
-              border: "3px solid #000000",
-              boxShadow: "3px 3px 0px #000000",
+              width: "42px",
+              height: "42px",
+              border: "2px solid #000000",
+              boxShadow: "2px 2px 0px #000000",
               objectFit: "contain",
               background: "transparent",
             }}
           />
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <h1
                 className="neo-title"
-                style={{ fontSize: "2.2rem", color: "#000000", margin: 0 }}
+                style={{
+                  fontSize: "1.6rem",
+                  color: "#000000",
+                  margin: 0,
+                  lineHeight: 1,
+                }}
               >
                 gEEpEE
               </h1>
@@ -53,8 +57,8 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
             <p
               style={{
                 color: "#000000",
-                fontSize: "0.95rem",
-                marginTop: "2px",
+                fontSize: "0.8rem",
+                marginTop: "1px",
                 fontWeight: 700,
               }}
             >
@@ -69,20 +73,20 @@ export const Header: React.FC<HeaderProps> = ({ status, memoryEnabled }) => {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "12px",
-            flexWrap: "wrap",
+            gap: "8px",
+            flexWrap: "nowrap",
           }}
         >
           <div className="badge badge-base">
-            <Cpu size={14} /> Base Mainnet (8453)
+            <Cpu size={12} /> Base Mainnet (8453)
           </div>
           <div className="badge badge-virtuals">
-            <Radio size={14} /> Virtuals ACP Active
+            <Radio size={12} /> Virtuals ACP Active
           </div>
           <div
             className={`badge ${memoryEnabled ? "badge-success" : "badge-danger"}`}
           >
-            <Database size={14} /> SQLite 5-Tier (
+            <Database size={12} /> SQLite 5-Tier (
             {status?.memory_stats?.db_size_kb || 0} KB)
           </div>
         </div>

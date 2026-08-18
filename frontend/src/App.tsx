@@ -25,6 +25,7 @@ import { CognitiveTerminal } from "./components/CognitiveTerminal";
 import { MemoryInspector } from "./components/MemoryInspector";
 import { StrategyForm } from "./components/StrategyForm";
 import { VirtualsACPPanel } from "./components/VirtualsACPPanel";
+import { DocsPanel } from "./components/DocsPanel";
 
 export default function App() {
   const [status, setStatus] = useState<StatusData | null>(null);
@@ -144,15 +145,8 @@ export default function App() {
   const memoryEnabled = status?.memory_stats?.load_bearing_enabled ?? true;
 
   return (
-    <div
-      style={{
-        padding: "24px",
-        maxWidth: "1400px",
-        margin: "0 auto",
-        color: "#000000",
-      }}
-    >
-      {/* HEADER */}
+    <div className="app-viewport">
+      {/* COMPACT HEADER */}
       <Header status={status} memoryEnabled={memoryEnabled} />
 
       {/* NOTIFICATION BANNER */}
@@ -171,37 +165,35 @@ export default function App() {
       {/* NAVIGATION TABS */}
       <NavigationTabs activeTab={activeTab} onSelectTab={setActiveTab} />
 
-      {/* TAB CONTENT PANELS */}
-      {activeTab === "overview" && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
-            gap: "24px",
-          }}
-        >
-          <PortfolioPanel status={status} />
-          <CognitiveTerminal rebalanceResult={rebalanceResult} />
-        </div>
-      )}
+      {/* MAIN VIEWPORT CONTENT AREA (STRICT 100vh NO-SCROLL) */}
+      <main className="app-main-content">
+        {activeTab === "overview" && (
+          <div className="no-scroll-grid">
+            <PortfolioPanel status={status} />
+            <CognitiveTerminal rebalanceResult={rebalanceResult} />
+          </div>
+        )}
 
-      {activeTab === "memory" && (
-        <MemoryInspector
-          status={status}
-          memoryDump={memoryDump}
-          searchQuery={searchQuery}
-          searchResults={searchResults}
-          isSearching={isSearching}
-          onSearchChange={setSearchQuery}
-          onSearchSubmit={handleSearchSubmit}
-        />
-      )}
+        {activeTab === "memory" && (
+          <MemoryInspector
+            status={status}
+            memoryDump={memoryDump}
+            searchQuery={searchQuery}
+            searchResults={searchResults}
+            isSearching={isSearching}
+            onSearchChange={setSearchQuery}
+            onSearchSubmit={handleSearchSubmit}
+          />
+        )}
 
-      {activeTab === "strategy" && (
-        <StrategyForm onSaveStrategy={handleSaveStrategy} />
-      )}
+        {activeTab === "strategy" && (
+          <StrategyForm onSaveStrategy={handleSaveStrategy} />
+        )}
 
-      {activeTab === "acp" && <VirtualsACPPanel status={status} />}
+        {activeTab === "acp" && <VirtualsACPPanel status={status} />}
+
+        {activeTab === "docs" && <DocsPanel status={status} />}
+      </main>
     </div>
   );
 }
