@@ -11,12 +11,6 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
 
-  const activeWalletAddress =
-    isConnected && address ? address : status?.wallet_info?.wallet_address;
-  const activeChainLabel = isConnected
-    ? `RainbowKit (Chain ID ${chainId})`
-    : status?.wallet_info?.chain || "Base Network";
-
   if (!status) {
     return (
       <div
@@ -30,6 +24,81 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
           Base Network Vault Portfolio
         </h3>
         <SkeletonLoader count={4} height="50px" />
+      </div>
+    );
+  }
+
+  // When wallet is disconnected, show clean disconnected lock banner
+  if (!isConnected || !address) {
+    return (
+      <div
+        className="neo-card"
+        style={{ padding: "20px", background: "#ffffff" }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "14px",
+            flexWrap: "wrap",
+            gap: "8px",
+          }}
+        >
+          <div>
+            <h3
+              className="neo-title"
+              style={{ fontSize: "1.1rem", color: "#000000", margin: 0 }}
+            >
+              Base Network Vault Portfolio
+            </h3>
+            <p
+              style={{
+                fontSize: "0.72rem",
+                color: "#555555",
+                fontWeight: 700,
+                marginTop: "2px",
+              }}
+            >
+              Data: Live Base L2 token balances and connected wallet portfolio valuations.
+            </p>
+          </div>
+          <span className="badge badge-warning">Wallet Disconnected</span>
+        </div>
+
+        <div
+          style={{
+            background: "var(--neo-yellow-light)",
+            border: "2px solid #000000",
+            boxShadow: "3px 3px 0px #000000",
+            padding: "16px",
+            textAlign: "center",
+          }}
+        >
+          <div style={{ fontSize: "1.8rem", marginBottom: "6px" }}>🔒</div>
+          <h4
+            style={{
+              fontSize: "0.95rem",
+              fontWeight: 900,
+              color: "#000000",
+              margin: 0,
+              textTransform: "uppercase",
+            }}
+          >
+            Wallet Not Connected
+          </h4>
+          <p
+            style={{
+              fontSize: "0.8rem",
+              color: "#333333",
+              fontWeight: 700,
+              marginTop: "6px",
+              marginBottom: 0,
+            }}
+          >
+            Please click <strong>"Connect Wallet"</strong> in the top header to connect your Base Web3 wallet and view your portfolio balances.
+          </p>
+        </div>
       </div>
     );
   }
@@ -64,19 +133,16 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
               marginTop: "2px",
             }}
           >
-            Data: Live Base L2 token balances, USD valuations, and active Web3
-            wallet address.
+            Data: Live Base L2 token balances, USD valuations, and active Web3 wallet address.
           </p>
         </div>
-        <span className="badge badge-base">{activeChainLabel}</span>
+        <span className="badge badge-base">Base L2 (Chain ID {chainId})</span>
       </div>
 
       <div
         style={{
           marginBottom: "16px",
-          background: isConnected
-            ? "var(--neo-green-light)"
-            : "var(--neo-cyan-light)",
+          background: "var(--neo-green-light)",
           padding: "10px 12px",
           border: "2px solid #000000",
           boxShadow: "2px 2px 0px #000000",
@@ -96,18 +162,17 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
               textTransform: "uppercase",
               letterSpacing: "0.04em",
               fontWeight: 900,
+              margin: 0,
             }}
           >
-            {isConnected ? "Connected Wallet" : "Vault Wallet Address"}
+            Connected Wallet Address
           </p>
-          {isConnected && (
-            <span
-              className="badge badge-success"
-              style={{ fontSize: "0.65rem" }}
-            >
-              Live Web3
-            </span>
-          )}
+          <span
+            className="badge badge-success"
+            style={{ fontSize: "0.65rem" }}
+          >
+            Live Web3
+          </span>
         </div>
         <p
           className="font-mono"
@@ -117,9 +182,10 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
             marginTop: "4px",
             fontWeight: 900,
             wordBreak: "break-all",
+            margin: "4px 0 0 0",
           }}
         >
-          {activeWalletAddress}
+          {address}
         </p>
       </div>
 
