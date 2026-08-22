@@ -60,7 +60,8 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
                 marginTop: "2px",
               }}
             >
-              Data: Live Base L2 token balances and connected wallet portfolio valuations.
+              Data: Live Base L2 token balances and connected wallet portfolio
+              valuations.
             </p>
           </div>
           <span className="badge badge-warning">Wallet Disconnected</span>
@@ -75,7 +76,6 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: "1.8rem", marginBottom: "6px" }}>🔒</div>
           <h4
             style={{
               fontSize: "0.95rem",
@@ -96,7 +96,8 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
               marginBottom: 0,
             }}
           >
-            Please click <strong>"Connect Wallet"</strong> in the top header to connect your Base Web3 wallet and view your portfolio balances.
+            Please click <strong>"Connect Wallet"</strong> in the top header to
+            connect your Base Web3 wallet and view your portfolio balances.
           </p>
         </div>
       </div>
@@ -133,7 +134,8 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
               marginTop: "2px",
             }}
           >
-            Data: Live Base L2 token balances, USD valuations, and active Web3 wallet address.
+            Data: Live Base L2 token balances, USD valuations, and active Web3
+            wallet address.
           </p>
         </div>
         <span className="badge badge-base">Base L2 (Chain ID {chainId})</span>
@@ -167,10 +169,7 @@ export const PortfolioPanel: React.FC<PortfolioPanelProps> = ({ status }) => {
           >
             Connected Wallet Address
           </p>
-          <span
-            className="badge badge-success"
-            style={{ fontSize: "0.65rem" }}
-          >
+          <span className="badge badge-success" style={{ fontSize: "0.65rem" }}>
             Live Web3
           </span>
         </div>
