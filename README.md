@@ -1,63 +1,94 @@
 # gEEpEE · Autonomous Memory-Driven Vault Agent
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Sibyl Memory](https://img.shields.io/badge/Memory-Sibyl%205--Tier%20SQLite-gold)](https://docs.sibyllabs.org)
+[![Sibyl Memory](https://img.shields.io/badge/Memory-Sibyl%205--Tier%20SQLite%20%2B%20Turso%20Cloud-gold)](https://docs.sibyllabs.org)
 [![Base Network](https://img.shields.io/badge/Chain-Base%20(ChainID%208453)-blue)](https://base.org)
 [![Virtuals Protocol](https://img.shields.io/badge/Protocol-Virtuals%20ACP-purple)](https://virtuals.io)
 
-**gEEpEE** is an autonomous, memory-driven DeFi vault and strategy manager operating on **Base** and **Virtuals Protocol**. It uses **Sibyl Memory** (5-tier local-first SQLite + FTS5 full-text search) to maintain persistent strategy rules, user risk profiles, execution journals, and knowledge graphs across sessions.
+**gEEpEE** is an autonomous, memory-driven DeFi vault and portfolio strategy manager on **Base** and **Virtuals Protocol**. Built for the **Sibyl Labs Hackathon**, gEEpEE leverages **Sibyl Memory** (5-tier local-first SQLite + Turso Cloud DB REST pipeline + Drizzle ORM schemas) to store load-bearing strategy rules, user risk profiles, execution audit logs, and inter-agent job signals.
 
 ---
 
-## 🔑 Key Features
+## 📍 1. Where Memory is Load-Bearing (Litmus Gate Location for Judges)
 
-- **Load-Bearing Sibyl Memory Engine:** Uses all 5 tiers of Sibyl Memory (`HOT` working state, `WARM` entity knowledge graph, `COLD` time-series journal, `REFERENCE` docs, and `ARCHIVE`).
-- **Base Network Onchain Execution:** Executes token swaps via Base DEX routers (Aerodrome / Uniswap V3) with gas optimization and verified transaction hashes. Includes **x402 micropayment header** support for Base market feeds.
-- **Virtuals Protocol ACP Integration:** Emits signed **Agent Communication Protocol (ACP)** job signals to coordinate portfolio actions across peer agents.
-- **Litmus Gate Verification & Cold-Start Demo:** Includes a built-in switch to toggle memory ON/OFF (proving core execution fails without memory) and a cold-start restart button to demonstrate fresh-session memory recall.
+Sibyl Memory is strictly on the critical execution path of **gEEpEE**. If the memory layer is disabled or deleted, the agent **cannot access user risk rules, target allocations, or stop-loss limits**, causing core execution to halt immediately with an explicit error.
 
----
+Judges can verify critical-path memory calls in **under 2 minutes**:
 
-## 📍 Where Memory is Load-Bearing (Litmus Gate Location)
-
-Sibyl Memory is on the critical path of **gEEpEE**. If the memory layer is removed or disabled, the agent fails to retrieve user risk limits, stop-loss thresholds, and target allocations, halting execution safely.
-
-- **[backend/geepee_memory.py](file:///home/kaycee/Desktop/hackathon/geepee/backend/geepee_memory.py#L1-L245):** 5-Tier SQLite + FTS5 engine wrapper implementing `set_entity`, `get_entity`, `write_event`, and `search_memory`.
-- **[backend/agent_brain.py#L32-L55](file:///home/kaycee/Desktop/hackathon/geepee/backend/agent_brain.py#L32-L55):** Critical path memory query. Line 38 fetches `category='user_strategy'`, `name='default_profile'`. If memory is disabled (`load_bearing_enabled == False`), the agent returns **`GATE FAILURE: Load-bearing memory missing`**.
-
----
-
-## 🤝 Partner Stack Integrations
-
-### 1. Base Network (+15% Multiplier)
-- **Code:** [`backend/base_agent.py`](file:///home/kaycee/Desktop/hackathon/geepee/backend/base_agent.py)
-- **Features:** Wallet management, Base DEX router execution, transaction hash generation, and x402 payment header verification.
-
-### 2. Virtuals Protocol (+10% Multiplier)
-- **Code:** [`backend/virtuals_acp.py`](file:///home/kaycee/Desktop/hackathon/geepee/backend/virtuals_acp.py)
-- **Features:** Virtuals agent registration schema and ACP (`Agent Communication Protocol`) job signal broadcasting.
+1. **[backend/agent_brain.py#L55-L71](file:///home/kaycee/Desktop/hackathon/geepee/backend/agent_brain.py#L55-L71):** Critical-path memory lookup.
+   ```python
+   # Reads WARM strategy entity. If memory is disabled or deleted (load_bearing_enabled == False):
+   if not self.memory.load_bearing_enabled or not strategy:
+       return {
+           "success": False,
+           "gate_status": "FAILED (Memory Layer Missing)",
+           "error": "CRITICAL FAILURE (Gate Litmus Test): Sibyl Memory layer is removed or disabled."
+       }
+   ```
+2. **[backend/geepee_memory.py](file:///home/kaycee/Desktop/hackathon/geepee/backend/geepee_memory.py):** 5-Tier Memory Engine (`HOT`, `WARM`, `COLD`, `REFERENCE`, `ARCHIVE`) with local SQLite + real-time **Turso Cloud DB LibSQL REST HTTP pipeline** sync.
+3. **[frontend/src/db/schema.ts](file:///home/kaycee/Desktop/hackathon/geepee/frontend/src/db/schema.ts):** Drizzle ORM table schemas matching the Turso Cloud DB dashboard (`user_portfolios`, `warm_entities`, `cold_journal`, `hot_state`, `reference_docs`, `archive_entities`).
 
 ---
 
-## 💡 How Memory Made This Possible
+## 🧪 2. How Judges Can Test the Litmus Gate & Cold-Start Recall
 
-Traditional DeFi bots either run stateless (relying on hardcoded parameters) or use cloud-based vector databases that hallucinate user preferences. **gEEpEE** uses Sibyl's local-first SQLite schema with a `UNIQUE(tenant_id, category, name)` constraint on the `WARM` tier. This guarantees deterministic schema enforcement—meaning gEEpEE never drifts or misreads user risk profiles across multi-turn sessions.
+### A. The Deletion Test (Litmus Gate)
+1. Open the **gEEpEE Dashboard** UI.
+2. In the Control Bar, click **"Delete (Litmus Test)"** to disable the Sibyl Memory layer.
+3. Observe that all onchain action buttons (**Run Rebalance**, **Test x402 Header**) become **blurred (`blur(1.5px)`), dimmed, and locked (`cursor: not-allowed`)**.
+4. Attempting to invoke the agent brain via API returns an explicit **Litmus Gate Failure**.
+
+### B. Cold-Start Recall Test
+1. Save a custom strategy in the **Strategy & WARM** tab.
+2. Restart the backend server (`python3 backend/server.py`) or refresh the browser.
+3. Click **"Cold-Start Recall"** or refresh the page.
+4. **gEEpEE** instantly recalls your strategy rules, allocation targets, and time-series transaction history directly from the `WARM` and `COLD` memory tiers.
 
 ---
 
-## 🚀 Quick Start & Installation
+## 🤝 3. Partner Stack Integrations
 
-### 1. Backend Setup (FastAPI & Sibyl Memory)
+### 🔵 Base Network (+15% Multiplier)
+- **Code:** [`backend/base_agent.py`](file:///home/kaycee/Desktop/hackathon/geepee/backend/base_agent.py) & [`frontend/src/components/ControlBar.tsx`](file:///home/kaycee/Desktop/hackathon/geepee/frontend/src/components/ControlBar.tsx)
+- **Integrations:**
+  - Web3 wallet connection via Wagmi & RainbowKit.
+  - Onchain DEX transaction logging with explorer links (`basescan.org/tx/...`).
+  - **x402 Micropayment Header Verification:** Real-time HTTP 402 payment header parsing (`x402-base-usdc-tx:...`) for Base oracle volatility feeds.
+
+### 🟣 Virtuals Protocol (+10% Multiplier)
+- **Code:** [`backend/virtuals_acp.py`](file:///home/kaycee/Desktop/hackathon/geepee/backend/virtuals_acp.py) & [`frontend/src/components/VirtualsACPPanel.tsx`](file:///home/kaycee/Desktop/hackathon/geepee/frontend/src/components/VirtualsACPPanel.tsx)
+- **Integrations:**
+  - Virtuals Agent Registration schema.
+  - **Agent Communication Protocol (ACP):** Broadcasts signed inter-agent job signals (target pair, allocation %, slippage tolerance) saved directly into Sibyl COLD memory.
+
+---
+
+## 🔒 4. Zero Duplicates & Connected Wallet Partitioning
+
+- **Deduplication:** Enforces `tx_hash TEXT UNIQUE` on `cold_journal` (preventing duplicate transaction logs), `UNIQUE(tenant_id, category, name)` on `warm_entities`, and `wallet_address TEXT PRIMARY KEY` on `user_portfolios`.
+- **Wallet Address Binding (`tenant_id = user_wallet`):** Every activity, strategy, and journal entry is automatically tagged with the user's connected Web3 wallet address (`0x...`), isolating multi-user portfolio records seamlessly across local SQLite and Turso Cloud DB.
+
+---
+
+## 💡 5. How Memory Made This Possible
+
+Traditional vault bots are either stateless scripts with hardcoded parameters or rely on unconstrained AI models that drift across turns. **gEEpEE** uses Sibyl's 5-tier architecture to enforce deterministic execution rules. By storing risk limits in the `WARM` tier and execution events in the `COLD` journal, gEEpEE maintains full state awareness across app reboots, multi-user wallet connections, and inter-agent ACP job requests.
+
+---
+
+## 🚀 6. Quick Start & Setup
+
+### Backend Setup (Python 3.12+ / FastAPI)
 
 ```bash
-# Python 3.12+
-python3 -m pip install --user --break-system-packages sibyl-memory-client web3 fastapi uvicorn requests pydantic
+# Install dependencies
+python3 -m pip install --user --break-system-packages sibyl-memory-client web3 fastapi uvicorn requests pydantic python-dotenv
 
-# Run Backend Server (Port 8000)
+# Run FastAPI Backend Server (Port 8000)
 python3 backend/server.py
 ```
 
-### 2. Frontend Dashboard Setup (React + Vite)
+### Frontend Setup (React + Vite + Wagmi + Drizzle ORM)
 
 ```bash
 cd frontend
@@ -65,16 +96,11 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` to access the **gEEpEE** Autonomous Vault Dashboard.
+Open `http://localhost:5173` to launch the **gEEpEE** Autonomous Vault Dashboard.
 
 ---
 
-## 📜 Prior Work Declaration
+## 📜 7. Prior Work & License Declaration
 
-All code in this repository was built during the Sibyl Labs Hackathon build window. Built using open-source packages (`sibyl-memory-client`, `web3`, `fastapi`, `react`, `vite`, `lucide-react`).
-
----
-
-## 📄 License
-
-MIT License. Copyright (c) 2026.
+- **Prior Work:** All code in this repository was built from scratch during the Sibyl Labs Hackathon build window (Sep 1 to 10, 2026). Built using open-source libraries (`sibyl-memory-client`, `drizzle-orm`, `@libsql/client`, `wagmi`, `viem`, `fastapi`, `react`, `vite`).
+- **License:** Open source under the [MIT License](LICENSE).
