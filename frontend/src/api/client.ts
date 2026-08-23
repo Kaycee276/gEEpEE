@@ -8,8 +8,11 @@ import type {
 const API_BASE =
   (import.meta.env.VITE_API_BASE_URL as string) || "http://localhost:8000/api";
 
-export async function fetchStatus(): Promise<StatusData> {
-  const res = await fetch(`${API_BASE}/status`);
+export async function fetchStatus(user_wallet?: string): Promise<StatusData> {
+  const url = user_wallet
+    ? `${API_BASE}/status?user_wallet=${encodeURIComponent(user_wallet)}`
+    : `${API_BASE}/status`;
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch status");
   return res.json();
 }

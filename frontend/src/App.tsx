@@ -47,7 +47,7 @@ export default function App() {
   const refreshAllData = async () => {
     try {
       const [dataStatus, dataMem] = await Promise.all([
-        fetchStatus(),
+        fetchStatus(address),
         fetchMemory(address),
       ]);
       setStatus(dataStatus);
