@@ -7,6 +7,9 @@ const projectId =
 
 export const web3Config = getDefaultConfig({
   appName: "gEEpEE Autonomous Vault Agent",
+  appDescription: "Autonomous Memory-Driven Vault Agent on Base Network",
+  appUrl: "https://geepee-zeta.vercel.app",
+  appIcon: "https://geepee-zeta.vercel.app/favicon.ico",
   projectId: projectId,
   chains: [baseSepolia, base, mainnet, sepolia],
   ssr: false,
