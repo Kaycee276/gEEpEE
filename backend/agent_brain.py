@@ -6,9 +6,9 @@ try:
     from backend.geepee_memory import GeePeeMemoryEngine
     from backend.virtuals_acp import VirtualsACPProtocol
 except ImportError:
-    from base_agent import BaseNetworkAgent
-    from geepee_memory import GeePeeMemoryEngine
-    from virtuals_acp import VirtualsACPProtocol
+    from .base_agent import BaseNetworkAgent
+    from .geepee_memory import GeePeeMemoryEngine
+    from .virtuals_acp import VirtualsACPProtocol
 
 
 class GeePeeAgentBrain:
@@ -169,7 +169,7 @@ class GeePeeAgentBrain:
             reasoning_steps.append({
                 "step": "06_BASE_EXECUTION_ERROR",
                 "title": "Base DEX Execution Failed",
-                "detail": swap_result.get("error")
+                "detail": str(swap_result.get("error") or "Unknown error")
             })
             return {
                 "success": False,

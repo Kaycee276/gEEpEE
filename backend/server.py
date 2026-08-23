@@ -9,10 +9,10 @@ try:
     from backend.geepee_memory import GeePeeMemoryEngine
     from backend.virtuals_acp import VirtualsACPProtocol
 except ImportError:
-    from agent_brain import GeePeeAgentBrain
-    from base_agent import BaseNetworkAgent
-    from geepee_memory import GeePeeMemoryEngine
-    from virtuals_acp import VirtualsACPProtocol
+    from .agent_brain import GeePeeAgentBrain
+    from .base_agent import BaseNetworkAgent
+    from .geepee_memory import GeePeeMemoryEngine
+    from .virtuals_acp import VirtualsACPProtocol
 
 app = FastAPI(
     title="gEEpEE Agent API",
