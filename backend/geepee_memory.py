@@ -208,6 +208,91 @@ class GeePeeMemoryEngine:
         ]
         for s in schemas:
             self._sync_turso(s)
+            
+        # Pull existing Cloud DB data into local SQLite on container startup
+        self._pull_turso_initial_data()
+
+    def _pull_turso_initial_data(self):
+        """Hydrates local SQLite memory on startup from Turso Cloud DB if configured."""
+        if not self.turso_url or not self.turso_token:
+            return
+            
+        try:
+            url = self.turso_url.replace("libsql://", "https://")
+            if not url.endswith("/v2/pipeline"):
+                url = url.rstrip("/") + "/v2/pipeline"
+                
+            payload = {
+                "requests": [
+                    {"type": "execute", "stmt": {"sql": "SELECT tenant_id, category, name, body, created_at, updated_at FROM warm_entities;"}},
+                    {"type": "execute", "stmt": {"sql": "SELECT tenant_id, action, details, tx_hash, timestamp FROM cold_journal;"}},
+                    {"type": "execute", "stmt": {"sql": "SELECT wallet_address, strategy, last_balances, updated_at FROM user_portfolios;"}},
+                    {"type": "close"}
+                ]
+            }
+
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={
+                    "Authorization": f"Bearer {self.turso_token}",
+                    "Content-Type": "application/json"
+                },
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=4) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                results = data.get("results", [])
+                
+                with self._get_connection() as conn:
+                    cursor = conn.cursor()
+                    
+                    # Hydrate WARM entities
+                    if len(results) > 0 and "response" in results[0]:
+                        rows = results[0]["response"]["result"]["rows"]
+                        cols = [c["name"] for c in results[0]["response"]["result"]["cols"]]
+                        for r in rows:
+                            row_dict = {cols[i]: (r[i]["value"] if r[i] and isinstance(r[i], dict) and "value" in r[i] else None) for i in range(len(cols))}
+                            cursor.execute("""
+                                INSERT INTO warm_entities (tenant_id, category, name, body, created_at, updated_at)
+                                VALUES (?, ?, ?, ?, ?, ?)
+                                ON CONFLICT(tenant_id, category, name) DO UPDATE SET body=excluded.body, updated_at=excluded.updated_at
+                            """, (row_dict.get("tenant_id"), row_dict.get("category"), row_dict.get("name"), row_dict.get("body"), row_dict.get("created_at"), row_dict.get("updated_at")))
+                    
+                    # Hydrate COLD journal
+                    if len(results) > 1 and "response" in results[1]:
+                        rows = results[1]["response"]["result"]["rows"]
+                        cols = [c["name"] for c in results[1]["response"]["result"]["cols"]]
+                        for r in rows:
+                            row_dict = {cols[i]: (r[i]["value"] if r[i] and isinstance(r[i], dict) and "value" in r[i] else None) for i in range(len(cols))}
+                            tx = row_dict.get("tx_hash")
+                            if tx:
+                                cursor.execute("""
+                                    INSERT INTO cold_journal (tenant_id, action, details, tx_hash, timestamp)
+                                    VALUES (?, ?, ?, ?, ?)
+                                    ON CONFLICT(tx_hash) DO UPDATE SET details=excluded.details, timestamp=excluded.timestamp
+                                """, (row_dict.get("tenant_id"), row_dict.get("action"), row_dict.get("details"), tx, row_dict.get("timestamp")))
+                            else:
+                                cursor.execute("""
+                                    INSERT INTO cold_journal (tenant_id, action, details, tx_hash, timestamp)
+                                    VALUES (?, ?, ?, ?, ?)
+                                """, (row_dict.get("tenant_id"), row_dict.get("action"), row_dict.get("details"), None, row_dict.get("timestamp")))
+
+                    # Hydrate user_portfolios
+                    if len(results) > 2 and "response" in results[2]:
+                        rows = results[2]["response"]["result"]["rows"]
+                        cols = [c["name"] for c in results[2]["response"]["result"]["cols"]]
+                        for r in rows:
+                            row_dict = {cols[i]: (r[i]["value"] if r[i] and isinstance(r[i], dict) and "value" in r[i] else None) for i in range(len(cols))}
+                            cursor.execute("""
+                                INSERT INTO user_portfolios (wallet_address, strategy, last_balances, updated_at)
+                                VALUES (?, ?, ?, ?)
+                                ON CONFLICT(wallet_address) DO UPDATE SET strategy=excluded.strategy, last_balances=excluded.last_balances, updated_at=excluded.updated_at
+                            """, (row_dict.get("wallet_address"), row_dict.get("strategy"), row_dict.get("last_balances"), row_dict.get("updated_at")))
+                    
+                    conn.commit()
+        except (urllib.error.URLError, urllib.error.HTTPError, OSError, ValueError, KeyError):
+            pass
 
     def upsert_user_portfolio(self, wallet_address: str, strategy: dict[str, Any] | None = None, last_balances: dict[str, Any] | None = None):
         """Upserts user portfolio in SQLite & Turso Cloud DB using wallet_address as UNIQUE primary key."""
