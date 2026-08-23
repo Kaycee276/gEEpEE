@@ -48,7 +48,7 @@ export const StrategyForm: React.FC<StrategyFormProps> = ({
         if (typeof alloc.VIRTUAL === "number") setVirtualAlloc(alloc.VIRTUAL);
       }
     }
-  }, [JSON.stringify(status?.recalled_strategy)]);
+  }, [status?.recalled_strategy]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
