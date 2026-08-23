@@ -9,7 +9,7 @@ interface ControlBarProps {
     user_wallet?: string;
     real_tx_hash?: string;
     chain_id?: number;
-  }) => void;
+  }) => Promise<void> | void;
   onColdStart: () => Promise<void> | void;
   onTriggerX402: (payload?: {
     user_wallet?: string;
@@ -32,11 +32,13 @@ export const ControlBar: React.FC<ControlBarProps> = ({
   const chainId = useChainId();
   const { sendTransactionAsync } = useSendTransaction();
 
+  const [isSigningRebalance, setIsSigningRebalance] = useState(false);
   const [isSigningX402, setIsSigningX402] = useState(false);
   const [isColdStarting, setIsColdStarting] = useState(false);
   const [isTogglingMemory, setIsTogglingMemory] = useState(false);
 
   const isActionLocked = !isConnected || !memoryEnabled;
+  const isRebalanceBusy = isRebalancing || isSigningRebalance;
 
   const handleRebalanceClick = async () => {
     if (!isConnected) {
@@ -47,6 +49,7 @@ export const ControlBar: React.FC<ControlBarProps> = ({
       return;
     }
 
+    setIsSigningRebalance(true);
     try {
       let realTxHash: string | undefined = undefined;
       if (sendTransactionAsync && address) {
@@ -65,13 +68,15 @@ export const ControlBar: React.FC<ControlBarProps> = ({
         }
       }
 
-      onRunRebalance({
+      await onRunRebalance({
         user_wallet: address,
         real_tx_hash: realTxHash,
         chain_id: chainId,
       });
     } catch (err) {
       console.error("Rebalance execution error:", err);
+    } finally {
+      setIsSigningRebalance(false);
     }
   };
 
@@ -195,25 +200,27 @@ export const ControlBar: React.FC<ControlBarProps> = ({
         >
           <button
             onClick={handleRebalanceClick}
-            disabled={isActionLocked || isRebalancing}
+            disabled={isActionLocked || isRebalanceBusy}
             className="neo-btn neo-btn-yellow"
             style={{
               filter: isActionLocked ? "blur(1.5px)" : "none",
-              opacity: isActionLocked || isRebalancing ? 0.45 : 1,
+              opacity: isActionLocked || isRebalanceBusy ? 0.45 : 1,
               cursor:
-                isActionLocked || isRebalancing ? "not-allowed" : "pointer",
+                isActionLocked || isRebalanceBusy ? "wait" : "pointer",
               display: "inline-flex",
               alignItems: "center",
               gap: "6px",
             }}
           >
-            {isRebalancing && (
+            {isRebalanceBusy && (
               <span
                 className="animate-spin"
                 style={{ display: "inline-block" }}
-              ></span>
+              >
+                ⏳
+              </span>
             )}
-            {isRebalancing
+            {isRebalanceBusy
               ? "Prompting Wallet & Rebalancing..."
               : "Run Rebalance"}
           </button>
