@@ -48,7 +48,7 @@ export default function App() {
     try {
       const [dataStatus, dataMem] = await Promise.all([
         fetchStatus(),
-        fetchMemory(),
+        fetchMemory(address),
       ]);
       setStatus(dataStatus);
       setMemoryDump(dataMem);

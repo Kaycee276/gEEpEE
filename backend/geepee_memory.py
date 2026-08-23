@@ -420,6 +420,30 @@ class GeePeeMemoryEngine:
                     SELECT category, name, body, updated_at FROM warm_entities WHERE tenant_id=? ORDER BY updated_at DESC
                 """, (tenant_id,)).fetchall()
             
+    def list_entities(self, category: str | None = None, tenant_id: str | None = None) -> list[dict[str, Any]]:
+        if not self.load_bearing_enabled:
+            return []
+            
+        with self._get_connection() as conn:
+            if tenant_id and tenant_id != "geepee_default":
+                if category:
+                    rows = conn.cursor().execute("""
+                        SELECT category, name, body, updated_at FROM warm_entities WHERE (tenant_id=? OR tenant_id='geepee_default') AND category=? ORDER BY updated_at DESC
+                    """, (tenant_id, category)).fetchall()
+                else:
+                    rows = conn.cursor().execute("""
+                        SELECT category, name, body, updated_at FROM warm_entities WHERE tenant_id=? OR tenant_id='geepee_default' ORDER BY updated_at DESC
+                    """, (tenant_id,)).fetchall()
+            else:
+                if category:
+                    rows = conn.cursor().execute("""
+                        SELECT category, name, body, updated_at FROM warm_entities WHERE category=? ORDER BY updated_at DESC
+                    """, (category,)).fetchall()
+                else:
+                    rows = conn.cursor().execute("""
+                        SELECT category, name, body, updated_at FROM warm_entities ORDER BY updated_at DESC
+                    """).fetchall()
+            
             return [
                 {
                     "category": r["category"],
@@ -476,14 +500,22 @@ class GeePeeMemoryEngine:
                 VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
             """, [tenant_id, action, det_str, tx_hash])
 
-    def read_events(self, limit: int = 20, tenant_id: str = "geepee_default") -> list[dict[str, Any]]:
+    def read_events(self, limit: int = 30, tenant_id: str | None = None) -> list[dict[str, Any]]:
         if not self.load_bearing_enabled:
             return []
             
         with self._get_connection() as conn:
-            rows = conn.cursor().execute("""
-                SELECT action, details, tx_hash, timestamp FROM cold_journal WHERE tenant_id=? ORDER BY timestamp DESC LIMIT ?
-            """, (tenant_id, limit)).fetchall()
+            if tenant_id and tenant_id != "geepee_default":
+                rows = conn.cursor().execute("""
+                    SELECT action, details, tx_hash, timestamp FROM cold_journal
+                    WHERE tenant_id=? OR tenant_id='geepee_default'
+                    ORDER BY id DESC LIMIT ?
+                """, (tenant_id, limit)).fetchall()
+            else:
+                rows = conn.cursor().execute("""
+                    SELECT action, details, tx_hash, timestamp FROM cold_journal
+                    ORDER BY id DESC LIMIT ?
+                """, (limit,)).fetchall()
             
             res = []
             for r in rows:

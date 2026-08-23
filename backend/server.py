@@ -79,7 +79,7 @@ def get_system_status():
 
 
 @app.get("/api/memory")
-def get_memory_dump():
+def get_memory_dump(user_wallet: str | None = None):
     """Returns all contents across Sibyl 5-Tiers (HOT, WARM, COLD, REFERENCE, ARCHIVE)."""
     return {
         "load_bearing_enabled": memory_engine.load_bearing_enabled,
@@ -87,8 +87,8 @@ def get_memory_dump():
             "last_status": memory_engine.get_state("last_rebalance_status"),
             "active_lock": memory_engine.get_state("active_portfolio_lock")
         },
-        "warm_entities": memory_engine.list_entities(),
-        "cold_journal": memory_engine.read_events(limit=30),
+        "warm_entities": memory_engine.list_entities(tenant_id=user_wallet),
+        "cold_journal": memory_engine.read_events(limit=30, tenant_id=user_wallet),
         "reference_docs": [
             memory_engine.get_reference("base_network_spec"),
             memory_engine.get_reference("virtuals_acp_spec")
